@@ -1,0 +1,57 @@
+{
+  "name": "nodestatus",
+  "version": "1.0.0-alpha",
+  "main": "index.js",
+  "license": "MIT",
+  "author": "Kagurazaka Mizuki",
+  "bin": {
+    "status-cli": "./bin/status-cli.js",
+    "status-server": "./bin/status-server.js"
+  },
+  "scripts": {
+    "postinstall": "node script/postinstall.js",
+    "postbuild": "node script/postbuild.js",
+    "dev": "cross-env NODE_ENV=development nodemon server/app.ts --watch ./server",
+    "lint": "eslint . --ext .js --ext .ts --ignore-pattern dist --fix",
+    "build": "tsc",
+    "start": "cross-env NODE_ENV=production node dist/app.js"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
+    "@types/koa": "^2.13.4",
+    "@types/koa-mount": "^4.0.0",
+    "@types/koa-static": "^4.0.2",
+    "@types/koa-webpack": "^6.0.4",
+    "@types/log4js": "^2.3.5",
+    "@types/msgpack-lite": "^0.1.8",
+    "@types/node": "^16.6.1",
+    "@types/ws": "^7.4.7",
+    "@typescript-eslint/eslint-plugin": "^4.29.2",
+    "@typescript-eslint/parser": "^4.29.2",
+    "eslint": "^7.32.0",
+    "koa-webpack": "^6.0.0",
+    "nodemon": "^2.0.12",
+    "ts-node": "^10.2.0",
+    "typescript": "^4.3.5",
+    "webpack": "4"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "chalk": "^4.1.2",
+    "commander": "^8.1.0",
+    "cross-env": "^7.0.3",
+    "figlet": "^1.5.2",
+    "i18n-iso-countries": "^6.8.0",
+    "inquirer": "^8.1.2",
+    "koa": "^2.13.1",
+    "koa-mount": "^4.0.0",
+    "koa-static": "^5.0.0",
+    "log4js": "^6.3.0",
+    "msgpack-lite": "^0.1.26",
+    "reflect-metadata": "^0.1.13",
+    "sequelize": "^6.6.5",
+    "sequelize-typescript": "^2.1.0",
+    "sqlite3": "^5.0.2",
+    "ws": "^8.1.0"
+  }
+}
