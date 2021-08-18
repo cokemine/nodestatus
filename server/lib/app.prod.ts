@@ -9,7 +9,7 @@ import { createIO } from './io';
 (async () => {
   const app = new Koa();
 
-  app.use(serve(resolve('./web/hotaru-theme/dist'), {
+  app.use(serve(resolve(__dirname, '../../web/hotaru-theme/dist'), {
     maxage: 2592000
   }));
 
