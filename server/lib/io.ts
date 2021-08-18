@@ -7,6 +7,7 @@ import { getListServers, authServer } from '../controller/server';
 import ipc from './ipc';
 import { logger } from './utils';
 import type { Box, ServerItem, Servers } from '../../types/server';
+import * as fs from 'fs';
 
 class NodeStatus {
   private ioPub = new ws.Server({ noServer: true });
@@ -121,5 +122,8 @@ export const instance = new NodeStatus();
 export async function createIO(server: Server): Promise<void> {
   await instance.updateStatus();
   instance.init(server);
+  if (os.platform() !== 'win32' && fs.existsSync('/tmp/nodestatus_unix.sock')) {
+    fs.unlinkSync('/tmp/nodestatus_unix.sock');
+  }
   ipc.listen(os.platform() === 'win32' ? '\\\\.\\pipe\\nodestatus_ipc' : '/tmp/nodestatus_unix.sock');
 }
