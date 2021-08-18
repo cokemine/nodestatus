@@ -2,7 +2,7 @@
 
 Yet another servers monitor written in TypeScript.
 
-Current Version: 1.0.0-alpha
+Current Version: 1.0.0-alpha.patch1
 
 ## Install Node.js
 
@@ -25,11 +25,21 @@ npm i yarn pm2 -g
 ## How To Use
 
 ```shell
+npm i nodestatus-server -g # will install status-cli and status-server in your computer
+status-server # start nodestatus-server
+pm2 status # check running status
+pm2 log nodestatus # check logs
+status-cli help # check cli help
+```
+
+## How To Debug
+
+```shell
 mkdir -p /usr/local/nodestatus && cd /usr/local/nodestatus
 git clone --recurse-submodules https://github.com/cokemine/nodestatus.git .
 yarn
 yarn build
-yarn start
+yarn dev
 ```
 
 ## Usage

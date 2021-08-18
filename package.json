@@ -1,9 +1,20 @@
 {
-  "name": "nodestatus",
-  "version": "1.0.0-alpha",
+  "name": "nodestatus-server",
+  "version": "1.0.0-alpha.patch1",
   "main": "index.js",
   "license": "MIT",
   "author": "Kagurazaka Mizuki",
+  "files": [
+    "bin",
+    "dist",
+    "types",
+    "script",
+    "web/*/dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cokemine/nodestatus.git"
+  },
   "bin": {
     "status-cli": "./bin/status-cli.js",
     "status-server": "./bin/status-server.js"
@@ -11,6 +22,7 @@
   "scripts": {
     "postinstall": "node script/postinstall.js",
     "postbuild": "node script/postbuild.js",
+    "postpublish": "npm run build",
     "dev": "cross-env NODE_ENV=development nodemon server/app.ts --watch ./server",
     "lint": "eslint . --ext .js --ext .ts --ignore-pattern dist --fix",
     "build": "tsc",
@@ -48,6 +60,7 @@
     "koa-static": "^5.0.0",
     "log4js": "^6.3.0",
     "msgpack-lite": "^0.1.26",
+    "pm2": "^5.1.0",
     "reflect-metadata": "^0.1.13",
     "sequelize": "^6.6.5",
     "sequelize-typescript": "^2.1.0",
