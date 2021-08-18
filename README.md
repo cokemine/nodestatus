@@ -22,10 +22,12 @@ apt-get install -y nodejs
 npm i yarn pm2 -g
 ```
 
-## How To Use
+## How To Install
+
+#### From NPM
 
 ```shell
-npm i nodestatus-server -g # will install status-cli and status-server in your computer
+npm i nodestatus-server -g --unsafe-perm=true --allow-root # will install status-cli and status-server in your computer
 status-server # start nodestatus-server
 pm2 status # check running status
 pm2 log nodestatus # check logs
