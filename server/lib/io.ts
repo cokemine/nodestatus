@@ -4,7 +4,7 @@ import { Server } from 'http';
 import { isIPv4 } from 'net';
 import { decode } from '@msgpack/msgpack';
 import { getListServers, authServer } from '../controller/server';
-import ipc from './ipc';
+import createIpc from './ipc';
 import { logger } from './utils';
 import type { Box, ServerItem, Servers } from '../../types/server';
 import * as fs from 'fs';
@@ -126,5 +126,6 @@ export async function createIO(server: Server): Promise<void> {
   if (os.platform() !== 'win32' && fs.existsSync('/tmp/nodestatus_unix.sock')) {
     fs.unlinkSync('/tmp/nodestatus_unix.sock');
   }
+  const ipc = createIpc(instance.updateStatus);
   ipc.listen(os.platform() === 'win32' ? '\\\\.\\pipe\\nodestatus_ipc' : '/tmp/nodestatus_unix.sock');
 }
