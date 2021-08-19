@@ -1,6 +1,7 @@
 import { program } from 'commander';
 import { platform } from 'os';
 import { resolve } from 'path';
+import { logger } from './utils';
 
 
 program
@@ -16,5 +17,15 @@ const config = {
   port: process.env.PORT || options.port,
   interval: process.env.INTERVAL || options.interval
 };
+
+if (isNaN(parseInt(config.port))) {
+  logger.fatal('Please enter the correct port number.');
+  process.exit(1);
+}
+
+if (isNaN(parseInt(config.interval))) {
+  logger.fatal('Please enter the correct interval.');
+  process.exit(1);
+}
 
 export default config;
