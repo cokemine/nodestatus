@@ -21,9 +21,9 @@
     "status-server-run": "bin/status-server-run.js"
   },
   "scripts": {
-    "postinstall": "node script/postinstall.js",
+    "prepare": "node script/postinstall.js",
     "postbuild": "node script/postbuild.js",
-    "postpublishOnly": "npm run build",
+    "prepublishOnly": "npm run build",
     "dev": "cross-env NODE_ENV=development rollup -c --watch --watch.exclude ./web",
     "build": "rollup -c",
     "start": "cross-env NODE_ENV=production node build/app.js",
