@@ -3,12 +3,13 @@ import koaWebpack from 'koa-webpack';
 import mount from 'koa-mount';
 import { resolve } from 'path';
 import { Server } from 'http';
-import { createIO } from './io';
-import { logger } from './utils';
+import { createIO } from './lib/io';
+import { logger } from './lib/utils';
+import config from './lib/config';
 
 const getVueWebpackConfig = (name: string) => {
-  process.env.VUE_CLI_CONTEXT = resolve(__dirname, `../../web/${ name }`);
-  return require(`../../web/${ name }/node_modules/@vue/cli-service/webpack.config`);
+  process.env.VUE_CLI_CONTEXT = resolve(__dirname, `../web/${ name }`);
+  return require(`../web/${ name }/node_modules/@vue/cli-service/webpack.config`);
 };
 
 (async () => {
@@ -24,5 +25,5 @@ const getVueWebpackConfig = (name: string) => {
 
   await createIO(server);
 
-  server.listen(process.env.port, () => logger.info(`🎉  NodeStatus is listening on http://localhost:${ process.env.port }`));
+  server.listen(config.port, () => logger.info(`🎉  NodeStatus is listening on http://localhost:${ config.port }`));
 })();

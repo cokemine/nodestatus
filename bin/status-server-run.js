@@ -12,7 +12,7 @@ pm2.connect(error => {
   pm2.start(
     {
       name: 'nodestatus',
-      script: path.resolve(__dirname, '../dist/app.js'),
+      script: path.resolve(__dirname, '../build/app.js'),
       args
     },
     error => {

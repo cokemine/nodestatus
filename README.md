@@ -2,7 +2,7 @@
 
 Yet another servers monitor written in TypeScript.
 
-Current Version: 1.0.0-alpha.patch3
+Current Version: 1.0.0-alpha.patch6
 
 ## Install Node.js
 

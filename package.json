@@ -1,12 +1,12 @@
 {
   "name": "nodestatus-server",
-  "version": "1.0.0-alpha.patch3",
+  "version": "1.0.0-alpha.patch6",
   "main": "index.js",
   "license": "MIT",
   "author": "Kagurazaka Mizuki",
   "files": [
     "bin",
-    "dist",
+    "build",
     "types",
     "script",
     "web/*/dist"
@@ -24,12 +24,18 @@
     "postinstall": "node script/postinstall.js",
     "postbuild": "node script/postbuild.js",
     "postpublishOnly": "npm run build",
-    "dev": "cross-env NODE_ENV=development nodemon server/app.ts --watch ./server",
-    "lint": "eslint . --ext .js --ext .ts --ignore-pattern dist --fix",
-    "build": "tsc",
-    "start": "cross-env NODE_ENV=production node dist/app.js"
+    "dev": "cross-env NODE_ENV=development rollup -c --watch --watch.exclude ./web",
+    "build": "rollup -c",
+    "start": "cross-env NODE_ENV=production node build/app.js",
+    "lint": "eslint . --ext .js --ext .ts --ignore-pattern build --ignore-pattern dist --fix"
   },
   "devDependencies": {
+    "@msgpack/msgpack": "^2.7.0",
+    "@rollup/plugin-alias": "^3.1.5",
+    "@rollup/plugin-commonjs": "^20.0.0",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^13.0.4",
+    "@rollup/plugin-run": "^2.1.0",
     "@types/bcryptjs": "^2.4.2",
     "@types/koa": "^2.13.4",
     "@types/koa-mount": "^4.0.0",
@@ -40,31 +46,34 @@
     "@types/ws": "^7.4.7",
     "@typescript-eslint/eslint-plugin": "^4.29.2",
     "@typescript-eslint/parser": "^4.29.2",
-    "eslint": "^7.32.0",
-    "koa-webpack": "^6.0.0",
-    "nodemon": "^2.0.12",
-    "ts-node": "^10.2.0",
-    "typescript": "^4.3.5",
-    "webpack": "4"
-  },
-  "dependencies": {
-    "@msgpack/msgpack": "^2.7.0",
     "bcryptjs": "^2.4.3",
+    "bufferutil": "^4.0.3",
     "chalk": "^4.1.2",
     "commander": "^8.1.0",
     "cross-env": "^7.0.3",
-    "figlet": "^1.5.2",
+    "eslint": "^7.32.0",
     "i18n-iso-countries": "^6.8.0",
     "inquirer": "^8.1.2",
     "koa": "^2.13.1",
     "koa-mount": "^4.0.0",
     "koa-static": "^5.0.0",
+    "koa-webpack": "^6.0.0",
     "log4js": "^6.3.0",
     "pm2": "^5.1.0",
-    "reflect-metadata": "^0.1.13",
+    "rollup": "^2.56.2",
+    "rollup-plugin-delete": "^2.0.0",
+    "rollup-plugin-typescript2": "^0.30.0",
+    "typescript": "^4.3.5",
+    "utf-8-validate": "^5.0.5",
+    "webpack": "4",
+    "ws": "^8.2.0"
+  },
+  "dependencies": {
+    "figlet": "^1.5.2",
+    "readable-stream": "^3.6.0",
     "sequelize": "^6.6.5",
     "sequelize-typescript": "^2.1.0",
     "sqlite3": "^5.0.2",
-    "ws": "^8.2.0"
+    "reflect-metadata": "^0.1.13"
   }
 }

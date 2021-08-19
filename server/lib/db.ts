@@ -1,11 +1,16 @@
 import { Sequelize } from 'sequelize-typescript';
-import { resolve } from 'path';
+import Server from '../schema/server';
+import { dirname } from 'path';
+import config from './config';
+import { mkdirSync } from 'fs';
+
+mkdirSync(dirname(config.database), { recursive: true });
 
 const sequelize = new Sequelize({
   dialect: 'sqlite',
-  storage: process.env.db,
+  storage: config.database,
   logging: false,
-  models: [resolve(__dirname, '../schema')]
+  models: [Server]
 });
 
 export default sequelize;

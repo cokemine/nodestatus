@@ -1,2 +1,2 @@
 #!/usr/bin/env node
-require('../dist/app.js');
+require('../build/app.js');

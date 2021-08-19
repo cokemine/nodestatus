@@ -1,16 +1,16 @@
 import Koa from 'koa';
 import serve from 'koa-static';
 import { resolve } from 'path';
-import { logger } from './utils';
+import { logger } from './lib/utils';
 import { Server } from 'http';
-import { createIO } from './io';
-import config from './config';
+import { createIO } from './lib/io';
+import config from './lib/config';
 
 
 (async () => {
   const app = new Koa();
 
-  app.use(serve(resolve(__dirname, '../../web/hotaru-theme/dist'), {
+  app.use(serve(resolve(__dirname, '../web/hotaru-theme/dist'), {
     maxage: 2592000
   }));
 

@@ -8,6 +8,7 @@ import createIpc from './ipc';
 import { logger } from './utils';
 import type { Box, ServerItem, Servers } from '../../types/server';
 import * as fs from 'fs';
+import config from './config';
 
 class NodeStatus {
   private ioPub = new ws.Server({ noServer: true });
@@ -97,7 +98,7 @@ class NodeStatus {
           updated: ~~(Date.now() / 1000)
         }));
       runPush();
-      const id = setInterval(runPush, Number(process.env.interval));
+      const id = setInterval(runPush, Number(config.interval));
       socket.on('close', () => clearInterval(id));
     });
   }
@@ -120,12 +121,14 @@ class NodeStatus {
 
 export const instance = new NodeStatus();
 
+export const updateStatus = (username?: string): Promise<void> => instance.updateStatus(username);
+
 export async function createIO(server: Server): Promise<void> {
   await instance.updateStatus();
   instance.init(server);
   if (os.platform() !== 'win32' && fs.existsSync('/tmp/nodestatus_unix.sock')) {
     fs.unlinkSync('/tmp/nodestatus_unix.sock');
   }
-  const ipc = createIpc(instance.updateStatus);
+  const ipc = createIpc(updateStatus);
   ipc.listen(os.platform() === 'win32' ? '\\\\.\\pipe\\nodestatus_ipc' : '/tmp/nodestatus_unix.sock');
 }
