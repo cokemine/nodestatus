@@ -36,7 +36,6 @@
     "@types/koa-static": "^4.0.2",
     "@types/koa-webpack": "^6.0.4",
     "@types/log4js": "^2.3.5",
-    "@types/msgpack-lite": "^0.1.8",
     "@types/node": "^16.6.1",
     "@types/ws": "^7.4.7",
     "@typescript-eslint/eslint-plugin": "^4.29.2",
@@ -49,6 +48,7 @@
     "webpack": "4"
   },
   "dependencies": {
+    "@msgpack/msgpack": "^2.7.0",
     "bcryptjs": "^2.4.3",
     "chalk": "^4.1.2",
     "commander": "^8.1.0",
@@ -60,7 +60,6 @@
     "koa-mount": "^4.0.0",
     "koa-static": "^5.0.0",
     "log4js": "^6.3.0",
-    "msgpack-lite": "^0.1.26",
     "pm2": "^5.1.0",
     "reflect-metadata": "^0.1.13",
     "sequelize": "^6.6.5",

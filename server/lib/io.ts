@@ -2,7 +2,7 @@ import os from 'os';
 import ws from 'ws';
 import { Server } from 'http';
 import { isIPv4 } from 'net';
-import msgpack from 'msgpack-lite';
+import { decode } from '@msgpack/msgpack';
 import { getListServers, authServer } from '../controller/server';
 import ipc from './ipc';
 import { logger } from './utils';
@@ -57,7 +57,7 @@ class NodeStatus {
         if (this.isBanned.get(address)) {
           socket.send('You are banned. Please try to connect after 60 / 120 seconds');
         } else try {
-          ({ username, password } = msgpack.decode(buf));
+          ({ username, password } = decode(buf) as any);
           username = username.trim();
           password = password.trim();
           if (Object.keys(this.servers[username].status).length) {
@@ -80,7 +80,7 @@ class NodeStatus {
           socket.send(`You are connecting via: ${ isIPv4(address) ? 'IPv4' : 'IPv6' }`);
           logger.info(`${ address } has connected to server`);
 
-          socket.on('message', (buf: Buffer) => this.servers[username]['status'] = msgpack.decode(buf));
+          socket.on('message', (buf: Buffer) => this.servers[username]['status'] = decode(buf) as any);
 
           socket.once('close', () => {
             this.servers[username]['status'] = {};
@@ -104,6 +104,7 @@ class NodeStatus {
 
   public async updateStatus(username ?: string) {
     const box = (await getListServers()).data as Box;
+    if (!box) return;
     if (username) {
       if (!box[username])
         delete this.servers[username];
