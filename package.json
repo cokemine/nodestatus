@@ -1,6 +1,6 @@
 {
   "name": "nodestatus-server",
-  "version": "1.0.0-alpha.patch6",
+  "version": "1.0.0-alpha.1",
   "main": "index.js",
   "license": "MIT",
   "author": "Kagurazaka Mizuki",
