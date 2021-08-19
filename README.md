@@ -2,7 +2,7 @@
 
 Yet another servers monitor written in TypeScript.
 
-Current Version: 1.0.0-alpha.patch1
+Current Version: 1.0.0-alpha.patch3
 
 ## Install Node.js
 
@@ -27,11 +27,12 @@ npm i yarn pm2 -g
 #### From NPM
 
 ```shell
-npm i nodestatus-server -g --unsafe-perm=true --allow-root # will install status-cli and status-server in your computer
+npm i nodestatus-server -g --unsafe-perm=true --allow-root # will install status-cli status-server status-server-run in your computer
 status-server # start nodestatus-server
+status-server-run # start nodestatus-server with pm2
+status-cli help # check cli help
 pm2 status # check running status
 pm2 log nodestatus # check logs
-status-cli help # check cli help
 ```
 
 ## How To Debug

@@ -1,6 +1,6 @@
 {
   "name": "nodestatus-server",
-  "version": "1.0.0-alpha.patch2",
+  "version": "1.0.0-alpha.patch3",
   "main": "index.js",
   "license": "MIT",
   "author": "Kagurazaka Mizuki",
@@ -16,13 +16,14 @@
     "url": "https://github.com/cokemine/nodestatus.git"
   },
   "bin": {
-    "status-cli": "./bin/status-cli.js",
-    "status-server": "./bin/status-server.js"
+    "status-cli": "bin/status-cli.js",
+    "status-server": "bin/status-server.js",
+    "status-server-run": "bin/status-server-run.js"
   },
   "scripts": {
     "postinstall": "node script/postinstall.js",
     "postbuild": "node script/postbuild.js",
-    "postpublish": "npm run build",
+    "postpublishOnly": "npm run build",
     "dev": "cross-env NODE_ENV=development nodemon server/app.ts --watch ./server",
     "lint": "eslint . --ext .js --ext .ts --ignore-pattern dist --fix",
     "build": "tsc",
