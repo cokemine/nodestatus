@@ -20,6 +20,6 @@ import db from './lib/db';
 
 db.sync({ alter: true }).then(() =>
   process.env.NODE_ENV === 'development'
-    ? require('./lib/app.dev')
-    : require('./lib/app.prod')
+    ? import('./lib/app.dev')
+    : import('./lib/app.prod')
 );

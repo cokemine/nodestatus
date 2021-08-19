@@ -1,7 +1,6 @@
 module.exports = {
   root: true,
   env: {
-    browser: true,
     commonjs: true,
     es6: true,
     node: true,
@@ -22,7 +21,14 @@ module.exports = {
     quotes: [ 1, 'single' ],
     'require-await': 2,
     'no-return-await': 2,
-    '@typescript-eslint/no-var-requires': 0,
     '@typescript-eslint/no-explicit-any': 0
-  }
+  },
+  'overrides': [
+    {
+      'files': [ '*.js' ],
+      'rules': {
+        '@typescript-eslint/no-var-requires': 0
+      }
+    }
+  ]
 };
