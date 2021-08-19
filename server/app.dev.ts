@@ -30,5 +30,5 @@ const webpackMiddleware = async (name: string) => {
 
   await createIO(server);
 
-  server.listen(config.port, () => logger.info(`🎉  NodeStatus is listening on http://localhost:${ config.port }`));
+  server.listen(config.port, () => logger.info(`🎉  NodeStatus is listening on http://127.0.0.1:${ config.port }`));
 })();
