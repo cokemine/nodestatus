@@ -1,4 +1,6 @@
 # NodeStatus
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fcokemine%2Fnodestatus.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fcokemine%2Fnodestatus?ref=badge_shield)
+
 
 Yet another servers monitor written in TypeScript.
 
@@ -60,3 +62,7 @@ Options:
 - ServerStatus 及其相关项目: https://github.com/cokemine/ServerStatus-Hotaru (MIT)
 - xyStatus: https://github.com/xytoki/xyStatus (GPLv3)
 
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fcokemine%2Fnodestatus.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fcokemine%2Fnodestatus?ref=badge_large)
