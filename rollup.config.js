@@ -28,6 +28,7 @@ export default [
       dir: './build',
       format: 'cjs',
     },
+    context: 'global',
     external: [ 'webpack', 'koa-webpack', 'sqlite3', 'sequelize', 'sequelize-typescript', 'reflect-metadata' ],
     plugins: [
       typescript(),

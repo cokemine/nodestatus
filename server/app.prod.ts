@@ -2,8 +2,7 @@ import Koa from 'koa';
 import serve from 'koa-static';
 import { resolve } from 'path';
 import { logger } from './lib/utils';
-import { Server } from 'http';
-import { createIO } from './lib/io';
+import { createStatus } from './lib/status';
 import config from './lib/config';
 
 
@@ -14,10 +13,10 @@ import config from './lib/config';
     maxage: 2592000
   }));
 
-  const server = new Server(app.callback());
-
-  await createIO(server);
+  const [server, ipc] = await createStatus(app);
 
   server.listen(config.port, () => logger.info(`🎉  NodeStatus is listening on http://127.0.0.1:${ config.port }`));
+
+  ipc && ipc.listen(config.ipcAddress, () => logger.info(`🎉  NodeStatus Ipc is listening on ${ config.ipcAddress }`));
 })();
 

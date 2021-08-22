@@ -2,8 +2,7 @@ import Koa from 'koa';
 import koaWebpack from 'koa-webpack';
 import mount from 'koa-mount';
 import { resolve } from 'path';
-import { Server } from 'http';
-import { createIO } from './lib/io';
+import { createStatus } from './lib/status';
 import { logger } from './lib/utils';
 import config from './lib/config';
 
@@ -24,11 +23,12 @@ const webpackMiddleware = async (name: string) => {
 
 (async () => {
   const app = new Koa();
-  const server = new Server(app.callback());
 
   app.use(mount('/', await webpackMiddleware('hotaru-theme')));
 
-  await createIO(server);
+  const [server, ipc] = await createStatus(app);
 
   server.listen(config.port, () => logger.info(`🎉  NodeStatus is listening on http://127.0.0.1:${ config.port }`));
+
+  ipc && ipc.listen(config.ipcAddress, () => logger.info(`🎉  NodeStatus Ipc is listening on ${ config.ipcAddress }`));
 })();

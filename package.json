@@ -21,7 +21,7 @@
     "status-server-run": "bin/status-server-run.js"
   },
   "scripts": {
-    "prepare": "node script/postinstall.js",
+    "postinstall": "node script/postinstall.js",
     "postbuild": "node script/postbuild.js",
     "prepublishOnly": "npm run build",
     "dev": "cross-env NODE_ENV=development rollup -c --watch --watch.exclude ./web",
@@ -41,7 +41,6 @@
     "@types/koa-mount": "^4.0.0",
     "@types/koa-static": "^4.0.2",
     "@types/koa-webpack": "^6.0.4",
-    "@types/log4js": "^2.3.5",
     "@types/node": "^16.6.1",
     "@types/ws": "^7.4.7",
     "@typescript-eslint/eslint-plugin": "^4.29.2",
@@ -51,9 +50,12 @@
     "chalk": "^4.1.2",
     "commander": "^8.1.0",
     "cross-env": "^7.0.3",
+    "dotenv": "^10.0.0",
     "eslint": "^7.32.0",
+    "https-proxy-agent": "^5.0.0",
     "i18n-iso-countries": "^6.8.0",
     "inquirer": "^8.1.2",
+    "ipaddr.js": "^2.0.1",
     "koa": "^2.13.1",
     "koa-mount": "^4.0.0",
     "koa-static": "^5.0.0",
@@ -63,6 +65,7 @@
     "rollup": "^2.56.2",
     "rollup-plugin-delete": "^2.0.0",
     "rollup-plugin-typescript2": "^0.30.0",
+    "telegraf": "^4.4.1",
     "typescript": "^4.3.5",
     "utf-8-validate": "^5.0.5",
     "webpack": "4",
@@ -71,9 +74,9 @@
   "dependencies": {
     "figlet": "^1.5.2",
     "readable-stream": "^3.6.0",
+    "reflect-metadata": "^0.1.13",
     "sequelize": "^6.6.5",
     "sequelize-typescript": "^2.1.0",
-    "sqlite3": "^5.0.2",
-    "reflect-metadata": "^0.1.13"
+    "sqlite3": "git+https://github.com/mapbox/node-sqlite3.git#593c9d"
   }
 }
