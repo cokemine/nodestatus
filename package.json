@@ -62,7 +62,7 @@
     "koa-webpack": "^6.0.0",
     "log4js": "^6.3.0",
     "pm2": "^5.1.0",
-    "rollup": "^2.56.2",
+    "rollup": "^2.56.3",
     "rollup-plugin-delete": "^2.0.0",
     "rollup-plugin-typescript2": "^0.30.0",
     "telegraf": "^4.4.1",
