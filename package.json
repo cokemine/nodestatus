@@ -43,7 +43,7 @@
     "@types/koa-webpack": "^6.0.4",
     "@types/node": "^16.6.1",
     "@types/ws": "^7.4.7",
-    "@typescript-eslint/eslint-plugin": "^4.29.2",
+    "@typescript-eslint/eslint-plugin": "^4.29.3",
     "@typescript-eslint/parser": "^4.29.2",
     "bcryptjs": "^2.4.3",
     "bufferutil": "^4.0.3",
