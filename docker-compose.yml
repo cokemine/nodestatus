@@ -2,6 +2,7 @@ version: "3"
 services:
   nodestatus:
     image: cokemine/nodestatus
+    restart: always
 
     environment:
       PORT: 35601
@@ -12,9 +13,11 @@ services:
       TGBOT_TOKEN: ""
       TGBOT_CHATID: ""
       TGBOT_PROXY: ""
+
     volumes:
       - /usr/local/NodeStatus/server:/usr/local/NodeStatus/server
       - /tmp:/tmp:rw
+
     ports:
       - "35601:35601"
 
