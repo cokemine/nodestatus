@@ -1,0 +1,48 @@
+name: 'Docker Release'
+
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - README.md
+      - .eslintrc.js
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+            submodules: recursive
+
+      - name: Check Version
+        id: checkver
+        run: |
+          version="v$(npm -s run env echo '$npm_package_version')"
+          echo "::set-output name=version::${version}"
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build dockerfile
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          VERSION: ${{ steps.checkver.outputs.version }}
+        run: |
+          docker buildx build \
+          --platform=linux/amd64,linux/arm/v7,linux/arm64 \
+          --output "type=image,push=true" \
+          --file ./Dockerfile . \
+          --tag $(echo "${DOCKER_USERNAME}" | tr '[:upper:]' '[:lower:]')/nodestatus:latest \
+          --tag $(echo "${DOCKER_USERNAME}" | tr '[:upper:]' '[:lower:]')/nodestatus:${VERSION}
