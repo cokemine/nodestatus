@@ -58,5 +58,5 @@ Options:
 ## 参考项目
 
 - ServerStatus 及其相关项目: https://github.com/cokemine/ServerStatus-Hotaru (MIT)
-- xyStatus: https://github.com/xytoki/xyStatus (GPLv3)
+- xyStatus: https://github.com/xytoki/xyStatus (GPLv2)
 

@@ -1,0 +1,20 @@
+version: "3"
+services:
+  nodestatus:
+    image: cokemine/nodestatus
+
+    environment:
+      PORT: 35601
+
+      USE_PUSH: "true"
+      USE_IPC: "true"
+
+      TGBOT_TOKEN: ""
+      TGBOT_CHATID: ""
+      TGBOT_PROXY: ""
+    volumes:
+      - /usr/local/NodeStatus/server:/usr/local/NodeStatus/server
+      - /tmp:/tmp:rw
+    ports:
+      - "35601:35601"
+

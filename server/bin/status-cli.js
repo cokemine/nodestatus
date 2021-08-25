@@ -12,7 +12,7 @@ const INFO = chalk.green('[INFO]');
 
 const emitter = new EventEmitter();
 const socket = net.connect({
-  path: os.platform() === 'win32' ? '\\\\.\\pipe\\nodestatus_ipc' : '/tmp/nodestatus_unix.sock'
+  path: os.platform() === 'win32' ? '\\\\.\\pipe\\status_ipc' : '/tmp/status_unix.sock'
 });
 
 socket.on('error', error => {
