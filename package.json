@@ -44,7 +44,7 @@
     "@types/node": "^16.6.1",
     "@types/ws": "^7.4.7",
     "@typescript-eslint/eslint-plugin": "^4.29.3",
-    "@typescript-eslint/parser": "^4.29.2",
+    "@typescript-eslint/parser": "^4.29.3",
     "bcryptjs": "^2.4.3",
     "bufferutil": "^4.0.3",
     "chalk": "^4.1.2",
