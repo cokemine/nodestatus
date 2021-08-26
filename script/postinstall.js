@@ -12,7 +12,7 @@ list.forEach(({ modPath, cmd }) => {
       return;
     }
   }
-  cp.spawn(cmd, [ cmd.startsWith('npm') ? 'ci' : ' --frozen-lockfile' ], {
+  cp.spawn(cmd, [ cmd.startsWith('npm') ? 'ci' : '--frozen-lockfile' ], {
     env: process.env,
     cwd: modPath,
     stdio: 'inherit'
