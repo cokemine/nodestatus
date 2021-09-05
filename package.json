@@ -79,7 +79,7 @@
     "typescript": "^4.3.5",
     "utf-8-validate": "^5.0.5",
     "webpack": "4",
-    "ws": "^8.2.0"
+    "ws": "^8.2.1"
   },
   "dependencies": {
     "figlet": "^1.5.2",
