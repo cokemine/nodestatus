@@ -45,7 +45,7 @@
     "@types/koa-static": "^4.0.2",
     "@types/koa-webpack": "^6.0.4",
     "@types/koa__router": "^8.0.7",
-    "@types/node": "^16.6.1",
+    "@types/node": "^16.7.10",
     "@types/ws": "^7.4.7",
     "@typescript-eslint/eslint-plugin": "^4.29.3",
     "@typescript-eslint/parser": "^4.29.3",
