@@ -41,7 +41,7 @@
     "@types/fs-extra": "^9.0.12",
     "@types/jsonwebtoken": "^8.5.5",
     "@types/koa": "^2.13.4",
-    "@types/koa-mount": "^4.0.0",
+    "@types/koa-mount": "^4.0.1",
     "@types/koa-static": "^4.0.2",
     "@types/koa-webpack": "^6.0.4",
     "@types/koa__router": "^8.0.7",

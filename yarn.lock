@@ -433,10 +433,10 @@
   dependencies:
     "@types/koa" "*"
 
-"@types/koa-mount@^4.0.0":
-  version "4.0.0"
-  resolved "https://registry.nlark.com/@types/koa-mount/download/@types/koa-mount-4.0.0.tgz#aa0505763c0d20bf4a16cdec0d9ccd2f4f2d2a86"
-  integrity sha1-qgUFdjwNIL9KFs3sDZzNL08tKoY=
+"@types/koa-mount@^4.0.1":
+  version "4.0.1"
+  resolved "https://registry.nlark.com/@types/koa-mount/download/@types/koa-mount-4.0.1.tgz#2994be86eaa3d9dc97365e6ebfa227cee3c5f157"
+  integrity sha1-KZS+huqj2dyXNl5uv6InzuPF8Vc=
   dependencies:
     "@types/koa" "*"
 
