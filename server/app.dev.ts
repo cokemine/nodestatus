@@ -1,30 +1,72 @@
-import Koa from 'koa';
+import Koa, { Middleware } from 'koa';
 import koaWebpack from 'koa-webpack';
-import mount from 'koa-mount';
+import historyApiFallback from 'koa2-connect-history-api-fallback';
 import { resolve } from 'path';
+
 import { createStatus } from './lib/status';
 import { logger } from './lib/utils';
 import config from './lib/config';
 
-const webpackMiddleware = async (name: string) => {
+const middlewares: Record<string, Middleware> = {};
+const webs = [{ name: 'hotaru-theme', publicPath: '/' }, { name: 'hotaru-admin', publicPath: '/admin' }];
+
+/* 或许需要一个更好的 dev 前端方案... */
+const webpackMiddleware = async (name: string, publicPath: string) => {
   const pkg = await import(`../web/${ name }/package.json`);
+  let middleware: Middleware;
   if (pkg['devDependencies']['@vue/cli-service']) {
     process.env.VUE_CLI_CONTEXT = resolve(__dirname, `../web/${ name }`);
-    return koaWebpack({
+    middleware = await koaWebpack({
       config: require(`../web/${ name }/node_modules/@vue/cli-service/webpack.config`),
       devMiddleware: {
-        publicPath: '/'
+        publicPath,
       }
     });
+    middlewares[name] = middleware;
   }
-  /* WIP */
-  return null as any;
+  if (pkg['devDependencies']['@craco/craco']) {
+    /*eslint-disable @typescript-eslint/no-var-requires */
+    const { createWebpackDevConfig } = require(`../web/${ name }/node_modules/@craco/craco`);
+    const cracoConfig = require(`../web/${ name }/craco.config`);
+    cracoConfig.webpack = {
+      ...cracoConfig.webpack,
+      plugins: {
+        remove: ['HotModuleReplacementPlugin']
+      },
+    };
+    process.chdir(`./web/${ name }`);
+    process.env.PUBLIC_URL = publicPath;
+    const config = createWebpackDevConfig({
+      ...cracoConfig,
+      reactScriptsVersion: resolve(__dirname, `../web/${ name }/node_modules/react-scripts`)
+    });
+    process.chdir('../../');
+    middleware = await koaWebpack({
+      config,
+      devMiddleware: {
+        publicPath,
+      }
+    });
+    middlewares[name] = middleware;
+  }
 };
+
 
 (async () => {
   const app = new Koa();
+  await Promise.all(webs.map(({
+    name,
+    publicPath
+  }) => webpackMiddleware(name, publicPath)));
 
-  app.use(mount('/', await webpackMiddleware('hotaru-theme')));
+  app.use(historyApiFallback({
+    whiteList: ['/admin/static'],
+    rewrites: [
+      { from: /^\/admin/ as any, to: '/admin/index.html' }
+    ]
+  }));
+  app.use(middlewares['hotaru-theme']);
+  app.use(middlewares['hotaru-admin']);
 
   const [server, ipc] = await createStatus(app);
 

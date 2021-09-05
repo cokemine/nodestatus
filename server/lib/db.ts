@@ -1,6 +1,6 @@
 import { Sequelize } from 'sequelize-typescript';
-import Server from '../schema/server';
 import { dirname } from 'path';
+import { Server } from '../schema/server';
 import config from './config';
 import { mkdirSync } from 'fs';
 

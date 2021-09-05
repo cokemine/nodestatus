@@ -1,10 +1,9 @@
 import net from 'net';
-import { addServer, delServer, getRawListServers, setServer } from '../controller/server';
+import { addServer, delServer, getRawListServers, setServer } from '../controller/status';
 import { createRes } from './utils';
 import type { IServer } from '../../types/server';
-import type { NodeStatus } from './nodestatus';
 
-export default function createIpc(instance: NodeStatus): net.Server {
+export default function createIpc(): net.Server {
   return net.createServer(client => {
     client.on('data', async (buf: Buffer) => {
       try {
@@ -14,7 +13,6 @@ export default function createIpc(instance: NodeStatus): net.Server {
           const data: IServer = JSON.parse(payload);
           const status = await addServer(data);
           client.write(JSON.stringify(status));
-          if (!status.code) await instance.update();
           break;
         }
         case 'list': {
@@ -32,15 +30,11 @@ export default function createIpc(instance: NodeStatus): net.Server {
           }
           const status = await setServer(username, obj);
           client.write(JSON.stringify(status));
-          if (!status.code) username === obj.username
-            ? await instance.update(username)
-            : await Promise.all([instance.update(username), instance.update(obj.username)]);
           break;
         }
         case 'del': {
           const status = await delServer(payload);
           client.write(JSON.stringify(status));
-          if (!status.code) await instance.update(payload);
           break;
         }
         }

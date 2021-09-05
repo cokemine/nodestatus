@@ -1,6 +1,6 @@
-import Server from '../schema/server';
+import { Server } from '../schema/server';
 import { IServer, IResp } from '../../types/server';
-import { createRes } from '../lib/utils';
+import { createRes, emitter } from '../lib/utils';
 
 async function handleRequest(callback: () => Promise<IResp>): Promise<IResp> {
   try {
@@ -33,9 +33,18 @@ export function getServerPassword(username: string): Promise<IResp> {
   });
 }
 
-export function addServer(server: IServer): Promise<IResp> {
+export function createServer(server: IServer): Promise<IResp> {
   return handleRequest(async () => {
     await Server.create(server);
+    emitter.emit('update', server.username);
+    return createRes();
+  });
+}
+
+export function bulkCreateServer(servers: IServer[]): Promise<IResp> {
+  return handleRequest(async () => {
+    await Server.bulkCreate(servers, { validate: true });
+    emitter.emit('update');
     return createRes();
   });
 }
@@ -47,17 +56,20 @@ export function delServer(username: string): Promise<IResp> {
         username
       }
     });
+    emitter.emit('update', username);
     return createRes();
   });
 }
 
-export function setServer(username: string, obj: IServer): Promise<IResp> {
+export function setServer(username: string, obj: Partial<IServer>): Promise<IResp> {
   return handleRequest(async () => {
     await Server.update(obj, {
       where: {
         username
       }
     });
+    emitter.emit('update', username);
+    emitter.emit('update', obj.username);
     return createRes();
   });
 }
@@ -66,7 +78,7 @@ export function getListServers(): Promise<IResp> {
   return handleRequest(async () => {
     const result = await Server.findAll({
       attributes: {
-        exclude: ['password', 'createdAt', 'updatedAt', 'disabled']
+        exclude: ['password', 'createdAt', 'updatedAt']
       },
       raw: true
     });

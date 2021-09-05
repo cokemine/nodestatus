@@ -6,6 +6,14 @@ import commonjs from '@rollup/plugin-commonjs';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import json from '@rollup/plugin-json';
 import run from '@rollup/plugin-run';
+import pkg from './package.json';
+
+const isProd = process.env.ROLLUP_WATCH !== 'true';
+
+/* WIP: babel-plugin-import */
+const external = isProd
+  ? [ 'readable-stream', 'figlet', 'webpack', 'koa-webpack', 'sqlite3', 'sequelize', 'sequelize-typescript', 'reflect-metadata', 'babel-plugin-import' ]
+  : [ ...Object.keys(pkg.devDependencies), ...Object.keys(pkg.dependencies) ];
 
 export default [
   {
@@ -14,11 +22,11 @@ export default [
       file: './build/bin/status-cli.js',
       format: 'cjs'
     },
-    external: [ 'readable-stream', 'figlet' ],
+    external,
     plugins: [
       del({ targets: 'build/*' }),
       nodeResolve({ preferBuiltins: true }),
-      commonjs(),
+      commonjs({ sourceMap: !isProd }),
       json(),
     ]
   },
@@ -29,7 +37,7 @@ export default [
       format: 'cjs',
     },
     context: 'global',
-    external: [ 'webpack', 'koa-webpack', 'sqlite3', 'sequelize', 'sequelize-typescript', 'reflect-metadata' ],
+    external,
     plugins: [
       typescript(),
       alias({
@@ -38,9 +46,9 @@ export default [
         ]
       }),
       nodeResolve({ preferBuiltins: true }),
-      commonjs(),
+      commonjs({ sourceMap: !isProd }),
       json(),
-      process.env.ROLLUP_WATCH === 'true' && run()
+      !isProd && run()
     ]
   }
 ];

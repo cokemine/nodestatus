@@ -1,5 +1,6 @@
 import { configure, getLogger } from 'log4js';
 import { IResp } from '../../types/server';
+import EventEmitter from 'events';
 
 configure({
   appenders: {
@@ -10,6 +11,8 @@ configure({
   }
 });
 export const logger = getLogger();
+
+export const emitter = new EventEmitter();
 
 export const createRes = (code: 0 | 1 | Partial<IResp> = 0, msg = 'ok', data: Record<string, any> | null = null): IResp => {
   if (typeof code === 'object') {

@@ -2,3 +2,7 @@
 	path = web/hotaru-theme
 	url = https://github.com/cokemine/Hotaru_theme
 	branch = nodestatus
+[submodule "web/hotaru-admin"]
+	path = web/hotaru-admin
+	url = https://github.com/cokemine/hotaru-admin
+	branch = master

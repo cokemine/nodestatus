@@ -36,7 +36,7 @@ export type IServer = { username: string, password: string, disabled: boolean } 
 
 export type IResp = {
   code: 0 | 1,
-  data: Record<string, any> | null,
+  data: Record<string, any> | null | string,
   msg: string
 }
 

@@ -1,5 +1,6 @@
 import Koa from 'koa';
 import serve from 'koa-static';
+import historyApiFallback from 'koa2-connect-history-api-fallback';
 import { resolve } from 'path';
 import { logger } from './lib/utils';
 import { createStatus } from './lib/status';
@@ -9,9 +10,13 @@ import config from './lib/config';
 (async () => {
   const app = new Koa();
 
-  app.use(serve(resolve(__dirname, '../web/hotaru-theme/dist'), {
-    maxage: 2592000
+  app.use(historyApiFallback({
+    whiteList: ['/admin/static'],
+    rewrites: [
+      { from: /^\/admin/ as any, to: '/admin/index.html' }
+    ]
   }));
+  app.use(serve(resolve(__dirname, '../dist'), { maxage: 2592000 }));
 
   const [server, ipc] = await createStatus(app);
 

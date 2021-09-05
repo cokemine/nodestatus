@@ -5,6 +5,7 @@
 **/.idea
 **/.vscode
 db.sqlite
+.yarnrc
 
 # local env files
 **/.env.local

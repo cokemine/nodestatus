@@ -1,10 +1,13 @@
 import { Server } from 'http';
+import fs from 'fs';
 import type { Server as NetServer } from 'net';
-import createIpc from './ipc';
 import Koa from 'koa';
+import koaJwt from 'koa-jwt';
+import koaBody from 'koa-body';
+import createIpc from './ipc';
 import { NodeStatus } from './nodestatus';
 import config from './config';
-import fs from 'fs';
+import router from '../router';
 
 export async function createStatus(app: Koa): Promise<[Server, NetServer | null]> {
 
@@ -13,7 +16,7 @@ export async function createStatus(app: Koa): Promise<[Server, NetServer | null]
 
   const instance = new NodeStatus(server, {
     interval: Number(config.interval),
-    usePush: config.usePush === 'true',
+    usePush: config.usePush,
     telegram: {
       ...config.telegram,
       chat_id: config.telegram.chat_id.split(',')
@@ -24,8 +27,19 @@ export async function createStatus(app: Koa): Promise<[Server, NetServer | null]
 
   if (config.useIpc) {
     fs.existsSync(config.ipcAddress) && fs.unlinkSync(config.ipcAddress);
-    ipc = createIpc(instance);
+    ipc = createIpc();
   }
-
+  if (config.useWeb) {
+    app.use(koaBody());
+    app.use(
+      koaJwt({
+        secret: config.webSecret
+      }).unless({
+        path: [/^\/api\/session/, /^\/telegraf/]
+      })
+    );
+    app.use(router.routes());
+    app.use(router.allowedMethods());
+  }
   return [server, ipc];
 }

@@ -7,8 +7,8 @@ import { Telegraf } from 'telegraf';
 import HttpsProxyAgent from 'https-proxy-agent';
 import { IPv6 } from 'ipaddr.js';
 import { Box, Options, ServerItem, Servers } from '../../types/server';
-import { logger } from './utils';
-import { authServer, getListServers } from '../controller/server';
+import { logger, emitter } from './utils';
+import { authServer, getListServers } from '../controller/status';
 
 function callHook(instance: NodeStatus, hook: keyof NodeStatus, ...args: any[]) {
   try {
@@ -27,7 +27,11 @@ export class NodeStatus {
 
   private ioPub = new ws.Server({ noServer: true });
   private ioConn = new ws.Server({ noServer: true });
+  /* socket -> ip */
   private map = new WeakMap<ws, string>();
+  /* username -> socket */
+  private userMap = new Map<string, ws>();
+  /* ip -> banned */
   private isBanned = new Map<string, boolean>();
 
   public servers: Servers = {};
@@ -41,6 +45,7 @@ export class NodeStatus {
   constructor(server: Server, options: Options) {
     this.server = server;
     this.options = options;
+    emitter.on('update', this.update.bind(this));
   }
 
   private setBan(socket: ws, address: string, t: number, reason: string): void {
@@ -83,27 +88,28 @@ export class NodeStatus {
       socket.once('message', async (buf: Buffer) => {
         if (this.isBanned.get(address)) {
           socket.send('You are banned. Please try connecting after 60 / 120 seconds');
-          socket.close();
+          return socket.close();
         }
         let username = '', password = '';
         try {
           ({ username, password } = decode(buf) as any);
           username = username.trim();
           password = password.trim();
+          if (!this.servers[username]) {
+            socket.send('Wrong username and/or password.');
+            return this.setBan(socket, address, 120, 'Wrong username and/or password.');
+          }
           if (Object.keys(this.servers[username]?.status || {}).length) {
             socket.send('Only one connection per user allowed.');
-            this.setBan(socket, address, 120, 'Only one connection per user allowed.');
+            return this.setBan(socket, address, 120, 'Only one connection per user allowed.');
           }
         } catch (e) {
           socket.send('Please check your login details.');
-          this.setBan(socket, address, 120, 'it is an idiot.');
+          return this.setBan(socket, address, 120, 'it is an idiot.');
         }
-        if (!username || !password) {
-          socket.send('Username or password must not be blank.');
-          this.setBan(socket, address, 60, 'username or password was blank');
-        } else if (!await authServer(username, password)) {
+        if (!await authServer(username, password)) {
           socket.send('Wrong username and/or password.');
-          this.setBan(socket, address, 60, 'use wrong username and/or password.');
+          return this.setBan(socket, address, 60, 'use wrong username and/or password.');
         } else {
           socket.send('Authentication successful. Access granted.');
           let ipType = 'IPv6';
@@ -113,9 +119,11 @@ export class NodeStatus {
           socket.send(`You are connecting via: ${ ipType }`);
           logger.info(`${ address } has connected to server`);
           socket.on('message', (buf: Buffer) => this.servers[username]['status'] = decode(buf) as any);
+          this.userMap.set(username, socket);
           callHook(this, 'onServerConnected', socket, username);
           socket.once('close', () => {
-            this.servers[username]['status'] = {};
+            this.userMap.delete(username);
+            this.servers[username] && (this.servers[username]['status'] = {});
             logger.warn(`${ address } disconnected`);
             callHook(this, 'onServerDisconnected', socket, username);
           });
@@ -139,13 +147,15 @@ export class NodeStatus {
     return this.update();
   }
 
-  public async update(username ?: string): Promise<void> {
+  private async update(username ?: string): Promise<void> {
     const box = (await getListServers()).data as Box;
     if (!box) return;
     if (username) {
       if (!box[username])
         delete this.servers[username];
       else this.servers[username] = Object.assign(box[username], { status: this.servers?.[username]?.status || {} });
+      const socket = this.userMap.get(username);
+      socket && socket.terminate();
     } else {
       for (const k of Object.keys(box)) {
         if (!this.servers[k]) this.servers[k] = Object.assign(box[k], { status: {} });
@@ -153,10 +163,15 @@ export class NodeStatus {
       for (const k of Object.keys(this.servers)) {
         if (!box[k]) delete this.servers[k];
       }
+      for (const socket of this.userMap.values()) {
+        socket.terminate();
+      }
+      this.userMap.clear();
     }
     this.serversPub = Object.values(this.servers).sort((x, y) => y.id - x.id);
   }
 
+  /* This should move to another file later */
   private createPush(): void {
     const pushList: Array<(message: string) => void> = [];
 
@@ -166,7 +181,7 @@ export class NodeStatus {
       this.serversPub.forEach(item => {
         str += `节点名: *${ item.name }*\n当前状态: `;
         if (item.status.online4 || item.status.online6) {
-          str += '✔*在线*\n';
+          str += '✅*在线*\n';
           online++;
         } else {
           str += '❌*离线*';

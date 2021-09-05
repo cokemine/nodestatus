@@ -27,10 +27,9 @@ COPY --from=0 /app/package.json ./
 COPY --from=0 /app/LICENSE ./
 COPY --from=0 /app/yarn.lock ./
 COPY --from=0 /app/build ./build
+COPY --from=0 /app/dist ./dist
 COPY --from=0 /app/bin ./bin
 COPY --from=0 /app/script ./script
-COPY --from=0 /app/web/hotaru-theme/dist ./web/hotaru-theme/dist
-COPY --from=0 /app/web/hotaru-theme/LICENSE ./web/hotaru-theme
 
 
 ENV IS_DOCKER=true

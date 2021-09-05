@@ -9,6 +9,12 @@ services:
 
       USE_PUSH: "true"
       USE_IPC: "true"
+      USE_WEB: "true"
+
+      WEB_USERNAME: "admin"
+      WEB_PASSWORD: ""
+      WEB_SECRET: ""
+
 
       TGBOT_TOKEN: ""
       TGBOT_CHATID: ""

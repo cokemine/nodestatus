@@ -23,10 +23,10 @@ module.exports = {
     'no-return-await': 2,
     '@typescript-eslint/no-explicit-any': 0
   },
-  'overrides': [
+  overrides: [
     {
-      'files': [ '*.js' ],
-      'rules': {
+      files: [ '*.js' ],
+      rules: {
         '@typescript-eslint/no-var-requires': 0
       }
     }
