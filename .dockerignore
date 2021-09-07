@@ -9,7 +9,6 @@ db.sqlite
 
 # local env files
 **/.env.local
-**/.env
 **/.env.*.local
 
 # Log files
