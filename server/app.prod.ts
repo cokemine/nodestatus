@@ -11,7 +11,7 @@ import config from './lib/config';
   const app = new Koa();
 
   app.use(historyApiFallback({
-    whiteList: ['/admin/static'],
+    whiteList: ['/admin/static', '/telegraf'],
     rewrites: [
       { from: /^\/admin/ as any, to: '/admin/index.html' }
     ]

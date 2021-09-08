@@ -234,7 +234,8 @@ export class NodeStatus {
 
         this.server.on('request', (req, res) => {
           if (req.url && req.url.length === secretPath.length && timingSafeEqual(Buffer.from(secretPath), Buffer.from(req.url))) {
-            return bot.webhookCallback(secretPath)(req, res);
+            bot.webhookCallback(secretPath)(req, res);
+            res.statusCode = 200;
           }
         });
       } else {

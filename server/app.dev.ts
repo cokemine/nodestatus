@@ -60,7 +60,7 @@ const webpackMiddleware = async (name: string, publicPath: string) => {
   }) => webpackMiddleware(name, publicPath)));
 
   app.use(historyApiFallback({
-    whiteList: ['/admin/static'],
+    whiteList: ['/admin/static', '/telegraf'],
     rewrites: [
       { from: /^\/admin/ as any, to: '/admin/index.html' }
     ]
