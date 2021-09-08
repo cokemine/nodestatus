@@ -250,7 +250,7 @@ export class NodeStatus {
       fn => fn(`🍊*NodeStatus* \n😀 One new server has connected! \n\n *用户名*: ${ username } \n *节点名*: ${ this.servers[username]['name'] } \n *时间*: ${ new Date() }`)
     ));
     this.onServerDisconnected = (socket, username) => Promise.all(pushList.map(
-      fn => fn(`🍊*NodeStatus* \n😰 One server has disconnected! \n\n *用户名*: *${ username }* \n *节点名*: ${ this.servers[username]['name'] } \n *时间*: ${ new Date() }`)
+      fn => fn(`🍊*NodeStatus* \n😰 One server has disconnected! \n\n *用户名*: *${ username }* \n *节点名*: ${ this.servers[username]?.['name'] } \n *时间*: ${ new Date() }`)
     ));
 
   }
