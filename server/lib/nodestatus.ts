@@ -230,7 +230,7 @@ export class NodeStatus {
 
       if (tgConfig.web_hook) {
         const secretPath = `/telegraf/${ bot.secretPathComponent() }`;
-        bot.telegram.setWebhook(`${ tgConfig.web_hook }${ secretPath }`).then(() => console.log('🤖 Telegram Bot is running using webhook'));
+        bot.telegram.setWebhook(`${ tgConfig.web_hook }${ secretPath }`).then(() => logger.info('🤖 Telegram Bot is running using webhook'));
 
         this.server.on('request', (req, res) => {
           if (req.url && req.url.length === secretPath.length && timingSafeEqual(Buffer.from(secretPath), Buffer.from(req.url))) {
