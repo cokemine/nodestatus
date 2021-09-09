@@ -15,6 +15,7 @@ RUN if [ "$USE_CHINA_MIRROR" = 1 ]; then \
   apt-get -y update \
   && apt-get install -y git python3 apt-transport-https ca-certificates build-essential \
   && ln -s /usr/bin/python3 /usr/bin/python \
+  && yarn config set network-timeout 600000 \
   && yarn install \
   && yarn build
 
@@ -43,6 +44,7 @@ RUN if [ "$USE_CHINA_MIRROR" = 1 ]; then \
   fi;\
   apk add --no-cache --virtual .build-deps git make gcc g++ python3 \
   && ln -s /usr/bin/python3 /usr/bin/python \
+  && yarn config set network-timeout 600000 \
   && yarn install --production \
   && npm install pm2 -g \
   && npm cache clean --force \

@@ -19,6 +19,7 @@ services:
       TGBOT_TOKEN: ""
       TGBOT_CHATID: ""
       TGBOT_PROXY: ""
+      TGBOT_WEBHOOK: ""
 
     volumes:
       - /usr/local/NodeStatus/server:/usr/local/NodeStatus/server

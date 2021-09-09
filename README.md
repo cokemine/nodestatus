@@ -2,7 +2,7 @@
 
 Yet another servers monitor written in TypeScript.
 
-Current Version: 1.0.0-alpha.5
+Current Version: 1.0.0-alpha.6
 
 ## How To Install
 
@@ -46,8 +46,9 @@ docker-compose --version
 # Download docker-compose.yml
 mkdir ~/nodestatus
 cd ~/nodestatus
-wget https://raw.githubusercontent.com/cokemine/nodestatus/feat/backendapi/docker-compose.yml
+wget https://raw.githubusercontent.com/cokemine/nodestatus/master/docker-compose.yml
 vim docker-compose.yml #修改环境变量相关配置
+docker-compose compose up -d
 ```
 
 ## Client
@@ -76,15 +77,15 @@ yarn dev
 
 **PORT**: NodeStatus 所用端口, 默认 35601
 
-
+&nbsp;
 
 **USE_PUSH**: 是否使用 Telegram 推送, 默认 true
 
-**USE_IPC**: 是否需要 IPC 修改服务端配置
+**USE_IPC**: 是否需要 IPC 修改服务端配置, 默认 true
 
-**USE_WEB**: 是否需要开启一个小型 web 面板修改服务端配置
+**USE_WEB**: 是否需要开启一个小型 web 面板修改服务端配置, 默认 true
 
-
+&nbsp;
 
 **WEB_USERNAME**: WEB 面板用户名，默认 admin
 
@@ -92,13 +93,13 @@ yarn dev
 
 **WEB_SECRET**: 用于 jsonwebtoken, 建议设为一个随机的字符串, 默认不填即和密码相同
 
-
+&nbsp;
 
 **TGBOT_TOKEN**: Telegram Bot Token (从 BotFather 申请到)
 
-**TGBOT_CHATID**: Telegram Bot 需要推送的 chat_id, 如不清楚可以先启动 NodeStatus, 对Bot发送 /start 获取这个 id, 多个请用`,`隔开
+**TGBOT_CHATID**: Telegram Bot 需要推送的 chat_id, 如不清楚可以先启动 NodeStatus, 对 Bot 发送 `/start` 获取这个 id, 多个请用`,`隔开
 
-**TGBOT_PROXY**: Telegram 代理服务器配置，例`http://127.0.0.1:10808`，仅支持http代理
+**TGBOT_PROXY**: Telegram 代理服务器配置，例`http://127.0.0.1:10808`，仅支持 http 代理
 
 **TGBOT_WEBHOOK**： Telegram Webhook 配置，不填写默认 Polling,例: `https://tz.mydomain.com`，使用 Webhook 务必需要开启 https
 
