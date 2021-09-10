@@ -29,6 +29,7 @@ list.forEach(({ modPath, cmd }) => {
         fs.copySync(buildPath, outputDir);
       }
     } else {
+      console.log('An error occurred while building submodules');
       process.exit(code);
     }
   });

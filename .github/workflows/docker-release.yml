@@ -41,7 +41,7 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           VERSION: ${{ steps.checkver.outputs.version }}
         with:
-          timeout_minutes: 60
+          timeout_minutes: 120
           max_attempts: 3
           command: |
             docker buildx build \

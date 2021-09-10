@@ -5,6 +5,7 @@ LABEL maintainer="Kagurazaka Mizuki"
 WORKDIR /app
 COPY . /app
 
+ENV IS_DOCKER=true
 ARG USE_CHINA_MIRROR=0
 
 RUN if [ "$USE_CHINA_MIRROR" = 1 ]; then \
@@ -16,7 +17,9 @@ RUN if [ "$USE_CHINA_MIRROR" = 1 ]; then \
   && apt-get install -y git python3 apt-transport-https ca-certificates build-essential \
   && ln -s /usr/bin/python3 /usr/bin/python \
   && yarn config set network-timeout 600000 \
-  && yarn install \
+  && mkdir .yarncache \
+  && yarn install --frozen-lockfile --cache-folder ./.yarncache \
+  && rm -rf .yarncache \
   && yarn build \
   && node script/minify-docker.js
 
