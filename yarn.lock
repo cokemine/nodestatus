@@ -5147,10 +5147,10 @@ wrappy@1:
   resolved "https://registry.nlark.com/wrappy/download/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
   integrity sha1-tSQ9jz7BqjXxNkYFvA0QNuMKtp8=
 
-ws@8.2.0, ws@^4.0.0, ws@^7.0.0, ws@^8.2.0, ws@~7.4.0:
-  version "8.2.0"
-  resolved "https://registry.npmjs.org/ws/-/ws-8.2.0.tgz#0b738cd484bfc9303421914b11bb4011e07615bb"
-  integrity sha512-uYhVJ/m9oXwEI04iIVmgLmugh2qrZihkywG9y5FfZV2ATeLIzHf93qs+tUNqlttbQK957/VX3mtwAS+UfIwA4g==
+ws@8.2.2, ws@^4.0.0, ws@^7.0.0, ws@^8.2.2, ws@~7.4.0:
+  version "8.2.2"
+  resolved "https://registry.nlark.com/ws/download/ws-8.2.2.tgz#ca684330c6dd6076a737250ed81ac1606cb0a63e"
+  integrity sha1-ymhDMMbdYHanNyUO2BrBYGywpj4=
 
 xregexp@2.0.0:
   version "2.0.0"
