@@ -31,7 +31,7 @@ export default [
     ]
   },
   {
-    input: './server/app.ts',
+    input: isProd ? './server/app.ts' : './server/app.dev.ts',
     output: {
       dir: './build',
       format: 'cjs',

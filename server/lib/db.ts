@@ -8,6 +8,7 @@ mkdirSync(dirname(config.database), { recursive: true });
 
 const sequelize = new Sequelize({
   dialect: 'sqlite',
+  dialectModule: require('sqlite3'),
   storage: config.database,
   logging: false,
   models: [Server]

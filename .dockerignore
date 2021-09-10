@@ -4,6 +4,7 @@
 **/build
 **/.idea
 **/.vscode
+app-minimal
 db.sqlite
 
 # local env files

@@ -28,6 +28,8 @@ list.forEach(({ modPath, cmd }) => {
       } else {
         fs.copySync(buildPath, outputDir);
       }
+    } else {
+      process.exit(code);
     }
   });
 });
