@@ -174,11 +174,32 @@ export class NodeStatus {
   /* This should move to another file later */
   private createPush(): void {
     const pushList: Array<(message: string) => void> = [];
+    const entities = new Set(['_', '*', '[', ']', '(', ')', '~', '`', '>', '#', '+', '-', '=', '|', '{', '}', '.', '!', '\\']);
+
+    const parseEntities = (str: any): string => {
+      if (typeof str !== 'string') str = str.toString();
+      let newStr = '';
+      for (const char of str) {
+        if (entities.has(char)) {
+          newStr += '\\';
+        }
+        newStr += char;
+      }
+      return newStr;
+    };
 
     const getBotStatus = (): string => {
       let str = '';
       let online = 0;
-      this.serversPub.forEach(item => {
+      this.serversPub.forEach(obj => {
+        const item = new Proxy(obj, {
+          get(target, key) {
+            const value = Reflect.get(target, key);
+            return typeof value === 'string'
+              ? parseEntities(value)
+              : value;
+          }
+        });
         str += `节点名: *${ item.name }*\n当前状态: `;
         if (item.status.online4 || item.status.online6) {
           str += '✅*在线*\n';
@@ -188,7 +209,7 @@ export class NodeStatus {
           str += '\n\n';
           return;
         }
-        str += `当前负载: ${ item.status.load.toFixed(2) } \n`;
+        str += `当前负载: ${ parseEntities(item.status.load.toFixed(2)) } \n`;
         str += `当前CPU占用: ${ Math.round(item.status.cpu) }% \n`;
         str += `当前内存占用: ${ Math.round(item.status.memory_used / item.status.memory_total * 100) }% \n`;
         str += `当前硬盘占用: ${ Math.round(item.status.hdd_used / item.status.hdd_total * 100) }% \n`;
@@ -214,17 +235,17 @@ export class NodeStatus {
       bot.command('start', ctx => {
         const currentChat = ctx.message.chat.id.toString();
         if (chatId.has(currentChat)) {
-          ctx.reply(`🍊NodeStatus\n🤖 Hi, this chat id is *${ currentChat }*.\nYou have access to this service. I will alert you when your servers changed.\nYou are currently using NodeStatus: *${ process.env.npm_package_version }*`, { parse_mode: 'Markdown' });
+          ctx.reply(`🍊NodeStatus\n🤖 Hi, this chat id is *${ currentChat }*\\.\nYou have access to this service\\. I will alert you when your servers changed\\.\nYou are currently using NodeStatus: *${ parseEntities(process.env.npm_package_version) }*`, { parse_mode: 'MarkdownV2' });
         } else {
-          ctx.reply(`🍊NodeStatus\n🤖 Hi, this chat id is *${ currentChat }*.\nYou *do not* have permission to use this service.\nPlease check your settings.`, { parse_mode: 'Markdown' });
+          ctx.reply(`🍊NodeStatus\n🤖 Hi, this chat id is *${ currentChat }*\\.\nYou *do not* have permission to use this service\\.\nPlease check your settings\\.`, { parse_mode: 'MarkdownV2' });
         }
       });
 
       bot.command('status', ctx => {
         if (chatId.has(ctx.message.chat.id.toString())) {
-          ctx.reply(getBotStatus(), { parse_mode: 'Markdown' });
+          ctx.reply(getBotStatus(), { parse_mode: 'MarkdownV2' });
         } else {
-          ctx.reply('🍊NodeStatus\n*No permission*', { parse_mode: 'Markdown' });
+          ctx.reply('🍊NodeStatus\n*No permission*', { parse_mode: 'MarkdownV2' });
         }
       });
 
@@ -242,15 +263,15 @@ export class NodeStatus {
         bot.launch().then(() => logger.info('🤖 Telegram Bot is running using polling'));
       }
 
-      pushList.push(message => [...chatId].map(id => bot.telegram.sendMessage(id, `${ message }`, { parse_mode: 'Markdown' })));
+      pushList.push(message => [...chatId].map(id => bot.telegram.sendMessage(id, `${ message }`, { parse_mode: 'MarkdownV2' })));
     }
 
 
     this.onServerConnected = (socket, username) => Promise.all(pushList.map(
-      fn => fn(`🍊*NodeStatus* \n😀 One new server has connected! \n\n *用户名*: ${ username } \n *节点名*: ${ this.servers[username]['name'] } \n *时间*: ${ new Date() }`)
+      fn => fn(`🍊*NodeStatus* \n😀 One new server has connected\\! \n\n *用户名*: ${ parseEntities(username) } \n *节点名*: ${ parseEntities(this.servers[username]['name']) } \n *时间*: ${ parseEntities(new Date()) }`)
     ));
     this.onServerDisconnected = (socket, username) => Promise.all(pushList.map(
-      fn => fn(`🍊*NodeStatus* \n😰 One server has disconnected! \n\n *用户名*: *${ username }* \n *节点名*: ${ this.servers[username]?.['name'] } \n *时间*: ${ new Date() }`)
+      fn => fn(`🍊*NodeStatus* \n😰 One server has disconnected\\! \n\n *用户名*: ${ parseEntities(username) } \n *节点名*: ${ parseEntities(this.servers[username]?.['name']) } \n *时间*: ${ parseEntities(new Date()) }`)
     ));
 
   }
