@@ -12,7 +12,7 @@ const isProd = process.env.ROLLUP_WATCH !== 'true';
 
 /* WIP: babel-plugin-import */
 const external = isProd
-  ? [ 'readable-stream', 'figlet', 'webpack', 'koa-webpack', 'sqlite3', 'sequelize', 'sequelize-typescript', 'reflect-metadata', 'babel-plugin-import' ]
+  ? [ 'readable-stream', 'figlet', 'webpack', 'koa-webpack', 'sqlite3', 'sequelize', 'sequelize-typescript', 'reflect-metadata' ]
   : [ ...Object.keys(pkg.devDependencies), ...Object.keys(pkg.dependencies) ];
 
 export default [
