@@ -2,9 +2,7 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
-    "outDir": "./dist",
     "strict": true,
-    "declaration": true,
     "moduleResolution": "node",
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -15,8 +13,7 @@
     "baseUrl": "."
   },
   "include": [
-    "server/**/*.ts",
-    "types/**/*.ts"
+    "packages/**/*.ts",
   ],
   "exclude": [
     "node_modules"

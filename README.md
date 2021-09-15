@@ -2,7 +2,7 @@
 
 Yet another servers monitor written in TypeScript.
 
-Current Version: 1.0.0-alpha.7
+Current Version: 1.1.0-alpha.1
 
 ## How To Install
 
@@ -27,7 +27,6 @@ npm i yarn pm2 -g
 npm i nodestatus-server -g --unsafe-perm=true --allow-root # will install status-cli status-server status-server-run in your computer
 status-server # start nodestatus-server
 status-server-run # start nodestatus-server with pm2
-status-cli help # check cli help
 pm2 status # check running status
 pm2 log nodestatus # check logs
 ```
@@ -91,13 +90,32 @@ Node.js Version: https://github.com/cokemine/nodestatus-client
 
 **TGBOT_PROXY**: Telegram 代理服务器配置，例`http://127.0.0.1:10808`，仅支持 http 代理
 
-**TGBOT_WEBHOOK**： Telegram Webhook 配置，不填写默认 Polling,例: `https://tz.mydomain.com`，使用 Webhook 务必需要开启 https，若你使用了https，则建议填写你的域名以开启  Webhook, 而非 Polling
+**TGBOT_WEBHOOK**: Telegram Webhook 配置，不填写默认 Polling,例: `https://tz.mydomain.com`，使用 Webhook 务必需要开启 https，若你使用了https，则建议填写你的域名以开启  Webhook, 而非 Polling
+
+## 修改客户端配置
+
+NodeStatus 有两种方式修改（添加 / 删除）服务器配置。
+
+### NodeStatus-cli
+
+若你启用了 IPC, 则可以通过`status-cli`修改服务器相关配置。
+
+```shell
+npm i nodestatus-cli -g
+status-cli help # check cli help
+```
+
+### Web
+
+若你启用了 Web, 则可以通过 Web 修改服务器相关配置。不需要手动安装，访问`http://tz.domain.com/admin`即可访问面板
+
+面板开源地址：https://github.com/cokemine/hotaru-admin
 
 ## Telegram Commands
 
-`/start `:查询当前`chat_id`，当前 NodeStatus 版本号
+`/start` 查询当前`chat_id`，当前 NodeStatus 版本号
 
-`/status`: 查询当前所有服务器状态信息
+`/status` 查询当前所有服务器状态信息
 
 ## Reverse Proxy
 
@@ -141,11 +159,12 @@ server {
 ## How To Debug
 
 ```shell
+npm i pnpm -g
 mkdir -p /usr/local/nodestatus && cd /usr/local/nodestatus
 git clone --recurse-submodules https://github.com/cokemine/nodestatus.git .
-yarn
-yarn build
-yarn dev
+pnpm install
+pnpm build
+pnpm dev
 ```
 
 ## CLI Options

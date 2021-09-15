@@ -2,10 +2,10 @@
 **/node_modules
 **/dist
 **/build
+**/app-minimal
+**/db.sqlite
 **/.idea
 **/.vscode
-app-minimal
-db.sqlite
 
 # local env files
 **/.env.local

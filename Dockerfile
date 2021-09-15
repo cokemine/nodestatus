@@ -10,18 +10,17 @@ ARG USE_CHINA_MIRROR=0
 
 RUN if [ "$USE_CHINA_MIRROR" = 1 ]; then \
   sed -i 's/http:\/\/.*\.debian.org/http:\/\/mirrors.aliyun.com/g' /etc/apt/sources.list \
-  && npm config set registry https://registry.npm.taobao.org \
-  && yarn config set registry https://registry.npm.taobao.org; \
+  && npm config set registry https://mirrors.cloud.tencent.com/npm/ \
+  && yarn config set registry https://mirrors.cloud.tencent.com/npm/; \
   fi;\
   apt-get -y update \
   && apt-get install -y git python3 apt-transport-https ca-certificates build-essential \
   && ln -s /usr/bin/python3 /usr/bin/python \
   && yarn config set network-timeout 600000 \
-  && mkdir .yarncache \
-  && yarn install --frozen-lockfile --cache-folder ./.yarncache \
-  && rm -rf .yarncache \
-  && yarn build \
-  && node script/minify-docker.js
+  && npm install pnpm -g \
+  && pnpm install \
+  && pnpm build \
+  && node scripts/minify-docker.js
 
 
 FROM node:16-alpine as app
@@ -37,11 +36,13 @@ ARG USE_CHINA_MIRROR=0
 
 RUN if [ "$USE_CHINA_MIRROR" = 1 ]; then \
   sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories \
-  && npm config set registry https://registry.npm.taobao.org \
-  && yarn config set registry https://registry.npm.taobao.org; \
+  && npm config set registry https://mirrors.cloud.tencent.com/npm/ \
+  && yarn config set registry https://mirrors.cloud.tencent.com/npm/; \
   fi;\
   npm install pm2 -g \
   && npm cache clean --force
+
+WORKDIR /app/packages/nodestatus-server
 
 EXPOSE 35601
 
