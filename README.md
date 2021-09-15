@@ -23,7 +23,7 @@ curl -fsSL https://rpm.nodesource.com/setup_16.x | bash -
 
 
 #Install From NPM
-npm i yarn pm2 -g
+npm i pm2 -g
 npm i nodestatus-server -g --unsafe-perm=true --allow-root # will install status-cli status-server status-server-run in your computer
 status-server # start nodestatus-server
 status-server-run # start nodestatus-server with pm2
@@ -58,7 +58,7 @@ Node.js Version: https://github.com/cokemine/nodestatus-client
 
 ## Environment
 
-关于环境变量的相关配置，如果是使用 Docker 请直接在 `docker-compose.ym`配置文件中修改
+关于环境变量的相关配置，如果是使用 Docker 请直接在 `docker-compose.yml`配置文件中修改
 
 **INTERVAL**: 服务端推送间隔时间, 默认 `1500` (1.5秒)
 
