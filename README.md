@@ -34,20 +34,19 @@ pm2 log nodestatus # check logs
 ### Install with Docker (Recommended)
 
 ```bash
-# Install Docker with docker-compose
+# Install Docker with docker-compose v2
 curl -fsSL https://get.docker.com | bash -s docker
 docker --version
-sudo curl -L "https://github.com/docker/compose-cli/releases/download/v2.0.0-rc.2/docker-compose-linux-amd64" -o /usr/local/bin/docker-compose #For x86_64
-chmod +x /usr/local/bin/docker-compose
-ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
-docker-compose --version
+mkdir -p ~/.docker/cli-plugins/
+curl -SL https://github.com/docker/compose/releases/download/v2.0.0-rc.3/docker-compose-linux-amd64 -o ~/.docker/cli-plugins/docker-compose # for x86_64
+chmod +x ~/.docker/cli-plugins/docker-compose
 
 # Download docker-compose.yml
 mkdir ~/nodestatus
 cd ~/nodestatus
 wget https://raw.githubusercontent.com/cokemine/nodestatus/master/docker-compose.yml
 vim docker-compose.yml #修改环境变量相关配置
-docker-compose compose up -d
+docker compose up -d
 ```
 
 ## Client
@@ -109,7 +108,9 @@ status-cli help # check cli help
 
 ### Web
 
-若你启用了 Web, 则可以通过 Web 修改服务器相关配置。不需要手动安装，访问`http://tz.domain.com/admin`即可访问面板
+若你启用了 Web, 则可以通过 Web 修改服务器相关配置。不需要手动安装，访问`http://tz.domain.com/admin`即可访问面板。
+
+同时通过 Web 面板你可以很简单的从 ServerStatus 迁移至 NodeStatus, 你可以在面板`Import`处将 ServerStatus 的 JSON文件粘贴过去一键添加服务器。
 
 面板开源地址：https://github.com/cokemine/hotaru-admin
 
