@@ -1,21 +1,21 @@
 {
   "name": "nodestatus-cli",
   "version": "1.1.0-alpha.1",
-  "main": "index.js",
-  "license": "MIT",
-  "author": "Kagurazaka Mizuki",
-  "files": [
-    "bin",
-    "build"
-  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/cokemine/nodestatus.git",
     "directory": "packages/nodestatus-cli"
   },
+  "license": "MIT",
+  "author": "Kagurazaka Mizuki",
+  "main": "index.js",
   "bin": {
     "status-cli": "bin/status-cli.js"
   },
+  "files": [
+    "bin",
+    "build"
+  ],
   "scripts": {
     "build": "rollup -c"
   },
@@ -24,9 +24,9 @@
     "readable-stream": "^3.6.0"
   },
   "devDependencies": {
-    "inquirer": "^8.1.2",
     "chalk": "^4.1.2",
     "commander": "^8.1.0",
-    "i18n-iso-countries": "^6.8.0"
+    "i18n-iso-countries": "^6.8.0",
+    "inquirer": "^8.1.2"
   }
 }

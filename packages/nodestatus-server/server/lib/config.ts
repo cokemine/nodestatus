@@ -1,10 +1,10 @@
-import { platform } from 'os';
+import { platform, homedir } from 'os';
 import { resolve } from 'path';
 import dotenv from 'dotenv';
 import { program } from 'commander';
 import { logger } from './utils';
 
-dotenv.config({ path: resolve(process.cwd(), '.env.local') });
+dotenv.config({ path: resolve(homedir(), '.nodestatus/.env.local') });
 
 program
   .option('-db, --database <db>', 'the path of database', platform() === 'win32' ? resolve(__dirname, '../db.sqlite') : '/usr/local/NodeStatus/server/db.sqlite')

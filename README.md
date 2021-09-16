@@ -58,7 +58,9 @@ Node.js Version: https://github.com/cokemine/nodestatus-client
 
 ## Environment
 
-关于环境变量的相关配置，如果是使用 Docker 请直接在 `docker-compose.yml`配置文件中修改
+关于环境变量的相关配置，如果是使用 Docker 请直接在 `docker-compose.yml`配置文件中修改。
+
+若为手动安装，则需要在本地用户目录下新建一个`.nodestatus/.env.local`文件（注意路径），在这个文件填写相关环境变量配置。
 
 **INTERVAL**: 服务端推送间隔时间, 默认 `1500` (1.5秒)
 

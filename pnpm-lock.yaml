@@ -71,7 +71,6 @@ importers:
       '@types/ws': ^7.4.7
       bcryptjs: ^2.4.3
       bufferutil: ^4.0.3
-      chalk: ^4.1.2
       commander: ^8.1.0
       cross-env: ^7.0.3
       dotenv: ^10.0.0
@@ -122,7 +121,6 @@ importers:
       '@types/koa-webpack': 6.0.4
       '@types/ws': 7.4.7
       bcryptjs: 2.4.3
-      chalk: 4.1.2
       commander: 8.2.0
       cross-env: 7.0.3
       dotenv: 10.0.0
