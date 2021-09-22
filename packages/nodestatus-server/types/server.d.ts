@@ -1,4 +1,4 @@
-export interface BoxItem {
+export interface BaseItem {
   id: number;
   name: string;
   type: string;
@@ -6,6 +6,13 @@ export interface BoxItem {
   region: string;
 }
 
+export interface BoxItem extends BaseItem {
+  order: number;
+}
+
+export type IServer = { username: string, password?: string, disabled?: boolean, order?: number } & BaseItem;
+
+export type Box = Record<string, BoxItem>
 
 export type ServerItem = BoxItem & {
   status: {
@@ -27,12 +34,6 @@ export type ServerItem = BoxItem & {
     custom: string;
   } | Record<string, never>
 }
-
-export type Box = Record<string, BoxItem>
-
-export type Servers = Record<string, ServerItem>
-
-export type IServer = { username: string, password: string, disabled: boolean } & BoxItem;
 
 export type IResp = {
   code: 0 | 1,

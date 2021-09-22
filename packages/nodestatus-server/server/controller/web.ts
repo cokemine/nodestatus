@@ -4,9 +4,10 @@ import {
   setServer as _setServer,
   createServer as _addServer,
   bulkCreateServer,
-  delServer as _delServer
+  delServer as _delServer,
+  updateOrder
 } from '../model/server';
-import { IServer, IResp } from '../../types/server';
+import { IServer, IResp, BoxItem } from '../../types/server';
 import { createRes } from '../lib/utils';
 
 const handleRequest = async (ctx: Context, handler: Promise<IResp>): Promise<void> => {
@@ -18,7 +19,11 @@ const handleRequest = async (ctx: Context, handler: Promise<IResp>): Promise<voi
 };
 
 const listServers: Middleware = async ctx => {
-  await handleRequest(ctx, getListServers());
+  const result = await getListServers();
+
+  (result.data as BoxItem[]).sort((x, y) => y.order - x.order);
+
+  await handleRequest(ctx, Promise.resolve(result));
 };
 
 const setServer: Middleware = async ctx => {
@@ -30,6 +35,7 @@ const setServer: Middleware = async ctx => {
     return;
   }
   if (!data.password) delete data.password;
+  if (username === data.username) delete data.username;
   await handleRequest(ctx, _setServer(username, data));
 };
 
@@ -64,9 +70,20 @@ const delServer: Middleware = async ctx => {
   await handleRequest(ctx, _delServer(username));
 };
 
+const modifyOrder: Middleware = async ctx => {
+  const { order = '' } = ctx.request.body;
+  if (!order) {
+    ctx.status = 400;
+    ctx.body = createRes(1, 'Wrong request');
+    return;
+  }
+  await handleRequest(ctx, updateOrder(order));
+};
+
 export {
   listServers,
   setServer,
   addServer,
-  delServer
+  delServer,
+  modifyOrder
 };

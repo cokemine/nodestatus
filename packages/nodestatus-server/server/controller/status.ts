@@ -1,23 +1,24 @@
 import { compareSync } from 'bcryptjs';
 import {
-  getServerPassword,
   getListServers as _getListServers,
   createServer as _addServer,
-  getServer,
+  getServer as _getServer,
   setServer as _setServer,
   delServer as _delServer
 } from '../model/server';
 import { createRes } from '../lib/utils';
-import type { IServer, IResp, Box } from '../../types/server';
+import type { IServer, IResp, Box, BoxItem } from '../../types/server';
 
 export async function authServer(username: string, password: string): Promise<boolean> {
-  const result = await getServerPassword(username);
+  const result = await _getServer(username, true);
   if (result.code) return false;
-  return compareSync(password, result.msg);
+  const data = result.data as IServer;
+  if (data.disabled || !data.password) return false;
+  return compareSync(password, data.password);
 }
 
 export async function addServer(obj: IServer): Promise<IResp> {
-  const result = await getServer(obj.username);
+  const result = await _getServer(obj.username);
   if (!result.code) {
     return createRes(1, 'Username duplicate');
   }
@@ -25,13 +26,13 @@ export async function addServer(obj: IServer): Promise<IResp> {
 }
 
 export async function setServer(username: string, obj: Partial<IServer>): Promise<IResp> {
-  const result = await getServer(username);
+  const result = await _getServer(username);
   if (result.code) return result;
   return _setServer(username, obj);
 }
 
 export async function delServer(username: string): Promise<IResp> {
-  const result = await getServer(username);
+  const result = await _getServer(username);
   if (result.code) {
     return result;
   }
@@ -43,12 +44,22 @@ export async function getListServers(): Promise<IResp> {
   if (result.code) return result;
   const obj: Box = {};
 
-  (result.data as IServer[]).forEach(item => {
-    if (item.disabled) return;
-    const { username, ..._item } = item;
-    obj[username] = _item;
+  (result.data as Array<IServer>).forEach(item => {
+    const { username, disabled, ..._item } = item;
+    if (disabled) return;
+    obj[username] = _item as BoxItem;
   });
   return createRes({ data: obj });
+}
+
+export async function getServer(username: string): Promise<IResp> {
+  const result = await _getServer(username);
+  if (result.code) return result;
+  const data = result.data as IServer;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { username: _, disabled, ...item } = data;
+  if (disabled) return createRes(1, 'Server disabled');
+  return createRes({ data: item });
 }
 
 export {

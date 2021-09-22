@@ -6,8 +6,8 @@ import { decode } from '@msgpack/msgpack';
 import { Telegraf } from 'telegraf';
 import HttpsProxyAgent from 'https-proxy-agent';
 import { IPv6 } from 'ipaddr.js';
-import { Box, Options, ServerItem, Servers } from '../../types/server';
-import { authServer, getListServers } from '../controller/status';
+import { Box, Options, ServerItem, BoxItem } from '../../types/server';
+import { authServer, getListServers, getServer } from '../controller/status';
 import { logger, emitter } from './utils';
 
 function callHook(instance: NodeStatus, hook: keyof NodeStatus, ...args: any[]) {
@@ -34,7 +34,7 @@ export class NodeStatus {
   /* ip -> banned */
   private isBanned = new Map<string, boolean>();
 
-  public servers: Servers = {};
+  public servers: Record<string, ServerItem> = {};
   public serversPub: ServerItem[] = [];
 
   public onServerConnect?: (socket: ws) => unknown;
@@ -45,7 +45,7 @@ export class NodeStatus {
   constructor(server: Server, options: Options) {
     this.server = server;
     this.options = options;
-    emitter.on('update', this.update.bind(this));
+    emitter.on('update', this.updateStatus.bind(this));
   }
 
   private setBan(socket: ws, address: string, t: number, reason: string): void {
@@ -144,31 +144,35 @@ export class NodeStatus {
 
     this.options.usePush && this.createPush();
 
-    return this.update();
+    return this.updateStatus();
   }
 
-  private async update(username ?: string): Promise<void> {
-    const box = (await getListServers()).data as Box;
-    if (!box) return;
+  private async updateStatus(username ?: string, shouldDisconnect = false): Promise<void> {
     if (username) {
-      if (!box[username])
+      const server = (await getServer(username)).data as BoxItem | null;
+      if (!server)
         delete this.servers[username];
-      else this.servers[username] = Object.assign(box[username], { status: this.servers?.[username]?.status || {} });
-      const socket = this.userMap.get(username);
-      socket && socket.terminate();
+      else
+        this.servers[username] = Object.assign(server, { status: this.servers?.[username]?.status || {} });
+      shouldDisconnect && this.userMap.get(username)?.terminate() && this.userMap.delete(username);
     } else {
+      const box = (await getListServers()).data as Box | null;
+      if (!box) return;
       for (const k of Object.keys(box)) {
         if (!this.servers[k]) this.servers[k] = Object.assign(box[k], { status: {} });
+        if (this.servers[k].order !== box[k].order) this.servers[k].order = box[k].order;
       }
       for (const k of Object.keys(this.servers)) {
         if (!box[k]) delete this.servers[k];
       }
-      for (const socket of this.userMap.values()) {
-        socket.terminate();
+      if (shouldDisconnect) {
+        for (const socket of this.userMap.values()) {
+          socket.terminate();
+        }
+        this.userMap.clear();
       }
-      this.userMap.clear();
     }
-    this.serversPub = Object.values(this.servers).sort((x, y) => y.id - x.id);
+    this.serversPub = Object.values(this.servers).sort((x, y) => y.order - x.order);
   }
 
   /* This should move to another file later */

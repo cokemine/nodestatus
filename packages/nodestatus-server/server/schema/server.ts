@@ -42,6 +42,17 @@ export class Server extends Model {
   disabled!: boolean;
 }
 
+@Table({
+  underscored: true
+})
+export class Order extends Model {
+  /* varchar id split by ',' */
+  @NotEmpty
+  @Unique
+  @Column
+  order!: string;
+}
+
 /* Deprecated */
 @Table({
   underscored: true
