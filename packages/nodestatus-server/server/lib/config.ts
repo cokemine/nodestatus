@@ -29,6 +29,8 @@ const config = {
 
   ipcAddress: process.env.IPC_ADDRESS || (platform() !== 'win32' ? '/tmp/status_unix.sock' : '\\\\.\\pipe\\status_ipc'),
 
+  pushTimeOut: Number(process.env.PUSH_TIMEOUT) || 30,
+
   telegram: {
     proxy: process.env.TGBOT_PROXY,
     bot_token: process.env.TGBOT_TOKEN || '',

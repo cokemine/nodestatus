@@ -16,6 +16,7 @@ services:
       WEB_SECRET: ""
 
 
+      PUSH_TIMEOUT: 30
       TGBOT_TOKEN: ""
       TGBOT_CHATID: ""
       TGBOT_PROXY: ""

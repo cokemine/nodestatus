@@ -54,10 +54,7 @@ export class NodeStatus {
     this.isBanned.set(address, true);
     logger.warn(`${ address } was banned ${ t } seconds, reason: ${ reason }`);
     callHook(this, 'onServerBanned', address, reason);
-    const id = setTimeout(() => {
-      this.isBanned.delete(address);
-      clearTimeout(id);
-    }, t * 1000);
+    setTimeout(() => this.isBanned.delete(address), t * 1000);
   }
 
   public launch(): Promise<void> {
@@ -178,6 +175,8 @@ export class NodeStatus {
   /* This should move to another file later */
   private createPush(): void {
     const pushList: Array<(message: string) => void> = [];
+    /* ip -> timer */
+    const timerMap = new Map<string, NodeJS.Timer>();
     const entities = new Set(['_', '*', '[', ']', '(', ')', '~', '`', '>', '#', '+', '-', '=', '|', '{', '}', '.', '!', '\\']);
 
     const parseEntities = (str: any): string => {
@@ -270,13 +269,32 @@ export class NodeStatus {
       pushList.push(message => [...chatId].map(id => bot.telegram.sendMessage(id, `${ message }`, { parse_mode: 'MarkdownV2' })));
     }
 
-
-    this.onServerConnected = (socket, username) => Promise.all(pushList.map(
-      fn => fn(`🍊*NodeStatus* \n😀 One new server has connected\\! \n\n *用户名*: ${ parseEntities(username) } \n *节点名*: ${ parseEntities(this.servers[username]['name']) } \n *时间*: ${ parseEntities(new Date()) }`)
-    ));
-    this.onServerDisconnected = (socket, username) => Promise.all(pushList.map(
-      fn => fn(`🍊*NodeStatus* \n😰 One server has disconnected\\! \n\n *用户名*: ${ parseEntities(username) } \n *节点名*: ${ parseEntities(this.servers[username]?.['name']) } \n *时间*: ${ parseEntities(new Date()) }`)
-    ));
-
+    this.onServerConnected = (socket, username) => {
+      const ip = this.map.get(socket);
+      if (ip) {
+        const timer = timerMap.get(ip);
+        if (timer) {
+          clearTimeout(timer);
+          timerMap.delete(ip);
+        } else {
+          return Promise.all(pushList.map(
+            fn => fn(`🍊*NodeStatus* \n😀 One new server has connected\\! \n\n *用户名*: ${ parseEntities(username) } \n *节点名*: ${ parseEntities(this.servers[username]['name']) } \n *时间*: ${ parseEntities(new Date()) }`)
+          ));
+        }
+      }
+    };
+    this.onServerDisconnected = (socket, username) => {
+      const ip = this.map.get(socket);
+      const timer = setTimeout(
+        () => {
+          Promise.all(pushList.map(
+            fn => fn(`🍊*NodeStatus* \n😰 One server has disconnected\\! \n\n *用户名*: ${ parseEntities(username) } \n *节点名*: ${ parseEntities(this.servers[username]?.['name']) } \n *时间*: ${ parseEntities(new Date()) }`)
+          )).then();
+          ip && timerMap.delete(ip);
+        },
+        this.options.pushTimeOut * 1000
+      );
+      ip && timerMap.set(ip, timer);
+    };
   }
 }

@@ -44,6 +44,7 @@ export type IResp = {
 export type Options = {
   interval: number;
   usePush: boolean;
+  pushTimeOut: number;
   telegram?: {
     bot_token: string;
     chat_id: string[];

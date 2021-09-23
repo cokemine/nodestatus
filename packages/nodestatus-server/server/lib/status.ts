@@ -17,6 +17,7 @@ export async function createStatus(app: Koa): Promise<[Server, NetServer | null]
   const instance = new NodeStatus(server, {
     interval: Number(config.interval),
     usePush: config.usePush,
+    pushTimeOut: config.pushTimeOut,
     telegram: {
       ...config.telegram,
       chat_id: config.telegram.chat_id.split(',')

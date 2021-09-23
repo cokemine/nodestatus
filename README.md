@@ -2,7 +2,7 @@
 
 Yet another servers monitor written in TypeScript.
 
-Current Version: 1.1.0-alpha.3
+Current Version: 1.1.0-alpha.4
 
 ## How To Install
 
@@ -84,6 +84,7 @@ Node.js Version: https://github.com/cokemine/nodestatus-client
 **WEB_SECRET**: 用于 jsonwebtoken, 建议设为一个随机的字符串, 默认不填即和密码相同
 
 &nbsp;
+**PUSH_TIMEOUT**: 客户端报警推送超时时间 (在这个时间内无论客户端发生了什么只要重新恢复与客户端的连接就不会推送),  默认`30` (30秒)
 
 **TGBOT_TOKEN**: Telegram Bot Token (从 BotFather 申请到)
 
