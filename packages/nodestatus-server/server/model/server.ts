@@ -10,7 +10,8 @@ async function handleRequest(callback: () => Promise<IResp>): Promise<IResp> {
   }
 }
 
-export function getServer(username: string, getPassword = false): Promise<IResp> {
+/* Refactor is needed */
+export function getServer(username: string, getPassword = false, raw = true): Promise<IResp> {
   return handleRequest(async () => {
     const exclude = ['createdAt', 'updatedAt'];
     !getPassword && exclude.push('password');
@@ -22,7 +23,7 @@ export function getServer(username: string, getPassword = false): Promise<IResp>
         attributes: {
           exclude
         },
-        raw: true
+        raw
       }),
       getOrder()
     ]);
@@ -67,7 +68,7 @@ export function bulkCreateServer(servers: IServer[]): Promise<IResp> {
 
 export function delServer(username: string): Promise<IResp> {
   return handleRequest(async () => {
-    const [result, orderResult] = await Promise.all([getServer(username), getOrder()]);
+    const [result, orderResult] = await Promise.all([getServer(username, false, false), getOrder()]);
     if (result.code) return result;
     if (orderResult.code) return orderResult;
     const server = result.data as Server;
