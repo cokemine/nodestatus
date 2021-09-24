@@ -27,13 +27,11 @@
   },
   "dependencies": {
     "@prisma/client": "^3.1.1",
+    "dotenv": "^10.0.0",
     "readable-stream": "^3.6.0",
     "reflect-metadata": "^0.1.13",
-    "sequelize": "^6.6.5",
-    "sequelize-typescript": "^2.1.0",
     "sqlite3": "^5.0.2",
-    "telegraf": "^4.4.1",
-    "dotenv": "^10.0.0"
+    "telegraf": "^4.4.1"
   },
   "devDependencies": {
     "@koa/router": "^10.1.1",
