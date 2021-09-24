@@ -6,7 +6,6 @@ import historyApiFallback from 'koa2-connect-history-api-fallback';
 import { createStatus } from './lib/status';
 import { logger } from './lib/utils';
 import config from './lib/config';
-import db from './lib/db';
 
 const middlewares: Record<string, Middleware> = {};
 const webs = [{ name: 'hotaru-theme', publicPath: '/' }, { name: 'hotaru-admin', publicPath: '/admin' }];
@@ -50,7 +49,6 @@ const webpackMiddleware = async (name: string, publicPath: string) => {
 
 
 (async () => {
-  await db.sync({ alter: true });
   const app = new Koa();
   await Promise.all(webs.map(({
     name,

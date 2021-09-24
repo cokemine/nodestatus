@@ -1,33 +1,34 @@
 import { Context, Middleware } from 'koa';
 import {
+  bulkCreateServer,
+  createServer as _addServer,
+  delServer as _delServer,
   getListServers,
   setServer as _setServer,
-  createServer as _addServer,
-  bulkCreateServer,
-  delServer as _delServer,
 } from '../model/server';
-import { IServer, IResp, BoxItem } from '../../types/server';
+import { Server } from '../../types/server';
 import { createRes } from '../lib/utils';
 
-const handleRequest = async (ctx: Context, handler: Promise<IResp>): Promise<void> => {
-  const result = await handler;
-  if (result.code) {
+async function handleRequest<T>(ctx: Context, handler: Promise<T>): Promise<void> {
+  try {
+    ctx.body = createRes({ data: await handler });
+  } catch (err: any) {
     ctx.status = 500;
+    ctx.body = createRes(1, err.message);
   }
-  ctx.body = result;
-};
+}
 
 const listServers: Middleware = async ctx => {
-  const result = await getListServers();
+  //const result = await getListServers();
 
-  (result as BoxItem[]).sort((x, y) => y.order - x.order);
+  // (result as BoxItem[]).sort((x, y) => y.order - x.order);
 
-  await handleRequest(ctx, Promise.resolve(result));
+  await handleRequest(ctx, getListServers());
 };
 
 const setServer: Middleware = async ctx => {
   const { username } = ctx.request.body;
-  const data: Partial<IServer> = ctx.request.body.data;
+  const data: Partial<Server> = ctx.request.body.data;
   if (!username || !data) {
     ctx.status = 400;
     ctx.body = createRes(1, 'Wrong request');

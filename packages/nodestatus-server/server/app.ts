@@ -5,10 +5,8 @@ import historyApiFallback from 'koa2-connect-history-api-fallback';
 import { logger } from './lib/utils';
 import { createStatus } from './lib/status';
 import config from './lib/config';
-import db from './lib/db';
 
 (async () => {
-  await db.sync({ alter: true });
   const app = new Koa();
 
   app.use(historyApiFallback({
