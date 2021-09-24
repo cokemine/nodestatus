@@ -16,7 +16,9 @@
   "files": [
     "bin",
     "build",
-    "dist"
+    "dist",
+    "scripts",
+    "db.base.sqlite"
   ],
   "scripts": {
     "postinstall": "node scripts/postinstall.js",
