@@ -58,7 +58,7 @@ export async function getServer(username: string): Promise<IResp<BoxItem | null>
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { username: _, disabled, ...item } = data;
   if (disabled) return createRes(1, 'Server disabled');
-  return createRes<BoxItem>({ data: item });
+  return createRes({ data: item });
 }
 
 

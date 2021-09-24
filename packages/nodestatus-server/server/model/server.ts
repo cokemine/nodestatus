@@ -36,6 +36,7 @@ export async function getListServers(): Promise<IServer[]> {
 
 export async function createServer(item: Prisma.ServerCreateInput): Promise<void> {
   await prisma.server.create({ data: item });
+  emitter.emit('update');
 }
 
 export async function bulkCreateServer(items: Prisma.ServerCreateInput[]): Promise<void> {
@@ -43,6 +44,7 @@ export async function bulkCreateServer(items: Prisma.ServerCreateInput[]): Promi
     data: items,
     skipDuplicates: true
   });
+  emitter.emit('update');
 }
 
 export async function delServer(username: string): Promise<void> {
