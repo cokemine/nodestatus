@@ -7,7 +7,7 @@ import {
   delServer as _delServer
 } from '../model/server';
 import { createRes } from '../lib/utils';
-import type { Server, IResp, Box, BoxItem } from '../../types/server';
+import type { Server, IResp, Box, BoxItem, IServer } from '../../types/server';
 
 async function handleRequest<T = any>(handler: Promise<T>): Promise<IResp<T>> {
   let data: T;
@@ -53,7 +53,7 @@ export async function getListServers(): Promise<IResp<Box>> {
   return createRes({ data: obj });
 }
 
-export async function getServer(username: string): Promise<IResp> {
+export async function getServer(username: string): Promise<IResp<IServer | null>> {
   const result = await handleRequest(_getServer(username));
   if (result.code || !result.data) return result;
   const data = result.data;
@@ -63,7 +63,8 @@ export async function getServer(username: string): Promise<IResp> {
   return createRes({ data: item });
 }
 
-export function getRawListServers(): Promise<IResp> {
+
+export function getRawListServers(): Promise<IResp<IServer[]>> {
   return handleRequest(_getListServers());
 }
 

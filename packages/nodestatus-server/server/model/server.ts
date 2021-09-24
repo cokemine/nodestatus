@@ -1,8 +1,6 @@
-import { BaseItem, Prisma, Server } from '../../types/server';
+import { IServer, Prisma, Server } from '../../types/server';
 import { emitter } from '../lib/utils';
 import prisma from '../lib/prisma';
-
-type IServer = BaseItem & { disabled: boolean };
 
 const resolveResult = (item: Server | null): IServer | null => {
   if (!item) return item;
