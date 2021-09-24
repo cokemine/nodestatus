@@ -4,10 +4,11 @@ import {
   createServer as _addServer,
   getServer as _getServer,
   setServer as _setServer,
-  delServer as _delServer
+  delServer as _delServer,
+  getServerPassword
 } from '../model/server';
 import { createRes } from '../lib/utils';
-import type { Server, IResp, Box, BoxItem, IServer } from '../../types/server';
+import type { Server, IResp, Box, IServer, BoxItem } from '../../types/server';
 
 async function handleRequest<T = any>(handler: Promise<T>): Promise<IResp<T>> {
   let data: T;
@@ -20,11 +21,9 @@ async function handleRequest<T = any>(handler: Promise<T>): Promise<IResp<T>> {
 }
 
 export async function authServer(username: string, password: string): Promise<boolean> {
-  const res = await handleRequest(_getServer(username));
+  const res = await handleRequest(getServerPassword(username));
   if (res.code || !res.data) return false;
-  const data = res.data;
-  if (data.disabled || !data.password) return false;
-  return compareSync(password, data.password);
+  return compareSync(password, res.data);
 }
 
 export function addServer(obj: Server): Promise<IResp<void>> {
@@ -46,21 +45,20 @@ export async function getListServers(): Promise<IResp<Box>> {
 
   result.data.forEach(item => {
     const { username, disabled, ..._item } = item;
-    delete _item.password;
     if (disabled) return;
     obj[username] = _item as BoxItem;
   });
   return createRes({ data: obj });
 }
 
-export async function getServer(username: string): Promise<IResp<IServer | null>> {
+export async function getServer(username: string): Promise<IResp<BoxItem | null>> {
   const result = await handleRequest(_getServer(username));
   if (result.code || !result.data) return result;
   const data = result.data;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { username: _, disabled, ...item } = data;
   if (disabled) return createRes(1, 'Server disabled');
-  return createRes({ data: item });
+  return createRes<BoxItem>({ data: item });
 }
 
 

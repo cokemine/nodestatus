@@ -1,14 +1,13 @@
-export type * from '@prisma/client';
+import type { Server } from '@prisma/client';
 
+export type * from '@prisma/client';
 //export type Server = Prisma.ServerCreateInput;
 
 export type BaseItem = Omit<Server, 'password' | 'disabled' | 'created_at' | 'updated_at'>
+
+export type BoxItem = Omit<BaseItem, 'username'>
+
 export type IServer = BaseItem & { disabled: boolean };
-
-
-export interface BoxItem extends BaseItem {
-  order: number;
-}
 
 export type Box = Record<string, BoxItem>
 

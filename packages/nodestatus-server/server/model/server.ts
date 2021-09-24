@@ -10,6 +10,7 @@ const resolveResult = (item: Server | null): IServer | null => {
   return item as IServer;
 };
 
+
 export async function getServer(username: string): Promise<IServer | null> {
   const item = await prisma.server.findUnique({
     where: {
