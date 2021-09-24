@@ -7,17 +7,17 @@ import {
   delServer as _delServer
 } from '../model/server';
 import { createRes } from '../lib/utils';
-import type { IServer, IResp, Box, BoxItem } from '../../types/server';
+import type { Server, IResp, Box, BoxItem } from '../../types/server';
 
 export async function authServer(username: string, password: string): Promise<boolean> {
-  const result = await _getServer(username, true);
+  const result = await _getServer(username);
   if (result.code) return false;
-  const data = result.data as IServer;
+  const data = result.data as Server;
   if (data.disabled || !data.password) return false;
   return compareSync(password, data.password);
 }
 
-export async function addServer(obj: IServer): Promise<IResp> {
+export async function addServer(obj: Server): Promise<IResp> {
   const result = await _getServer(obj.username);
   if (!result.code) {
     return createRes(1, 'Username duplicate');
@@ -25,7 +25,7 @@ export async function addServer(obj: IServer): Promise<IResp> {
   return _addServer(obj);
 }
 
-export async function setServer(username: string, obj: Partial<IServer>): Promise<IResp> {
+export async function setServer(username: string, obj: Partial<Server>): Promise<IResp> {
   const result = await _getServer(username);
   if (result.code) return result;
   return _setServer(username, obj);
@@ -44,8 +44,9 @@ export async function getListServers(): Promise<IResp> {
   if (result.code) return result;
   const obj: Box = {};
 
-  (result.data as Array<IServer>).forEach(item => {
+  (result.data as Array<Server>).forEach(item => {
     const { username, disabled, ..._item } = item;
+    delete _item.password;
     if (disabled) return;
     obj[username] = _item as BoxItem;
   });
@@ -55,7 +56,7 @@ export async function getListServers(): Promise<IResp> {
 export async function getServer(username: string): Promise<IResp> {
   const result = await _getServer(username);
   if (result.code) return result;
-  const data = result.data as IServer;
+  const data = result.data as Server;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { username: _, disabled, ...item } = data;
   if (disabled) return createRes(1, 'Server disabled');

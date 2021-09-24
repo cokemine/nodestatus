@@ -1,6 +1,6 @@
-import { Server, Order } from '../schema/server';
-import { IServer, IResp } from '../../types/server';
+import { Server, IResp } from '../../types/server';
 import { createRes, emitter } from '../lib/utils';
+import prisma from '../lib/prisma';
 
 async function handleRequest(callback: () => Promise<IResp>): Promise<IResp> {
   try {
@@ -10,145 +10,67 @@ async function handleRequest(callback: () => Promise<IResp>): Promise<IResp> {
   }
 }
 
-/* Refactor is needed */
-export function getServer(username: string, getPassword = false, raw = true): Promise<IResp> {
+export function getServer(username: string): Promise<IResp> {
   return handleRequest(async () => {
-    const exclude = ['createdAt', 'updatedAt'];
-    !getPassword && exclude.push('password');
-    const [result, orderResult] = await Promise.all([
-      Server.findOne({
-        where: {
-          username
-        },
-        attributes: {
-          exclude
-        },
-        raw
-      }),
-      getOrder()
-    ]);
-    if (orderResult.code) return orderResult;
-    const order: string[] = orderResult.data?.split(',') || [];
-    const newResult: any = result;
-    for (let i = 0; i < order.length; ++i) {
-      if (result?.id === Number(order[i])) {
-        newResult.order = i + 1;
-      }
-    }
+    const server = await prisma.server.findUnique({
+      where: {
+        username
+      },
+    });
     return createRes(
-      newResult ? 0 : 1,
-      newResult ? 'ok' : 'User Not Found',
-      newResult
+      server ? 0 : 1,
+      server ? 'ok' : 'Server Not Found',
+      server
     );
   });
 }
 
-export function createServer(server: IServer): Promise<IResp> {
+export function createServer(item: Server): Promise<IResp> {
   return handleRequest(async () => {
-    const [item, result] = await Promise.all([Server.create(server), getOrder()]);
-    let order = result.data as string;
-    order = order ? `${ order },${ item.id }` : item.id;
-    await updateOrder(order);
+    await prisma.server.create({ data: item });
     return createRes();
   });
 }
 
-export function bulkCreateServer(servers: IServer[]): Promise<IResp> {
+export function bulkCreateServer(items: Server[]): Promise<IResp> {
   return handleRequest(async () => {
-    const [items, result] = await Promise.all([Server.bulkCreate(servers, { validate: true }), getOrder()]);
-    if (result.code) return result;
-    let order = result.data as string;
-    for (const item of items) {
-      order = order ? `${ order },${ item.id }` : item.id;
-    }
-    await updateOrder(order);
+    await (prisma.server as any).createMany({
+      data: items,
+      skipDuplicates: true
+    });
     return createRes();
   });
 }
 
 export function delServer(username: string): Promise<IResp> {
   return handleRequest(async () => {
-    const [result, orderResult] = await Promise.all([getServer(username, false, false), getOrder()]);
-    if (result.code) return result;
-    if (orderResult.code) return orderResult;
-    const server = result.data as Server;
-    let order = orderResult.data?.split(',');
-    if (order) {
-      order = order.filter((id: string) => Number(id) !== server.id);
-    }
-    await Promise.all([server.destroy(), updateOrder(order.join(','))]);
-    emitter.emit('update', username, true);
-    return createRes();
-  });
-}
-
-export function setServer(username: string, obj: Partial<IServer>): Promise<IResp> {
-  return handleRequest(async () => {
-    await Server.update(obj, {
+    await prisma.server.delete({
       where: {
         username
-      }
+      },
     });
-    const shouldDisconnect = !!(obj.username || obj.password || obj.disabled === true);
-    emitter.emit('update', username, shouldDisconnect);
-    obj.username && emitter.emit('update', obj.username, true);
     return createRes();
   });
 }
 
 export function getListServers(): Promise<IResp> {
   return handleRequest(async () => {
-    /* https://github.com/RobinBuschmann/sequelize-typescript/issues/763
-    *  Maybe we should move to TypeORM or Prisma because low typescript support of sequelize
-    *  */
-    const [result, orderResult] = await Promise.all([
-      Server.findAll({
-        attributes: {
-          exclude: ['password', 'createdAt', 'updatedAt']
-        },
-        raw: true
-      }),
-      getOrder()
-    ]);
-
-    if (orderResult.code) return orderResult;
-
-    const order: string[] = orderResult.data?.split(',') || [];
-    const newResult: Array<any> = [];
-    const map = new Map<number, number>();
-
-    for (let i = 0; i < order.length; ++i) {
-      map.set(Number(order?.[i]), i + 1);
-    }
-
-    for (const item of result) {
-      newResult.push({ ...item, order: map.get(item.id) });
-    }
-
-    return createRes({ data: newResult });
+    const result = await prisma.server.findMany();
+    return createRes({ data: result });
   });
 }
 
-export function getOrder(): Promise<IResp> {
+export function setServer(username: string, obj: Partial<Server>): Promise<IResp> {
   return handleRequest(async () => {
-    const result = await Order.findAll({
-      attributes: {
-        exclude: ['id', 'createdAt', 'updatedAt']
+    await prisma.server.update({
+      where: {
+        username
       },
-      raw: true
+      data: obj
     });
-    const order = result?.[0]?.order || '';
-    return createRes({ data: order });
-  });
-}
-
-export function updateOrder(order: string): Promise<IResp> {
-  return handleRequest(async () => {
-    await Order.destroy({
-      truncate: true
-    });
-    await Order.create({ order });
-    emitter.emit('update');
+    const shouldDisconnect = !!(obj.username || obj.password || obj.disabled === true);
+    emitter.emit('update', username, shouldDisconnect);
+    obj.username && emitter.emit('update', obj.username, true);
     return createRes();
   });
 }

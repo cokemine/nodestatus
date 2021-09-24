@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:../db.test.sqlite"
+}
+
+model Order {
+  id         Int      @id @default(autoincrement())
+  order      String  @unique(map: "sqlite_autoindex_orders_1")
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("orders")
+}
+
+model Server {
+  id         Int      @id @default(autoincrement())
+  username   String  @unique(map: "sqlite_autoindex_servers_1")
+  password   String?
+  name       String
+  type       String
+  location   String
+  region     String
+  disabled   Boolean  @default(false)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("servers")
+}

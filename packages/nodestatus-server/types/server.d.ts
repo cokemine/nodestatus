@@ -1,3 +1,8 @@
+import type { Prisma } from '@prisma/client';
+
+type Server = Prisma.ServerCreateInput;
+
+
 export interface BaseItem {
   id: number;
   name: string;
@@ -5,6 +10,8 @@ export interface BaseItem {
   location: string;
   region: string;
 }
+
+
 
 export interface BoxItem extends BaseItem {
   order: number;

@@ -5,7 +5,6 @@ import {
   createServer as _addServer,
   bulkCreateServer,
   delServer as _delServer,
-  updateOrder
 } from '../model/server';
 import { IServer, IResp, BoxItem } from '../../types/server';
 import { createRes } from '../lib/utils';
@@ -77,7 +76,7 @@ const modifyOrder: Middleware = async ctx => {
     ctx.body = createRes(1, 'Wrong request');
     return;
   }
-  await handleRequest(ctx, updateOrder(order));
+  await handleRequest(ctx, null as any);
 };
 
 export {
