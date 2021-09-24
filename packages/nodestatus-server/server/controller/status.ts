@@ -46,7 +46,7 @@ export async function getListServers(): Promise<IResp<Box>> {
   result.data.forEach(item => {
     const { username, disabled, ..._item } = item;
     if (disabled) return;
-    obj[username] = _item as BoxItem;
+    obj[username] = _item;
   });
   return createRes({ data: obj });
 }

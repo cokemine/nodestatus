@@ -9,7 +9,7 @@ datasource db {
 
 model Server {
   id         Int      @id @default(autoincrement())
-  username   String  @unique(map: "sqlite_autoindex_servers_1")
+  username   String   @unique(map: "sqlite_autoindex_servers_1")
   password   String
   name       String
   type       String
