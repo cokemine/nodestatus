@@ -1,76 +1,67 @@
-import { Server, IResp } from '../../types/server';
-import { createRes, emitter } from '../lib/utils';
+import { BaseItem, Prisma, Server } from '../../types/server';
+import { emitter } from '../lib/utils';
 import prisma from '../lib/prisma';
 
-async function handleRequest(callback: () => Promise<IResp>): Promise<IResp> {
-  try {
-    return await callback();
-  } catch (error: any) {
-    return createRes(1, error.message);
-  }
+type IServer = BaseItem & { disabled: boolean };
+
+const resolveResult = (item: Server | null): IServer | null => {
+  if (!item) return item;
+  type Key = keyof Server;
+  for (const key of ['password', 'created_at', 'updated_at'])
+    delete item[key as Key];
+  return item as IServer;
+};
+
+export async function getServer(username: string): Promise<IServer | null> {
+  const item = await prisma.server.findUnique({
+    where: {
+      username
+    },
+  });
+  return resolveResult(item);
 }
 
-export function getServer(username: string): Promise<IResp> {
-  return handleRequest(async () => {
-    const server = await prisma.server.findUnique({
-      where: {
-        username
-      },
-    });
-    return createRes(
-      server ? 0 : 1,
-      server ? 'ok' : 'Server Not Found',
-      server
-    );
+export async function getServerPassword(username: string): Promise<string | null | undefined> {
+  const item = await prisma.server.findUnique({
+    where: {
+      username
+    },
+  });
+  return item?.password;
+}
+
+export async function getListServers(): Promise<IServer[]> {
+  const items = await prisma.server.findMany();
+  return items.map(item => resolveResult(item)) as IServer[];
+}
+
+export async function createServer(item: Prisma.ServerCreateInput): Promise<void> {
+  await prisma.server.create({ data: item });
+}
+
+export async function bulkCreateServer(items: Prisma.ServerCreateInput[]): Promise<void> {
+  await (prisma.server as any).createMany({
+    data: items,
+    skipDuplicates: true
   });
 }
 
-export function createServer(item: Server): Promise<IResp> {
-  return handleRequest(async () => {
-    await prisma.server.create({ data: item });
-    return createRes();
+export async function delServer(username: string): Promise<void> {
+  await prisma.server.delete({
+    where: {
+      username
+    },
   });
 }
 
-export function bulkCreateServer(items: Server[]): Promise<IResp> {
-  return handleRequest(async () => {
-    await (prisma.server as any).createMany({
-      data: items,
-      skipDuplicates: true
-    });
-    return createRes();
+export async function setServer(username: string, obj: Partial<Server>): Promise<void> {
+  await prisma.server.update({
+    where: {
+      username
+    },
+    data: obj
   });
-}
-
-export function delServer(username: string): Promise<IResp> {
-  return handleRequest(async () => {
-    await prisma.server.delete({
-      where: {
-        username
-      },
-    });
-    return createRes();
-  });
-}
-
-export function getListServers(): Promise<IResp> {
-  return handleRequest(async () => {
-    const result = await prisma.server.findMany();
-    return createRes({ data: result });
-  });
-}
-
-export function setServer(username: string, obj: Partial<Server>): Promise<IResp> {
-  return handleRequest(async () => {
-    await prisma.server.update({
-      where: {
-        username
-      },
-      data: obj
-    });
-    const shouldDisconnect = !!(obj.username || obj.password || obj.disabled === true);
-    emitter.emit('update', username, shouldDisconnect);
-    obj.username && emitter.emit('update', obj.username, true);
-    return createRes();
-  });
+  const shouldDisconnect = !!(obj.username || obj.password || obj.disabled === true);
+  emitter.emit('update', username, shouldDisconnect);
+  obj.username && emitter.emit('update', obj.username, true);
 }

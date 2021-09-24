@@ -20,7 +20,7 @@ const handleRequest = async (ctx: Context, handler: Promise<IResp>): Promise<voi
 const listServers: Middleware = async ctx => {
   const result = await getListServers();
 
-  (result.data as BoxItem[]).sort((x, y) => y.order - x.order);
+  (result as BoxItem[]).sort((x, y) => y.order - x.order);
 
   await handleRequest(ctx, Promise.resolve(result));
 };
