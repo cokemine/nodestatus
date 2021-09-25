@@ -15,5 +15,5 @@ const resultFolder = path.resolve(__dirname, '../app-minimal');
     base: path.resolve(__dirname, '../'),
   });
   console.log('Total files need to be copy: ' + fileList.length);
-  return Promise.all(fileList.map((e) => fs.copy(e, path.resolve(resultFolder, e))));
+  return Promise.all(fileList.map(e => e !== path.resolve(resultFolder, e) && fs.copy(e, path.resolve(resultFolder, e))));
 })();

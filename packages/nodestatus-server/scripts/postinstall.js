@@ -11,7 +11,11 @@ let dbPath = process.env.DATABASE || (
     : '/usr/local/NodeStatus/server/db.sqlite'
 );
 
-fs.mkdirSync(path.dirname(dbPath), { recursive: true });
-fs.copyFileSync(path.resolve(__dirname, '../db.base.sqlite'), dbPath, fs.constants.COPYFILE_EXCL);
+try {
+  fs.mkdirSync(path.dirname(dbPath), { recursive: true });
+  fs.copyFileSync(path.resolve(__dirname, '../db.base.sqlite'), dbPath, fs.constants.COPYFILE_EXCL);
 
-console.log(`Database file location: ${dbPath}`);
+  console.log(`Database file location: ${dbPath}`);
+} catch (err) {
+  console.log(`[ERROR]: ${err.message}`);
+}
