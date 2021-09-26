@@ -1,4 +1,4 @@
-import { compareSync } from 'bcryptjs';
+import { compare } from 'bcryptjs';
 import {
   getListServers as _getListServers,
   createServer as _addServer,
@@ -23,7 +23,7 @@ async function handleRequest<T = any>(handler: Promise<T>): Promise<IResp<T>> {
 export async function authServer(username: string, password: string): Promise<boolean> {
   const res = await handleRequest(getServerPassword(username));
   if (res.code || !res.data) return false;
-  return compareSync(password, res.data);
+  return compare(password, res.data);
 }
 
 export function addServer(obj: Server): Promise<IResp<void>> {
