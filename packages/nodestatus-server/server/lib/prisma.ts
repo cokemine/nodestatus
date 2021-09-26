@@ -19,22 +19,46 @@ const prisma = new PrismaClient({
   }
 });
 
-const actions = new Set(['create', 'createMany', 'update', 'updateMany', 'upsert']);
+const actions = new Set(['create', 'update', 'updateMany', 'upsert']);
 
-const parse = async (server: Prisma.ServerCreateInput) => {
+const parseFields = (server: Prisma.ServerCreateInput) => {
+  type Key = keyof Prisma.ServerCreateInput;
+  for (const key of Object.keys(server)) {
+    if (server[key as Key] === '') {
+      delete server[key as Key];
+    }
+  }
+};
+
+const parsePassword = async (server: Prisma.ServerCreateInput) => {
   if (server.password) {
     server.password = await hash(server.password, 8);
   }
 };
 
+/* All fields must not be empty */
+prisma.$use((params, next) => {
+  if (params.model != 'Server' || params.action !== 'create') return next(params);
+  const data: Prisma.ServerCreateInput | Prisma.ServerCreateInput[] = params.args.data;
+
+  if (data instanceof Array) {
+    data.forEach(server => parseFields(server));
+  } else {
+    parseFields(data);
+  }
+
+  return next(params);
+});
+
+/* Password should be encrypted */
 prisma.$use(async (params, next) => {
   if (params.model != 'Server' || !actions.has(params.action)) return next(params);
   const data: Prisma.ServerCreateInput | Prisma.ServerCreateInput[] = params.args.data;
 
   if (data instanceof Array) {
-    await Promise.all(data.map(server => parse(server)));
+    await Promise.all(data.map(server => parsePassword(server)));
   } else {
-    await parse(data);
+    await parsePassword(data);
   }
 
   return next(params);
