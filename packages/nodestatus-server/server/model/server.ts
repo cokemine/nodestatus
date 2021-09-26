@@ -30,12 +30,27 @@ export async function getServerPassword(username: string): Promise<string | null
 }
 
 export async function getListServers(): Promise<IServer[]> {
-  const items = await prisma.server.findMany();
+  const items = await prisma.server.findMany({
+    orderBy: {
+      order: 'asc'
+    }
+  });
   return items.map(item => resolveResult(item)) as IServer[];
 }
 
 export async function createServer(item: Prisma.ServerCreateInput): Promise<void> {
-  await prisma.server.create({ data: item });
+  // await prisma.server.create({ data: item });
+  await prisma.$transaction(async prisma => {
+    const server = await prisma.server.create({ data: item });
+    return prisma.server.update({
+      where: {
+        id: server.id
+      },
+      data: {
+        order: server.id
+      }
+    });
+  });
   emitter.emit('update');
 }
 
@@ -68,4 +83,40 @@ export async function setServer(username: string, obj: Partial<Server>): Promise
   const shouldDisconnect = !!(obj.username || obj.password || obj.disabled === true);
   emitter.emit('update', username, shouldDisconnect);
   obj.username && emitter.emit('update', obj.username, true);
+}
+
+export async function setServerOrder(username: string, from: number, to: number): Promise<void> {
+  const min = Math.min(from, to);
+  const max = Math.max(from, to);
+  await prisma.$transaction([
+    prisma.server.update({
+      where: {
+        username
+      },
+      data: {
+        order: to
+      }
+    }),
+    prisma.server.updateMany({
+      where: {
+        AND: [
+          {
+            order: { gte: min },
+          },
+          {
+            order: { lte: max }
+          },
+          {
+            username: { not: username }
+          }
+        ]
+      },
+      data: {
+        order: {
+          increment: from > to ? 1 : -1
+        }
+      }
+    })
+  ]);
+  emitter.emit('update');
 }

@@ -5,6 +5,7 @@ import {
   delServer as _delServer,
   getListServers,
   setServer as _setServer,
+  setServerOrder
 } from '../model/server';
 import { Server } from '../../types/server';
 import { createRes } from '../lib/utils';
@@ -71,13 +72,8 @@ const delServer: Middleware = async ctx => {
 };
 
 const modifyOrder: Middleware = async ctx => {
-  const { order = '' } = ctx.request.body;
-  if (!order) {
-    ctx.status = 400;
-    ctx.body = createRes(1, 'Wrong request');
-    return;
-  }
-  await handleRequest(ctx, null as any);
+  const { order = [] } = ctx.request.body as { order: Array<{ username: string, from: number, to: number }> };
+  await handleRequest(ctx, Promise.all(order.map(item => setServerOrder(item.username, item.from, item.to))));
 };
 
 export {
