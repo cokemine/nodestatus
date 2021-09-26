@@ -10,13 +10,14 @@ datasource db {
 
 model Server {
   id         Int      @id @default(autoincrement())
-  username   String   @unique(map: "sqlite_autoindex_servers_1")
+  username   String   @unique
   password   String
   name       String
   type       String
   location   String
   region     String
   disabled   Boolean  @default(false)
+  // https://github.com/prisma/prisma/issues/8510
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
