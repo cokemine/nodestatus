@@ -20,13 +20,13 @@ export async function getServer(username: string): Promise<IServer | null> {
   return resolveResult(item);
 }
 
-export async function getServerPassword(username: string): Promise<string | null | undefined> {
+export async function getServerPassword(username: string): Promise<string | null> {
   const item = await prisma.server.findUnique({
     where: {
       username
     },
   });
-  return item?.password;
+  return item?.password || null;
 }
 
 export async function getListServers(): Promise<IServer[]> {
@@ -40,10 +40,12 @@ export async function createServer(item: Prisma.ServerCreateInput): Promise<void
 }
 
 export async function bulkCreateServer(items: Prisma.ServerCreateInput[]): Promise<void> {
-  await (prisma.server as any).createMany({
-    data: items,
-    skipDuplicates: true
-  });
+  /* https://github.com/prisma/prisma/discussions/7372 */
+  // await prisma.server.createMany({
+  //   data: items,
+  //   skipDuplicates: true
+  // });
+  await Promise.all(items.map(item => prisma.server.create({ data: item })));
   emitter.emit('update');
 }
 
@@ -53,6 +55,7 @@ export async function delServer(username: string): Promise<void> {
       username
     },
   });
+  emitter.emit('update', username);
 }
 
 export async function setServer(username: string, obj: Partial<Server>): Promise<void> {
