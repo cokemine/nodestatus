@@ -44,11 +44,8 @@ RUN if [ "$USE_CHINA_MIRROR" = 1 ]; then \
   && npm config set registry https://mirrors.cloud.tencent.com/npm/ \
   && yarn config set registry https://mirrors.cloud.tencent.com/npm/; \
   fi;\
-  mkdir -p /usr/local/NodeStatus/server \
-  && npm install pm2 -g \
+  npm install pm2 -g \
   && npm cache clean --force
-
-COPY --from=0 /usr/local/NodeStatus/server /usr/local/NodeStatus/server
 
 WORKDIR /app/packages/nodestatus-server
 
