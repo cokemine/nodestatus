@@ -64,7 +64,6 @@ export async function bulkCreateServer(items: Prisma.ServerCreateInput[]): Promi
     const newOrder = Array.from(orderMap.keys()).concat(order);
     await setOrder(newOrder.join(','), prisma as PrismaClient);
   });
-  emitter.emit('update');
 }
 
 export async function delServer(username: string): Promise<void> {
