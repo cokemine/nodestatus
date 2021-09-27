@@ -92,7 +92,7 @@ export async function setServer(username: string, obj: Partial<Server>): Promise
   obj.username && emitter.emit('update', obj.username, true);
 }
 
-export async function setOrder(order: string, Prisma: PrismaClient = prisma): Promise<void> {
+export async function setOrder(order: string, Prisma = prisma): Promise<void> {
   await Prisma.order.upsert({
     where: { id: 1 },
     update: { order },
