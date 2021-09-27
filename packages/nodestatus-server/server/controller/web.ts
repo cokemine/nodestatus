@@ -7,8 +7,8 @@ import {
   setServer as _setServer,
   setOrder
 } from '../model/server';
-import { Server } from '../../types/server';
 import { createRes } from '../lib/utils';
+import type { Server } from '../../types/server';
 
 async function handleRequest<T>(ctx: Context, handler: Promise<T>): Promise<void> {
   try {
@@ -31,7 +31,6 @@ const setServer: Middleware = async ctx => {
     ctx.body = createRes(1, 'Wrong request');
     return;
   }
-  if (!data.password) delete data.password;
   if (username === data.username) delete data.username;
   await handleRequest(ctx, _setServer(username, data));
 };

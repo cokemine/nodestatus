@@ -20,10 +20,6 @@ RUN if [ "$USE_CHINA_MIRROR" = 1 ]; then \
   && yarn config set network-timeout 600000 \
   && npm install pnpm -g \
   && pnpm install --unsafe-perm \
-  && cd packages/nodestatus-server/ \
-  && pnpx prisma db push \
-  && node scripts/postinstall.js \
-  && cd /app \
   && pnpm build \
   && node scripts/minify-docker.js
 
