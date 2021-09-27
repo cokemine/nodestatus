@@ -23,3 +23,10 @@ model Server {
 
   @@map("servers")
 }
+
+model Order {
+  id    Int    @id @default(autoincrement())
+  order String
+
+  @@map("orders")
+}
