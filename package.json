@@ -23,17 +23,18 @@
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.0.4",
     "@rollup/plugin-run": "^2.1.0",
-    "@rollup/plugin-typescript": "^8.2.5",
     "@types/fs-extra": "^9.0.12",
     "@types/node": "^16.9.1",
     "@typescript-eslint/eslint-plugin": "^4.31.1",
     "@typescript-eslint/parser": "^4.31.1",
     "@vercel/nft": "^0.13.1",
+    "esbuild": "^0.13.2",
     "eslint": "^7.32.0",
     "eslint-plugin-import": "^2.24.2",
     "fs-extra": "^10.0.0",
     "rollup": "^2.56.3",
     "rollup-plugin-delete": "^2.0.0",
+    "rollup-plugin-esbuild": "^4.5.0",
     "typescript": "^4.4.3"
   }
 }
