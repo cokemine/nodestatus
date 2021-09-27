@@ -11,6 +11,7 @@ db.base.sqlite
 .env
 .env.local
 .env.*.local
+!packages/nodestatus-server/prisma/.env
 
 # Log files
 npm-debug.log*

@@ -40,7 +40,7 @@ RUN if [ "$USE_CHINA_MIRROR" = 1 ]; then \
   && npm config set registry https://mirrors.cloud.tencent.com/npm/ \
   && yarn config set registry https://mirrors.cloud.tencent.com/npm/; \
   fi;\
-  npm install pm2 -g \
+  npm install pm2 prisma -g \
   && npm cache clean --force
 
 WORKDIR /app/packages/nodestatus-server

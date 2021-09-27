@@ -1,12 +1,12 @@
 generator client {
-  provider      = "prisma-client-js"
-  binaryTargets = env("BINARY_TARGETS")
+  provider        = "prisma-client-js"
+  binaryTargets   = env("BINARY_TARGETS")
   previewFeatures = ["interactiveTransactions"]
 }
 
 datasource db {
   provider = "sqlite"
-  url      = "file:../db.base.sqlite"
+  url      = env("DATABASE_URL")
 }
 
 model Server {
