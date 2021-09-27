@@ -169,8 +169,7 @@ export class NodeStatus {
         this.userMap.clear();
       }
     }
-    /* this.serversPub = Object.values(this.servers).sort((x, y) => y.order - x.order);*/
-    this.serversPub = Object.values(this.servers).sort((x, y) => y.id - x.id);
+    this.serversPub = Object.values(this.servers).sort((x, y) => y.order - x.order);
   }
 
   /* This should move to another file later */

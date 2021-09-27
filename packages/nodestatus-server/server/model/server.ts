@@ -1,6 +1,6 @@
-import { IServer, Prisma, Server } from '../../types/server';
 import { emitter } from '../lib/utils';
 import prisma from '../lib/prisma';
+import type { IServer, Prisma, Server, PrismaClient } from '../../types/server';
 
 const resolveResult = (item: Server | null): IServer | null => {
   if (!item) return item;
@@ -40,8 +40,12 @@ export async function getListServers(): Promise<IServer[]> {
 }
 
 export async function createServer(item: Prisma.ServerCreateInput): Promise<void> {
-  await prisma.server.create({ data: item });
-  emitter.emit('update');
+  await prisma.$transaction(async prisma => {
+    const server = await prisma.server.create({ data: item });
+    const order = Array.from(orderMap.keys());
+    order.push(server.id);
+    await setOrder(order.join(','), prisma as PrismaClient);
+  });
 }
 
 export async function bulkCreateServer(items: Prisma.ServerCreateInput[]): Promise<void> {
@@ -55,12 +59,15 @@ export async function bulkCreateServer(items: Prisma.ServerCreateInput[]): Promi
 }
 
 export async function delServer(username: string): Promise<void> {
-  const server = await prisma.server.delete({
-    where: {
-      username
-    },
+  await prisma.$transaction(async prisma => {
+    const server = await prisma.server.delete({
+      where: {
+        username
+      },
+    });
+    orderMap.delete(server.id);
+    await setOrder(Array.from(orderMap.keys()).join(), prisma as PrismaClient);
   });
-  emitter.emit('update', username);
 }
 
 export async function setServer(username: string, obj: Partial<Server>): Promise<void> {
@@ -75,8 +82,8 @@ export async function setServer(username: string, obj: Partial<Server>): Promise
   obj.username && emitter.emit('update', obj.username, true);
 }
 
-export async function setOrder(order: string): Promise<void> {
-  await prisma.order.update({
+export async function setOrder(order: string, Prisma: PrismaClient = prisma): Promise<void> {
+  await Prisma.order.update({
     where: {
       id: 1,
     },
@@ -103,4 +110,5 @@ const updateOrder = (order: string): void => {
   for (let i = 0; i < orderList.length; ++i) {
     orderMap.set(Number(orderList[i]), i + 1);
   }
+  emitter.emit('update');
 };
