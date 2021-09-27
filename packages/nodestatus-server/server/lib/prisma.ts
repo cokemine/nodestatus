@@ -1,15 +1,7 @@
-import fs from 'fs';
 import { PrismaClient } from '@prisma/client';
 import { hash } from 'bcryptjs';
 import { Prisma } from '../../types/server';
 import config from './config';
-
-/* Initializing database for Docker */
-if (process.env.IS_DOCKER === 'true' && !fs.existsSync('/usr/local/NodeStatus/server/db.sqlite')) {
-  fs.existsSync('/app/db.base.sqlite') || process.exit(1);
-  fs.mkdirSync('/usr/local/NodeStatus/server/', { recursive: true });
-  fs.copyFileSync('/app/db.base.sqlite', '/usr/local/NodeStatus/server/db.sqlite');
-}
 
 const prisma = new PrismaClient({
   datasources: {
