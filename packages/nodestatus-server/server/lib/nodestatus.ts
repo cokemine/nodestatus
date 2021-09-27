@@ -157,7 +157,7 @@ export class NodeStatus {
       if (!box) return;
       for (const k of Object.keys(box)) {
         if (!this.servers[k]) this.servers[k] = Object.assign(box[k], { status: {} });
-        /* if (this.servers[k].order !== box[k].order) this.servers[k].order = box[k].order;*/
+        this.servers[k].order = box[k].order;
       }
       for (const k of Object.keys(this.servers)) {
         if (!box[k]) delete this.servers[k];

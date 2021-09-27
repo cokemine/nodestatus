@@ -32,7 +32,7 @@ export async function getServerPassword(username: string): Promise<string | null
 
 export async function getListServers(): Promise<IServer[]> {
   const queries: [Promise<Server[]>, Promise<void>?] = [prisma.server.findMany()];
-  if (!orderMap.size) queries.push(queryOrder());
+  !orderMap.size && queries.push(queryOrder());
 
   const [items] = await Promise.all(queries as [Promise<Server[]>, Promise<void>]);
 
@@ -49,12 +49,21 @@ export async function createServer(item: Prisma.ServerCreateInput): Promise<void
 }
 
 export async function bulkCreateServer(items: Prisma.ServerCreateInput[]): Promise<void> {
-  /* https://github.com/prisma/prisma/discussions/7372 */
+  /* https://github.com/prisma/prisma/issues/7374 */
   // await prisma.server.createMany({
   //   data: items,
   //   skipDuplicates: true
   // });
-  await Promise.all(items.map(item => prisma.server.create({ data: item })));
+  await prisma.$transaction(async prisma => {
+    const order: number[] = [];
+    await Promise.all(items.map(item =>
+      prisma.server
+        .create({ data: item })
+        .then(server => order.push(server.id))
+    ));
+    const newOrder = Array.from(orderMap.keys()).concat(order);
+    await setOrder(newOrder.join(','), prisma as PrismaClient);
+  });
   emitter.emit('update');
 }
 
@@ -68,6 +77,7 @@ export async function delServer(username: string): Promise<void> {
     orderMap.delete(server.id);
     await setOrder(Array.from(orderMap.keys()).join(), prisma as PrismaClient);
   });
+  emitter.emit('update', username, true);
 }
 
 export async function setServer(username: string, obj: Partial<Server>): Promise<void> {
@@ -83,13 +93,10 @@ export async function setServer(username: string, obj: Partial<Server>): Promise
 }
 
 export async function setOrder(order: string, Prisma: PrismaClient = prisma): Promise<void> {
-  await Prisma.order.update({
-    where: {
-      id: 1,
-    },
-    data: {
-      order
-    }
+  await Prisma.order.upsert({
+    where: { id: 1 },
+    update: { order },
+    create: { order }
   });
   updateOrder(order);
 }
@@ -106,7 +113,7 @@ const queryOrder = async (): Promise<void> => {
 
 const updateOrder = (order: string): void => {
   orderMap.clear();
-  const orderList = order?.split(',') || [];
+  const orderList = order.split(',') || [];
   for (let i = 0; i < orderList.length; ++i) {
     orderMap.set(Number(orderList[i]), i + 1);
   }

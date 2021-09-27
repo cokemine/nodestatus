@@ -5,6 +5,7 @@ import {
   delServer as _delServer,
   getListServers,
   setServer as _setServer,
+  setOrder
 } from '../model/server';
 import { Server } from '../../types/server';
 import { createRes } from '../lib/utils';
@@ -19,11 +20,7 @@ async function handleRequest<T>(ctx: Context, handler: Promise<T>): Promise<void
 }
 
 const listServers: Middleware = async ctx => {
-  //const result = await getListServers();
-
-  // (result as BoxItem[]).sort((x, y) => y.order - x.order);
-
-  await handleRequest(ctx, getListServers());
+  await handleRequest(ctx, getListServers().then(data => data.sort((x, y) => y.order - x.order)));
 };
 
 const setServer: Middleware = async ctx => {
@@ -77,7 +74,7 @@ const modifyOrder: Middleware = async ctx => {
     ctx.body = createRes(1, 'Wrong request');
     return;
   }
-  await handleRequest(ctx, null as any);
+  await handleRequest(ctx, setOrder(order));
 };
 
 export {
