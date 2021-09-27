@@ -31,10 +31,11 @@ export async function getServerPassword(username: string): Promise<string | null
 }
 
 export async function getListServers(): Promise<IServer[]> {
-  const [items] = await Promise.all([
-    prisma.server.findMany(),
-    queryOrder()
-  ]);
+  const queries: [Promise<Server[]>, Promise<void>?] = [prisma.server.findMany()];
+  if (!orderMap.size) queries.push(queryOrder());
+
+  const [items] = await Promise.all(queries as [Promise<Server[]>, Promise<void>]);
+
   return items.map(item => resolveResult(item)) as IServer[];
 }
 
@@ -54,7 +55,7 @@ export async function bulkCreateServer(items: Prisma.ServerCreateInput[]): Promi
 }
 
 export async function delServer(username: string): Promise<void> {
-  await prisma.server.delete({
+  const server = await prisma.server.delete({
     where: {
       username
     },
@@ -92,9 +93,8 @@ const queryOrder = async (): Promise<void> => {
       id: 1
     }
   });
-  if (!order || order?.order) return;
 
-  return updateOrder(order.order);
+  return updateOrder(order?.order || '');
 };
 
 const updateOrder = (order: string): void => {
