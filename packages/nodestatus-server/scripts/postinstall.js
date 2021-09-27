@@ -22,7 +22,7 @@ try {
   let cmd = 'prisma';
   platform() === 'win32' && (cmd += '.cmd');
   const prisma = cp.spawn(cmd, [ 'db', 'push', '--accept-data-loss' ], {
-    env: { ...process.env, 'BINARY_TARGETS': '["native"]', 'DATABASE_URL': `file:${dbPath}` },
+    env: { BINARY_TARGETS: '["native"]', DATABASE_URL: `file:${dbPath}`, ...process.env },
     cwd: resolve(__dirname, '../'),
     stdio: 'inherit'
   });

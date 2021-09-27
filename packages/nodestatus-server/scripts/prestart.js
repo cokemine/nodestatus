@@ -12,7 +12,7 @@ if (process.env.IS_DOCKER === 'true') {
   );
   fs.mkdirSync(dirname(dbPath), { recursive: true });
   cp.spawn('prisma', [ 'db', 'push', '--accept-data-loss', '--skip-generate' ], {
-    env: { ...process.env, 'BINARY_TARGETS': '["native"]', 'DATABASE_URL': `file:${dbPath}` },
+    env: { 'BINARY_TARGETS': '["native"]', 'DATABASE_URL': `file:${dbPath}`, ...process.env },
     cwd: resolve(__dirname, '../'),
     stdio: 'inherit'
   });
