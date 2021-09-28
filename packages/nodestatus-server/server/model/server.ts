@@ -10,6 +10,7 @@ const resolveResult = (item: Server | null): IServer | null => {
   return Object.assign(item, { order: orderMap.get(item.id) || 0 });
 };
 
+let isInitial = true;
 const orderMap = new Map<number, number>();
 
 export async function getServer(username: string): Promise<IServer | null> {
@@ -32,7 +33,7 @@ export async function getServerPassword(username: string): Promise<string | null
 
 export async function getListServers(): Promise<IServer[]> {
   const queries: [Promise<Server[]>, Promise<void>?] = [prisma.server.findMany()];
-  !orderMap.size && queries.push(queryOrder());
+  isInitial && queries.push(queryOrder());
 
   const [items] = await Promise.all(queries as [Promise<Server[]>, Promise<void>]);
 
@@ -106,7 +107,7 @@ const queryOrder = async (): Promise<void> => {
       id: 1
     }
   });
-
+  isInitial = false;
   return updateOrder(order?.order || '');
 };
 

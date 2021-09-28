@@ -7,7 +7,7 @@ import { logger } from './utils';
 dotenv.config({ path: resolve(homedir(), '.nodestatus/.env.local') });
 
 program
-  .option('-db, --database <db>', 'the path of database', platform() === 'win32' ? resolve(homedir(), '.nodestatus/./db.sqlite') : '/usr/local/NodeStatus/server/db.sqlite')
+  .option('-db, --database <db>', 'the path of database', platform() === 'win32' ? resolve(homedir(), '.nodestatus/db.sqlite') : '/usr/local/NodeStatus/server/db.sqlite')
   .option('-p, --port <port>', 'the port of NodeStatus', '35601')
   .option('-i, --interval <interval>', 'update interval', '1500')
   .parse(process.argv);
