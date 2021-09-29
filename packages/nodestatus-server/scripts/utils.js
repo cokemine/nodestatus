@@ -6,7 +6,7 @@ function backupDatabase(dbPath) {
   const date = new Date();
   fs.copyFileSync(
     dbPath,
-    `${dbPath}_${date.getFullYear()}_${date.getMonth() + 1}_${date.getDate()}_${date.getHours()}_${date.getMinutes()}}_${date.getSeconds()}.bak`
+    `${dbPath}_${date.getFullYear()}_${date.getMonth() + 1}_${date.getDate()}_${date.getHours()}_${date.getMinutes()}_${date.getSeconds()}.bak`
   );
 }
 
