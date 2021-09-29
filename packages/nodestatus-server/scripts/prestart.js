@@ -8,7 +8,7 @@ if (process.env.IS_DOCKER === 'true') {
   let dbPath = process.env.DATABASE || '/usr/local/NodeStatus/server/db.sqlite';
   fs.mkdirSync(dirname(dbPath), { recursive: true });
   fs.existsSync(dbPath) && backupDatabase(dbPath);
-  cp.spawn('prisma', [ 'db', 'push', '--accept-data-loss', '--skip-generate' ], {
+  cp.spawn('prisma', ['db', 'push', '--accept-data-loss', '--skip-generate'], {
     env: { BINARY_TARGETS: '["native"]', DATABASE_URL: `file:${dbPath}`, ...process.env },
     cwd: resolve(__dirname, '../'),
     stdio: 'inherit'

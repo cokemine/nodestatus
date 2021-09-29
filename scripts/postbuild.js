@@ -14,7 +14,7 @@ if (fs.pathExistsSync(outputDir)) {
 process.env.GENERATE_SOURCEMAP = 'false';
 
 list.forEach(({ modPath, cmd }) => {
-  const build = cp.spawn(cmd, [ 'run', 'build' ], {
+  const build = cp.spawn(cmd, ['run', 'build'], {
     env: process.env,
     cwd: modPath,
     stdio: 'inherit'

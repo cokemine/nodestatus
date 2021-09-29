@@ -5,7 +5,7 @@ const path = require('path');
 const fs = require('fs-extra');
 const { nodeFileTrace } = require('@vercel/nft');
 const serverPath = path.resolve(__dirname, '../packages/nodestatus-server');
-const files = [ path.resolve(serverPath, 'build/app.js'), path.resolve(serverPath, 'scripts/prestart.js') ];
+const files = [path.resolve(serverPath, 'build/app.js'), path.resolve(serverPath, 'scripts/prestart.js')];
 const resultFolder = path.resolve(__dirname, '../app-minimal');
 
 (async () => {

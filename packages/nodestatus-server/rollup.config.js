@@ -10,11 +10,11 @@ import pkg from './package.json';
 
 const isProd = process.env.ROLLUP_WATCH !== 'true';
 
-const deps = [ ...Object.keys(pkg.dependencies), ...Object.keys(pkg.optionalDependencies) ];
+const deps = [...Object.keys(pkg.dependencies), ...Object.keys(pkg.optionalDependencies)];
 
 const external = isProd
   ? deps
-  : [ ...deps, ...Object.keys(pkg.devDependencies) ];
+  : [...deps, ...Object.keys(pkg.devDependencies)];
 
 export default {
   input: isProd ? './server/app.ts' : './server/app.dev.ts',

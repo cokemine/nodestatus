@@ -18,7 +18,7 @@ fs.mkdirSync(path.dirname(dbPath), { recursive: true });
 fs.existsSync(dbPath) && backupDatabase(dbPath);
 let cmd = 'prisma';
 platform() === 'win32' && (cmd += '.cmd');
-const prisma = cp.spawn(cmd, [ 'db', 'push', '--accept-data-loss' ], {
+const prisma = cp.spawn(cmd, ['db', 'push', '--accept-data-loss'], {
   env: { BINARY_TARGETS: '["native"]', DATABASE_URL: `file:${dbPath}`, ...process.env },
   cwd: resolve(__dirname, '../'),
   stdio: 'inherit'
