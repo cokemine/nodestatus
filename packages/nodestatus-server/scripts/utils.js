@@ -1,6 +1,6 @@
-import fs from 'fs';
+const fs = require('fs');
 
-export function backupDatabase(dbPath) {
+function backupDatabase(dbPath) {
   console.log('The database file is detected to already exist.');
   console.log('Trying to update database schema.....');
   const date = new Date();
@@ -9,3 +9,5 @@ export function backupDatabase(dbPath) {
     `${dbPath}_${date.getFullYear()}_${date.getMonth() + 1}_${date.getDate()}_${date.getHours()}_${date.getMinutes()}}_${date.getSeconds()}.bak`
   );
 }
+
+module.exports = { backupDatabase };
