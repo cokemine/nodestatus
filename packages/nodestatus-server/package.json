@@ -1,6 +1,6 @@
 {
   "name": "nodestatus-server",
-  "version": "1.1.0-alpha.6",
+  "version": "1.2.0-alpha.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/cokemine/nodestatus.git",
@@ -16,20 +16,22 @@
   "files": [
     "bin",
     "build",
-    "dist"
+    "dist",
+    "scripts",
+    "prisma"
   ],
   "scripts": {
+    "postinstall": "node scripts/postinstall.js",
+    "prestart": "node scripts/prestart.js",
     "dev": "cross-env NODE_ENV=development rollup -c --watch",
     "build": "rollup -c",
     "start": "node build/app.js",
     "lint": "eslint . --ext .js --ext .ts --ignore-pattern build --ignore-pattern dist --fix"
   },
   "dependencies": {
+    "@prisma/client": "^3.1.1",
+    "dotenv": "^10.0.0",
     "readable-stream": "^3.6.0",
-    "reflect-metadata": "^0.1.13",
-    "sequelize": "^6.6.5",
-    "sequelize-typescript": "^2.1.0",
-    "sqlite3": "^5.0.2",
     "telegraf": "^4.4.1"
   },
   "devDependencies": {
@@ -46,7 +48,6 @@
     "bcryptjs": "^2.4.3",
     "commander": "^8.1.0",
     "cross-env": "^7.0.3",
-    "dotenv": "^10.0.0",
     "encoding": "^0.1.13",
     "hotaru-admin": "workspace:*",
     "hotaru-theme": "workspace:*",
@@ -62,6 +63,7 @@
     "koa2-connect-history-api-fallback": "^0.1.3",
     "log4js": "^6.3.0",
     "pm2": "^5.1.0",
+    "prisma": "^3.1.1",
     "typescript": "^4.3.5",
     "webpack": "4",
     "ws": "^8.2.0"

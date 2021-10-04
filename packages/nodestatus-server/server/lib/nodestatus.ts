@@ -16,7 +16,7 @@ function callHook(instance: NodeStatus, hook: keyof NodeStatus, ...args: any[]) 
       (instance[hook] as any).call(instance, ...args);
     }
   } catch (error: any) {
-    logger.error(`[hook]: ${ hook } error: ${ error.message || error }`);
+    logger.error(`[hook]: ${hook} error: ${error.message || error}`);
   }
 }
 
@@ -52,7 +52,7 @@ export class NodeStatus {
     socket.close();
     if (this.isBanned.get(address)) return;
     this.isBanned.set(address, true);
-    logger.warn(`${ address } was banned ${ t } seconds, reason: ${ reason }`);
+    logger.warn(`${address} was banned ${t} seconds, reason: ${reason}`);
     callHook(this, 'onServerBanned', address, reason);
     setTimeout(() => this.isBanned.delete(address), t * 1000);
   }
@@ -62,7 +62,10 @@ export class NodeStatus {
       const pathname = request.url;
       if (pathname === '/connect') {
         this.ioConn.handleUpgrade(request, socket as any, head, ws => {
-          this.map.set(ws, (request.headers?.['x-forwarded-for'] as any)?.split(',')?.[0]?.trim() || request.socket.remoteAddress);
+          this.map.set(
+            ws,
+            (request.headers['x-forwarded-for'] as any)?.split(',')?.[0]?.trim() || request.socket.remoteAddress
+          );
           this.ioConn.emit('connection', ws);
         });
       } else if (pathname === '/public') {
@@ -81,7 +84,7 @@ export class NodeStatus {
       }
       callHook(this, 'onServerConnect', socket);
       socket.send('Authentication required');
-      logger.info(`${ address } is trying to connect to server`);
+      logger.info(`${address} is trying to connect to server`);
       socket.once('message', async (buf: Buffer) => {
         if (this.isBanned.get(address)) {
           socket.send('You are banned. Please try connecting after 60 / 120 seconds');
@@ -113,15 +116,15 @@ export class NodeStatus {
           if (isIPv4(address) || IPv6.parse(address).isIPv4MappedAddress()) {
             ipType = 'IPv4';
           }
-          socket.send(`You are connecting via: ${ ipType }`);
-          logger.info(`${ address } has connected to server`);
+          socket.send(`You are connecting via: ${ipType}`);
+          logger.info(`${address} has connected to server`);
           socket.on('message', (buf: Buffer) => this.servers[username]['status'] = decode(buf) as any);
           this.userMap.set(username, socket);
           callHook(this, 'onServerConnected', socket, username);
           socket.once('close', () => {
             this.userMap.delete(username);
             this.servers[username] && (this.servers[username]['status'] = {});
-            logger.warn(`${ address } disconnected`);
+            logger.warn(`${address} disconnected`);
             callHook(this, 'onServerDisconnected', socket, username);
           });
         }
@@ -157,7 +160,7 @@ export class NodeStatus {
       if (!box) return;
       for (const k of Object.keys(box)) {
         if (!this.servers[k]) this.servers[k] = Object.assign(box[k], { status: {} });
-        if (this.servers[k].order !== box[k].order) this.servers[k].order = box[k].order;
+        this.servers[k].order = box[k].order;
       }
       for (const k of Object.keys(this.servers)) {
         if (!box[k]) delete this.servers[k];
@@ -203,7 +206,7 @@ export class NodeStatus {
               : value;
           }
         });
-        str += `节点名: *${ item.name }*\n当前状态: `;
+        str += `节点名: *${item.name}*\n当前状态: `;
         if (item.status.online4 || item.status.online6) {
           str += '✅*在线*\n';
           online++;
@@ -212,13 +215,13 @@ export class NodeStatus {
           str += '\n\n';
           return;
         }
-        str += `当前负载: ${ parseEntities(item.status.load.toFixed(2)) } \n`;
-        str += `当前CPU占用: ${ Math.round(item.status.cpu) }% \n`;
-        str += `当前内存占用: ${ Math.round(item.status.memory_used / item.status.memory_total * 100) }% \n`;
-        str += `当前硬盘占用: ${ Math.round(item.status.hdd_used / item.status.hdd_total * 100) }% \n`;
+        str += `当前负载: ${parseEntities(item.status.load.toFixed(2))} \n`;
+        str += `当前CPU占用: ${Math.round(item.status.cpu)}% \n`;
+        str += `当前内存占用: ${Math.round(item.status.memory_used / item.status.memory_total * 100)}% \n`;
+        str += `当前硬盘占用: ${Math.round(item.status.hdd_used / item.status.hdd_total * 100)}% \n`;
         str += '\n\n';
       });
-      return `🍊*NodeStatus* \n🤖 当前有 ${ this.serversPub.length } 台服务器, 其中在线 ${ online } 台\n\n${ str }`;
+      return `🍊*NodeStatus* \n🤖 当前有 ${this.serversPub.length} 台服务器, 其中在线 ${online} 台\n\n${str}`;
     };
 
     const tgConfig = this.options.telegram;
@@ -238,9 +241,9 @@ export class NodeStatus {
       bot.command('start', ctx => {
         const currentChat = ctx.message.chat.id.toString();
         if (chatId.has(currentChat)) {
-          ctx.reply(`🍊NodeStatus\n🤖 Hi, this chat id is *${ currentChat }*\\.\nYou have access to this service\\. I will alert you when your servers changed\\.\nYou are currently using NodeStatus: *${ parseEntities(process.env.npm_package_version) }*`, { parse_mode: 'MarkdownV2' });
+          ctx.reply(`🍊NodeStatus\n🤖 Hi, this chat id is *${currentChat}*\\.\nYou have access to this service\\. I will alert you when your servers changed\\.\nYou are currently using NodeStatus: *${parseEntities(process.env.npm_package_version)}*`, { parse_mode: 'MarkdownV2' });
         } else {
-          ctx.reply(`🍊NodeStatus\n🤖 Hi, this chat id is *${ currentChat }*\\.\nYou *do not* have permission to use this service\\.\nPlease check your settings\\.`, { parse_mode: 'MarkdownV2' });
+          ctx.reply(`🍊NodeStatus\n🤖 Hi, this chat id is *${currentChat}*\\.\nYou *do not* have permission to use this service\\.\nPlease check your settings\\.`, { parse_mode: 'MarkdownV2' });
         }
       });
 
@@ -253,11 +256,15 @@ export class NodeStatus {
       });
 
       if (tgConfig.web_hook) {
-        const secretPath = `/telegraf/${ bot.secretPathComponent() }`;
-        bot.telegram.setWebhook(`${ tgConfig.web_hook }${ secretPath }`).then(() => logger.info('🤖 Telegram Bot is running using webhook'));
+        const secretPath = `/telegraf/${bot.secretPathComponent()}`;
+        bot.telegram.setWebhook(`${tgConfig.web_hook}${secretPath}`).then(() => logger.info('🤖 Telegram Bot is running using webhook'));
 
         this.server.on('request', (req, res) => {
-          if (req.url && req.url.length === secretPath.length && timingSafeEqual(Buffer.from(secretPath), Buffer.from(req.url))) {
+          if (
+            req.url
+            && req.url.length === secretPath.length
+            && timingSafeEqual(Buffer.from(secretPath), Buffer.from(req.url))
+          ) {
             bot.webhookCallback(secretPath)(req, res);
             res.statusCode = 200;
           }
@@ -266,7 +273,7 @@ export class NodeStatus {
         bot.launch().then(() => logger.info('🤖 Telegram Bot is running using polling'));
       }
 
-      pushList.push(message => [...chatId].map(id => bot.telegram.sendMessage(id, `${ message }`, { parse_mode: 'MarkdownV2' })));
+      pushList.push(message => [...chatId].map(id => bot.telegram.sendMessage(id, `${message}`, { parse_mode: 'MarkdownV2' })));
     }
 
     this.onServerConnected = (socket, username) => {
@@ -278,7 +285,7 @@ export class NodeStatus {
           timerMap.delete(ip);
         } else {
           return Promise.all(pushList.map(
-            fn => fn(`🍊*NodeStatus* \n😀 One new server has connected\\! \n\n *用户名*: ${ parseEntities(username) } \n *节点名*: ${ parseEntities(this.servers[username]['name']) } \n *时间*: ${ parseEntities(new Date()) }`)
+            fn => fn(`🍊*NodeStatus* \n😀 One new server has connected\\! \n\n *用户名*: ${parseEntities(username)} \n *节点名*: ${parseEntities(this.servers[username]['name'])} \n *时间*: ${parseEntities(new Date())}`)
           ));
         }
       }
@@ -288,7 +295,7 @@ export class NodeStatus {
       const timer = setTimeout(
         () => {
           Promise.all(pushList.map(
-            fn => fn(`🍊*NodeStatus* \n😰 One server has disconnected\\! \n\n *用户名*: ${ parseEntities(username) } \n *节点名*: ${ parseEntities(this.servers[username]?.['name']) } \n *时间*: ${ parseEntities(new Date()) }`)
+            fn => fn(`🍊*NodeStatus* \n😰 One server has disconnected\\! \n\n *用户名*: ${parseEntities(username)} \n *节点名*: ${parseEntities(this.servers[username]?.['name'])} \n *时间*: ${parseEntities(new Date())}`)
           )).then();
           ip && timerMap.delete(ip);
         },

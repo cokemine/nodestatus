@@ -1,7 +1,7 @@
 import net from 'net';
 import { addServer, delServer, getRawListServers, setServer } from '../controller/status';
 import { createRes } from './utils';
-import type { IServer } from '../../types/server';
+import type { Server } from '../../types/server';
 
 export default function createIpc(): net.Server {
   return net.createServer(client => {
@@ -10,7 +10,7 @@ export default function createIpc(): net.Server {
         const [method, payload] = buf.toString().trim().split(' @;@ ');
         switch (method) {
         case 'add': {
-          const data: IServer = JSON.parse(payload);
+          const data: Server = JSON.parse(payload);
           const status = await addServer(data);
           client.write(JSON.stringify(status));
           break;

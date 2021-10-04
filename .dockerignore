@@ -4,6 +4,7 @@
 **/build
 **/app-minimal
 **/db.sqlite
+**/db.base.sqlite
 **/.idea
 **/.vscode
 

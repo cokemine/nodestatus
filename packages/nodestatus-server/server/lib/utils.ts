@@ -14,22 +14,18 @@ export const logger = getLogger();
 
 export const emitter = new EventEmitter();
 
-export const createRes = (code: 0 | 1 | Partial<IResp> = 0, msg = 'ok', data: Record<string, any> | null = null): IResp => {
+export function createRes<T = any>(code: 0 | 1 | Partial<IResp<T>> = 0, msg = 'ok', data: T | null = null): IResp<T> {
   if (typeof code === 'object') {
-    const {
-      code: _code = 0,
-      msg = 'ok',
-      data = null
-    } = code;
     return {
-      code: _code,
-      msg,
-      data
-    };
+      code: 0,
+      msg: 'ok',
+      data: null,
+      ...code
+    } as IResp<T>;
   }
   return {
     code,
     msg,
     data
-  };
-};
+  } as IResp<T>;
+}

@@ -1,154 +1,123 @@
-import { Server, Order } from '../schema/server';
-import { IServer, IResp } from '../../types/server';
-import { createRes, emitter } from '../lib/utils';
+import { emitter } from '../lib/utils';
+import prisma from '../lib/prisma';
+import type { IServer, Prisma, Server, PrismaClient } from '../../types/server';
 
-async function handleRequest(callback: () => Promise<IResp>): Promise<IResp> {
-  try {
-    return await callback();
-  } catch (error: any) {
-    return createRes(1, error.message);
-  }
-}
+const resolveResult = (item: Server | null): IServer | null => {
+  if (!item) return item;
+  type Key = keyof Server;
+  for (const key of ['password', 'created_at', 'updated_at'])
+    delete item[key as Key];
+  return Object.assign(item, { order: orderMap.get(item.id) || item.id || 0 });
+};
 
-/* Refactor is needed */
-export function getServer(username: string, getPassword = false, raw = true): Promise<IResp> {
-  return handleRequest(async () => {
-    const exclude = ['createdAt', 'updatedAt'];
-    !getPassword && exclude.push('password');
-    const [result, orderResult] = await Promise.all([
-      Server.findOne({
-        where: {
-          username
-        },
-        attributes: {
-          exclude
-        },
-        raw
-      }),
-      getOrder()
-    ]);
-    if (orderResult.code) return orderResult;
-    const order: string[] = orderResult.data?.split(',') || [];
-    const newResult: any = result;
-    for (let i = 0; i < order.length; ++i) {
-      if (result?.id === Number(order[i])) {
-        newResult.order = i + 1;
-      }
-    }
-    return createRes(
-      newResult ? 0 : 1,
-      newResult ? 'ok' : 'User Not Found',
-      newResult
-    );
+let isInitial = true;
+const orderMap = new Map<number, number>();
+
+export async function getServer(username: string): Promise<IServer | null> {
+  const item = await prisma.server.findUnique({
+    where: {
+      username
+    },
   });
+  return resolveResult(item);
 }
 
-export function createServer(server: IServer): Promise<IResp> {
-  return handleRequest(async () => {
-    const [item, result] = await Promise.all([Server.create(server), getOrder()]);
-    let order = result.data as string;
-    order = order ? `${ order },${ item.id }` : item.id;
-    await updateOrder(order);
-    return createRes();
+export async function getServerPassword(username: string): Promise<string | null> {
+  const item = await prisma.server.findUnique({
+    where: {
+      username
+    },
   });
+  return item?.password || null;
 }
 
-export function bulkCreateServer(servers: IServer[]): Promise<IResp> {
-  return handleRequest(async () => {
-    const [items, result] = await Promise.all([Server.bulkCreate(servers, { validate: true }), getOrder()]);
-    if (result.code) return result;
-    let order = result.data as string;
-    for (const item of items) {
-      order = order ? `${ order },${ item.id }` : item.id;
-    }
-    await updateOrder(order);
-    return createRes();
+export async function getListServers(): Promise<IServer[]> {
+  const queries: [Promise<Server[]>, Promise<void>?] = [prisma.server.findMany()];
+  isInitial && queries.push(queryOrder());
+
+  const [items] = await Promise.all(queries as [Promise<Server[]>, Promise<void>]);
+
+  return items.map(item => resolveResult(item)) as IServer[];
+}
+
+export async function createServer(item: Prisma.ServerCreateInput): Promise<void> {
+  await prisma.$transaction(async prisma => {
+    const server = await prisma.server.create({ data: item });
+    const order = Array.from(orderMap.keys());
+    order.push(server.id);
+    await setOrder(order.join(','), prisma as PrismaClient, false);
   });
+  emitter.emit('update');
 }
 
-export function delServer(username: string): Promise<IResp> {
-  return handleRequest(async () => {
-    const [result, orderResult] = await Promise.all([getServer(username, false, false), getOrder()]);
-    if (result.code) return result;
-    if (orderResult.code) return orderResult;
-    const server = result.data as Server;
-    let order = orderResult.data?.split(',');
-    if (order) {
-      order = order.filter((id: string) => Number(id) !== server.id);
-    }
-    await Promise.all([server.destroy(), updateOrder(order.join(','))]);
-    emitter.emit('update', username, true);
-    return createRes();
+export async function bulkCreateServer(items: Prisma.ServerCreateInput[]): Promise<void> {
+  /* https://github.com/prisma/prisma/issues/7374 */
+  // await prisma.server.createMany({
+  //   data: items,
+  //   skipDuplicates: true
+  // });
+  await prisma.$transaction(async prisma => {
+    const order: number[] = [];
+    await Promise.all(items.map(item =>
+      prisma.server
+        .create({ data: item })
+        .then(server => order.push(server.id))
+    ));
+    const newOrder = Array.from(orderMap.keys()).concat(order);
+    await setOrder(newOrder.join(','), prisma as PrismaClient, false);
   });
+  emitter.emit('update');
 }
 
-export function setServer(username: string, obj: Partial<IServer>): Promise<IResp> {
-  return handleRequest(async () => {
-    await Server.update(obj, {
+export async function delServer(username: string): Promise<void> {
+  await prisma.$transaction(async prisma => {
+    const server = await prisma.server.delete({
       where: {
         username
-      }
-    });
-    const shouldDisconnect = !!(obj.username || obj.password || obj.disabled === true);
-    emitter.emit('update', username, shouldDisconnect);
-    obj.username && emitter.emit('update', obj.username, true);
-    return createRes();
-  });
-}
-
-export function getListServers(): Promise<IResp> {
-  return handleRequest(async () => {
-    /* https://github.com/RobinBuschmann/sequelize-typescript/issues/763
-    *  Maybe we should move to TypeORM or Prisma because low typescript support of sequelize
-    *  */
-    const [result, orderResult] = await Promise.all([
-      Server.findAll({
-        attributes: {
-          exclude: ['password', 'createdAt', 'updatedAt']
-        },
-        raw: true
-      }),
-      getOrder()
-    ]);
-
-    if (orderResult.code) return orderResult;
-
-    const order: string[] = orderResult.data?.split(',') || [];
-    const newResult: Array<any> = [];
-    const map = new Map<number, number>();
-
-    for (let i = 0; i < order.length; ++i) {
-      map.set(Number(order?.[i]), i + 1);
-    }
-
-    for (const item of result) {
-      newResult.push({ ...item, order: map.get(item.id) });
-    }
-
-    return createRes({ data: newResult });
-  });
-}
-
-export function getOrder(): Promise<IResp> {
-  return handleRequest(async () => {
-    const result = await Order.findAll({
-      attributes: {
-        exclude: ['id', 'createdAt', 'updatedAt']
       },
-      raw: true
     });
-    const order = result?.[0]?.order || '';
-    return createRes({ data: order });
+    orderMap.delete(server.id);
+    await setOrder(Array.from(orderMap.keys()).join(','), prisma as PrismaClient, false);
   });
+  emitter.emit('update', username, true);
 }
 
-export function updateOrder(order: string): Promise<IResp> {
-  return handleRequest(async () => {
-    await Order.destroy({
-      truncate: true
-    });
-    await Order.create({ order });
-    emitter.emit('update');
-    return createRes();
+export async function setServer(username: string, obj: Partial<Server>): Promise<void> {
+  await prisma.server.update({
+    where: {
+      username
+    },
+    data: obj
   });
+  const shouldDisconnect = !!(obj.username || obj.password || obj.disabled === true);
+  emitter.emit('update', username, shouldDisconnect);
+  obj.username && emitter.emit('update', obj.username, true);
 }
+
+export async function setOrder(order: string, Prisma = prisma, shouldUpdate = true): Promise<void> {
+  await Prisma.option.upsert({
+    where: { name: 'order' },
+    update: { value: order },
+    create: { name: 'order', value: order }
+  });
+  shouldUpdate && updateOrder(order);
+}
+
+const queryOrder = async (): Promise<void> => {
+  const order = await prisma.option.findUnique({
+    where: {
+      name: 'order'
+    }
+  });
+  isInitial = false;
+  return updateOrder(order?.value || '');
+};
+
+const updateOrder = (order: string): void => {
+  orderMap.clear();
+  const orderList = order.split(',') || [];
+  for (let i = 0; i < orderList.length; ++i) {
+    orderMap.set(Number(orderList[i]), i + 1);
+  }
+  emitter.emit('update');
+};

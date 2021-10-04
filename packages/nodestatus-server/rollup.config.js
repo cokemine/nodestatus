@@ -1,5 +1,5 @@
 import { resolve } from 'path';
-import typescript from '@rollup/plugin-typescript';
+import esbuild from 'rollup-plugin-esbuild';
 import del from 'rollup-plugin-delete';
 import alias from '@rollup/plugin-alias';
 import commonjs from '@rollup/plugin-commonjs';
@@ -10,11 +10,11 @@ import pkg from './package.json';
 
 const isProd = process.env.ROLLUP_WATCH !== 'true';
 
-const deps = [ ...Object.keys(pkg.dependencies), ...Object.keys(pkg.optionalDependencies) ];
+const deps = [...Object.keys(pkg.dependencies), ...Object.keys(pkg.optionalDependencies)];
 
 const external = isProd
   ? deps
-  : [ ...deps, ...Object.keys(pkg.devDependencies) ];
+  : [...deps, ...Object.keys(pkg.devDependencies)];
 
 export default {
   input: isProd ? './server/app.ts' : './server/app.dev.ts',
@@ -27,7 +27,7 @@ export default {
   external,
   plugins: [
     del({ targets: 'build/*' }),
-    typescript({ tsconfig: resolve(__dirname, '../../tsconfig.json'), sourceMap: !isProd }),
+    esbuild(),
     alias({
       entries: [
         { find: 'ws', replacement: resolve(__dirname, 'node_modules/ws/index.js') }

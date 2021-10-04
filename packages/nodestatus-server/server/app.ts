@@ -5,10 +5,8 @@ import historyApiFallback from 'koa2-connect-history-api-fallback';
 import { logger } from './lib/utils';
 import { createStatus } from './lib/status';
 import config from './lib/config';
-import db from './lib/db';
 
 (async () => {
-  await db.sync({ alter: true });
   const app = new Koa();
 
   app.use(historyApiFallback({
@@ -21,8 +19,8 @@ import db from './lib/db';
 
   const [server, ipc] = await createStatus(app);
 
-  server.listen(config.port, () => logger.info(`🎉  NodeStatus is listening on http://127.0.0.1:${ config.port }`));
+  server.listen(config.port, () => logger.info(`🎉  NodeStatus is listening on http://127.0.0.1:${config.port}`));
 
-  ipc && ipc.listen(config.ipcAddress, () => logger.info(`🎉  NodeStatus Ipc is listening on ${ config.ipcAddress }`));
+  ipc && ipc.listen(config.ipcAddress, () => logger.info(`🎉  NodeStatus Ipc is listening on ${config.ipcAddress}`));
 })();
 

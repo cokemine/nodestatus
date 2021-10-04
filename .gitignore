@@ -4,12 +4,14 @@ dist
 build
 app-minimal
 db.sqlite
+db.base.sqlite
 
 
 # local env files
 .env
 .env.local
 .env.*.local
+!packages/nodestatus-server/prisma/.env
 
 # Log files
 npm-debug.log*

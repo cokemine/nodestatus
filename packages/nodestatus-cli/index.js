@@ -80,7 +80,7 @@ const questions = [
     name: 'disabled',
     type: 'list',
     message: '请输入 NodeStatus 服务端要设置的节点状态[disabled]:',
-    choices: [ 'true', 'false' ],
+    choices: ['true', 'false'],
     when: () => false
   }
 ];
@@ -122,7 +122,7 @@ function handleModify() {
   socket.write('list');
   emitter.once('list', async data => {
     console.table(data);
-    const { username, key } = await inquirer.prompt([ {
+    const { username, key } = await inquirer.prompt([{
       name: 'username',
       type: 'list',
       choices: data.map(item => item.username),
@@ -131,8 +131,8 @@ function handleModify() {
       name: 'key',
       type: 'list',
       message: '请输入需要修改的客户端属性:',
-      choices: [ 'username', 'password', 'name', 'type', 'location', 'region', 'disabled' ]
-    } ]);
+      choices: ['username', 'password', 'name', 'type', 'location', 'region', 'disabled']
+    }]);
 
     let answer = await inquirer.prompt(createQuestions(key), { username });
 
