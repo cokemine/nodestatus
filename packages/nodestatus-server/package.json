@@ -1,6 +1,6 @@
 {
   "name": "nodestatus-server",
-  "version": "1.1.0-alpha.6",
+  "version": "1.2.0-alpha",
   "repository": {
     "type": "git",
     "url": "https://github.com/cokemine/nodestatus.git",
@@ -17,7 +17,8 @@
     "bin",
     "build",
     "dist",
-    "scripts"
+    "scripts",
+    "prisma"
   ],
   "scripts": {
     "postinstall": "node scripts/postinstall.js",

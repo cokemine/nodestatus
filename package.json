@@ -14,7 +14,7 @@
     "app:cli": "pnpm --filter=nodestatus-cli",
     "dev": "npm run app:server dev",
     "start": "npm run app:server start",
-    "publish": "npm run build && npm run app:main publish",
+    "publish": "npm run build && npm run app:server publish",
     "lint": "eslint . --ext .js --ext .ts --ignore-pattern build --ignore-pattern dist --fix"
   },
   "devDependencies": {
