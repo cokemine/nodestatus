@@ -93,22 +93,22 @@ export async function setServer(username: string, obj: Partial<Server>): Promise
 }
 
 export async function setOrder(order: string, Prisma = prisma): Promise<void> {
-  await Prisma.order.upsert({
-    where: { id: 1 },
-    update: { order },
-    create: { order }
+  await Prisma.option.upsert({
+    where: { name: 'order' },
+    update: { value: order },
+    create: { name: 'order', value: order }
   });
   updateOrder(order);
 }
 
 const queryOrder = async (): Promise<void> => {
-  const order = await prisma.order.findUnique({
+  const order = await prisma.option.findUnique({
     where: {
-      id: 1
+      name: 'order'
     }
   });
   isInitial = false;
-  return updateOrder(order?.order || '');
+  return updateOrder(order?.value || '');
 };
 
 const updateOrder = (order: string): void => {
