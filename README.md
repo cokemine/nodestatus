@@ -6,6 +6,13 @@ Current Version: 1.2.0-alpha.1
 
 ## How To Install
 
+If you want to update from v1.1.0 to v1.2.0 or later, you need to rebuild the database to handle the breaking change.
+
+```bash
+mv /usr/local/NodeStatus/db.sqlite /usr/local/NodeStatus/db.sqlite.bak
+rm -f /usr/local/NodeStatus/db.sqlite
+```
+
 ### Install locally
 
 ```bash
@@ -22,13 +29,16 @@ apt-get install -y nodejs
 curl -fsSL https://rpm.nodesource.com/setup_16.x | bash -
 
 
-#Install From NPM
-npm i pm2 -g
-npm i nodestatus-server -g --unsafe-perm=true --allow-root # will install status-cli status-server status-server-run in your computer
+#Install From NPM, NodeStatus needs prisma-cli to generate db
+npm i pm2 prisma -g
+npm i nodestatus-server -g # will install status-server status-server-run in your computer
 status-server # start nodestatus-server
 status-server-run # start nodestatus-server with pm2
 pm2 status # check running status
 pm2 log nodestatus # check logs
+
+# How to Update
+npm i nodestatus-server@latest -g
 ```
 
 ### Install with Docker (Recommended)
@@ -46,6 +56,12 @@ mkdir ~/nodestatus
 cd ~/nodestatus
 wget https://raw.githubusercontent.com/cokemine/nodestatus/master/docker-compose.yml
 vim docker-compose.yml #修改环境变量相关配置
+docker compose up -d
+
+# How to Update
+cd ~/nodestatus
+docker compose down
+docker pull cokemine/nodestatus:latest
 docker compose up -d
 ```
 
@@ -84,6 +100,7 @@ Node.js Version: https://github.com/cokemine/nodestatus-client
 **WEB_SECRET**: 用于 jsonwebtoken, 建议设为一个随机的字符串, 默认不填即和密码相同
 
 &nbsp;
+
 **PUSH_TIMEOUT**: 客户端报警推送超时时间 (在这个时间内无论客户端发生了什么只要重新恢复与客户端的连接就不会推送),  默认`30` (30秒)
 
 **TGBOT_TOKEN**: Telegram Bot Token (从 BotFather 申请到)
@@ -111,7 +128,7 @@ status-cli help # check cli help
 
 若你启用了 Web, 则可以通过 Web 修改服务器相关配置。不需要手动安装，访问`http://tz.domain.com/admin`即可访问面板。
 
-同时通过 Web 面板你可以很简单的从 ServerStatus 迁移至 NodeStatus, 你可以在面板`Import`处将 ServerStatus 的 JSON文件粘贴过去一键添加服务器。
+同时通过 Web 面板你可以很简单的从 ServerStatus 迁移至 NodeStatus, 你可以在面板`Import`处将 ServerStatus 的 JSON文件粘贴过去一键添加服务器。（需要去除多余的 `host` 字段）
 
 面板开源地址：https://github.com/cokemine/hotaru-admin
 
