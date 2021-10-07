@@ -45,9 +45,9 @@ export async function createServer(item: Prisma.ServerCreateInput): Promise<void
     const server = await prisma.server.create({ data: item });
     const order = Array.from(orderMap.keys());
     order.push(server.id);
-    await setOrder(order.join(','), prisma as PrismaClient, false);
+    await setOrder(order.join(','), prisma as PrismaClient);
   });
-  emitter.emit('update');
+  emitter.emit('update', item.username);
 }
 
 export async function bulkCreateServer(items: Prisma.ServerCreateInput[]): Promise<void> {
@@ -64,7 +64,7 @@ export async function bulkCreateServer(items: Prisma.ServerCreateInput[]): Promi
         .then(server => order.push(server.id))
     ));
     const newOrder = Array.from(orderMap.keys()).concat(order);
-    await setOrder(newOrder.join(','), prisma as PrismaClient, false);
+    await setOrder(newOrder.join(','), prisma as PrismaClient);
   });
   emitter.emit('update');
 }
@@ -77,7 +77,7 @@ export async function delServer(username: string): Promise<void> {
       },
     });
     orderMap.delete(server.id);
-    await setOrder(Array.from(orderMap.keys()).join(','), prisma as PrismaClient, false);
+    await setOrder(Array.from(orderMap.keys()).join(','), prisma as PrismaClient);
   });
   emitter.emit('update', username, true);
 }
@@ -94,13 +94,14 @@ export async function setServer(username: string, obj: Partial<Server>): Promise
   obj.username && emitter.emit('update', obj.username, true);
 }
 
-export async function setOrder(order: string, Prisma = prisma, shouldUpdate = true): Promise<void> {
+export async function setOrder(order: string, Prisma = prisma): Promise<void> {
+  const shouldEmit = Prisma === prisma;
   await Prisma.option.upsert({
     where: { name: 'order' },
     update: { value: order },
     create: { name: 'order', value: order }
   });
-  shouldUpdate && updateOrder(order);
+  updateOrder(order, shouldEmit);
 }
 
 const queryOrder = async (): Promise<void> => {
@@ -113,11 +114,13 @@ const queryOrder = async (): Promise<void> => {
   return updateOrder(order?.value || '');
 };
 
-const updateOrder = (order: string): void => {
+const updateOrder = (order: string, shouldEmit = true): void => {
   orderMap.clear();
-  const orderList = order.split(',') || [];
+  const orderList = order === ''
+    ? []
+    : order.split(',');
   for (let i = 0; i < orderList.length; ++i) {
     orderMap.set(Number(orderList[i]), i + 1);
   }
-  emitter.emit('update');
+  shouldEmit && emitter.emit('update');
 };
