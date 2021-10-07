@@ -15,7 +15,8 @@
     "dev": "npm run app:server dev",
     "start": "npm run app:server start",
     "publish": "npm run build && npm run app:server publish",
-    "lint": "eslint . --ext .js --ext .ts --ignore-pattern build --ignore-pattern dist --fix"
+    "lint": "eslint . --ext .js --ext .ts --ignore-pattern build --ignore-pattern dist --fix",
+    "test": "jest"
   },
   "devDependencies": {
     "@rollup/plugin-alias": "^3.1.5",
@@ -24,6 +25,7 @@
     "@rollup/plugin-node-resolve": "^13.0.4",
     "@rollup/plugin-run": "^2.1.0",
     "@types/fs-extra": "^9.0.12",
+    "@types/jest": "^27.0.2",
     "@types/node": "^16.9.1",
     "@typescript-eslint/eslint-plugin": "^4.31.1",
     "@typescript-eslint/parser": "^4.31.1",
@@ -32,9 +34,12 @@
     "eslint": "^7.32.0",
     "eslint-plugin-import": "^2.24.2",
     "fs-extra": "^10.0.0",
+    "jest": "^27.2.4",
+    "jest-mock-extended": "^2.0.4",
     "rollup": "^2.56.3",
     "rollup-plugin-delete": "^2.0.0",
     "rollup-plugin-esbuild": "^4.5.0",
+    "ts-jest": "^27.0.5",
     "typescript": "^4.4.3"
   }
 }
