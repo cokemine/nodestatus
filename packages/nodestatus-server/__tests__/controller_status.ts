@@ -1,9 +1,25 @@
-import { addServer, getListServers, getServer, setServer } from '../server/controller/status';
-import prisma from '../server/lib/prisma';
-import { Prisma } from '../types/server';
+import { mockReset } from 'jest-mock-extended';
+import { hash } from 'bcryptjs';
+import { addServer, authServer, getListServers, getServer, setServer } from '../server/controller/status';
+import {
+  getListServers as _getListServers,
+  createServer as _addServer,
+  getServer as _getServer,
+  setServer as _setServer,
+  getServerPassword
+} from '../server/model/server';
+import { IServer, Prisma } from '../types/server';
+
+jest.mock('../server/model/server');
+
+const GetListServers = _getListServers as jest.MockedFunction<typeof _getListServers>;
+const CreateServer = _addServer as jest.MockedFunction<typeof _addServer>;
+const GetServer = _getServer as jest.MockedFunction<typeof _getServer>;
+const SetServer = _setServer as jest.MockedFunction<typeof _setServer>;
+const GetServerPassword = getServerPassword as jest.MockedFunction<typeof getServerPassword>;
 
 afterEach(() => {
-  return prisma.$transaction([prisma.server.deleteMany({}), prisma.option.deleteMany({})]);
+  [GetListServers, CreateServer, GetServer, SetServer, GetServerPassword].forEach(mockReset);
 });
 
 const mockServer = (str: string): Prisma.ServerCreateInput => ({
@@ -15,12 +31,25 @@ const mockServer = (str: string): Prisma.ServerCreateInput => ({
   location: str
 });
 
+const mockResolve = (str: string, disabled = false): IServer => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { password, ...rest } = mockServer(str);
+  return {
+    ...rest,
+    id: 1,
+    order: 1,
+    disabled
+  };
+};
+
 test('Call get servers first', () => {
-  return expect(getListServers()).resolves.toEqual({ code: 0, data: {}, msg: 'ok' });
+  GetListServers.mockResolvedValueOnce([]);
+  expect(getListServers()).resolves.toEqual({ code: 0, data: {}, msg: 'ok' });
 });
 
 test('Create a server and find unique Server', async () => {
   await expect(addServer(mockServer('username'))).resolves.toEqual({ code: 0, data: null, msg: 'ok' });
+  GetServer.mockResolvedValueOnce(mockResolve('username'));
   const result = await getServer('username');
   expect(result.code).toBe(0);
   expect(result.msg).toBe('ok');
@@ -38,6 +67,7 @@ test('Set Server with disabled', async () => {
   await expect(setServer('username', {
     disabled: true
   })).resolves.toEqual({ code: 0, data: null, msg: 'ok' });
+  GetServer.mockResolvedValueOnce(mockResolve('username', true));
   await expect(getServer('username')).resolves.toEqual({
     code: 1,
     data: null,
@@ -51,6 +81,7 @@ test('get List Servers', async () => {
   for (const server of servers) {
     await expect(addServer(server)).resolves.toEqual({ code: 0, data: null, msg: 'ok' });
   }
+  GetListServers.mockResolvedValueOnce(servers.map(({ name }) => mockResolve(name)));
   const result = await getListServers();
   expect(result).toMatchObject({
     code: 0,
@@ -61,4 +92,15 @@ test('get List Servers', async () => {
   for (const name in data) {
     ['password', 'created_at', 'updated_at', 'username', 'disabled'].forEach(prop => expect(data[name]).not.toHaveProperty(prop));
   }
+});
+
+test('auth password', async () => {
+  await addServer(mockServer('username'));
+  const password = await hash('username', 8);
+  GetServerPassword.mockResolvedValue(password);
+  await expect(authServer('username', 'username')).resolves.toBe(true);
+  await expect(authServer('username', 'false_password')).resolves.toBe(false);
+  /* NULL USERNAME */
+  GetServerPassword.mockResolvedValue(null);
+  return expect(authServer('username2', 'username2')).resolves.toBe(false);
 });
