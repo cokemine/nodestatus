@@ -8,7 +8,7 @@ import {
   getServerPassword
 } from '../model/server';
 import { createRes } from '../lib/utils';
-import type { Server, IResp, Box, IServer, BoxItem } from '../../types/server';
+import type { Prisma, Server, IResp, Box, IServer, BoxItem } from '../../types/server';
 
 async function handleRequest<T = any>(handler: Promise<T>): Promise<IResp<T>> {
   let data: T;
@@ -17,7 +17,7 @@ async function handleRequest<T = any>(handler: Promise<T>): Promise<IResp<T>> {
   } catch (error: any) {
     return createRes(1, error.message);
   }
-  return createRes({ data });
+  return createRes({ data: data });
 }
 
 export async function authServer(username: string, password: string): Promise<boolean> {
@@ -26,7 +26,7 @@ export async function authServer(username: string, password: string): Promise<bo
   return compare(password, res.data);
 }
 
-export function addServer(obj: Server): Promise<IResp<void>> {
+export function addServer(obj: Prisma.ServerCreateInput): Promise<IResp<void>> {
   return handleRequest(_addServer(obj));
 }
 
