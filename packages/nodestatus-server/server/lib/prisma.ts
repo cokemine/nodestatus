@@ -1,3 +1,4 @@
+import path from 'path';
 import { PrismaClient } from '@prisma/client';
 import { hash } from 'bcryptjs';
 import { Prisma } from '../../types/server';
@@ -6,7 +7,10 @@ import config from './config';
 const prisma = new PrismaClient({
   datasources: {
     db: {
-      url: `file:${config.database}`
+      url:
+        process.env.NODE_ENV === 'TEST'
+          ? `file:${path.resolve(__dirname, '../../db.base.sqlite')}`
+          : `file:${config.database}`
     }
   }
 });

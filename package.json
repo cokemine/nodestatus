@@ -16,7 +16,7 @@
     "start": "npm run app:server start",
     "publish": "npm run build && npm run app:server publish",
     "lint": "eslint . --ext .js --ext .ts --ignore-pattern build --ignore-pattern dist --fix",
-    "test": "jest"
+    "test": "cross-env NODE_ENV=TEST jest"
   },
   "devDependencies": {
     "@rollup/plugin-alias": "^3.1.5",
