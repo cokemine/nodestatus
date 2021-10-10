@@ -6,7 +6,7 @@ WORKDIR /app
 COPY . /app
 
 ENV IS_DOCKER=true
-ARG BINARY_TARGETS="[\"linux-musl\"]"
+ARG TARGETARCH
 ARG USE_CHINA_MIRROR=0
 
 RUN if [ "$USE_CHINA_MIRROR" = 1 ]; then \
@@ -14,7 +14,8 @@ RUN if [ "$USE_CHINA_MIRROR" = 1 ]; then \
   && npm config set registry https://mirrors.cloud.tencent.com/npm/ \
   && yarn config set registry https://mirrors.cloud.tencent.com/npm/; \
   fi;\
-  apt-get -y update \
+  [ "$TARGETARCH" = "arm64" ] && export BINARY_TARGETS="[\"linux-arm64-openssl-1.1.x\"]" || export BINARY_TARGETS="[\"linux-musl\"]" \
+  && apt-get -y update \
   && apt-get install -y git python3 apt-transport-https ca-certificates build-essential \
   && ln -s /usr/bin/python3 /usr/bin/python \
   && yarn config set network-timeout 600000 \
