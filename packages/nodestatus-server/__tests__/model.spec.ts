@@ -13,17 +13,12 @@ import {
 import { emitter as Emitter } from '../server/lib/utils';
 import { Prisma } from '../types/server';
 
-jest.mock('../server/lib/utils', () => {
-  const originalModule = jest.requireActual('../server/lib/utils');
-  return {
-    __esModule: true,
-    ...originalModule,
-    emitter: mockDeep<EventEmitter>()
-  };
-});
+jest.mock('../server/lib/utils', () => ({
+  __esModule: true,
+  emitter: mockDeep<EventEmitter>()
+}));
 
 const emitter = Emitter as DeepMockProxy<EventEmitter>;
-
 
 afterEach(async () => {
   await setOrder('');
