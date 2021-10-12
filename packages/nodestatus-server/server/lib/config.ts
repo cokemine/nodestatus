@@ -15,7 +15,11 @@ const options = program.opts();
 
 const config = {
   NODE_ENV: process.env.NODE_ENV,
-  database: process.env.DATABASE || options.database,
+  database: process.env.DATABASE || (
+    process.env.NODE_ENV === 'TEST' ?
+      resolve(__dirname, '../../db.base.sqlite')
+      : options.database
+  ),
   port: process.env.PORT || options.port,
   interval: process.env.INTERVAL || options.interval,
 
