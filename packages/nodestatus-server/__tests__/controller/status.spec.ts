@@ -1,16 +1,16 @@
 import { mockReset } from 'jest-mock-extended';
 import { hash } from 'bcryptjs';
-import { addServer, authServer, getListServers, getServer, setServer } from '../server/controller/status';
+import { addServer, authServer, getListServers, getServer, setServer } from '../../server/controller/status';
 import {
   getListServers as _getListServers,
   createServer as _addServer,
   getServer as _getServer,
   setServer as _setServer,
   getServerPassword
-} from '../server/model/server';
-import { IServer, Prisma } from '../types/server';
+} from '../../server/model/server';
+import { IServer, Prisma } from '../../types/server';
 
-jest.mock('../server/model/server');
+jest.mock('../../server/model/server');
 
 const GetListServers = _getListServers as jest.MockedFunction<typeof _getListServers>;
 const CreateServer = _addServer as jest.MockedFunction<typeof _addServer>;
