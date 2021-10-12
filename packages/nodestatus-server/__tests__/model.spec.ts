@@ -14,6 +14,7 @@ import {
 } from '../server/model/server';
 import { emitter as Emitter } from '../server/lib/utils';
 import { Prisma } from '../types/server';
+import { mockServerInput } from './lib';
 
 jest.mock('../server/lib/utils', () => ({
   __esModule: true,
@@ -26,15 +27,6 @@ afterEach(async () => {
   await setOrder('');
   mockReset(emitter);
   return prisma.$transaction([prisma.server.deleteMany({}), prisma.option.deleteMany({})]);
-});
-
-const mockServer = (str: string): Prisma.ServerCreateInput => ({
-  name: str,
-  username: str,
-  password: str,
-  region: str,
-  type: str,
-  location: str
 });
 
 const mockResolve = (server: Prisma.ServerCreateInput) => {
@@ -56,7 +48,7 @@ test('Init getListServers should call emitter', async () => {
 });
 
 test('Create a server and find unique Server', async () => {
-  const server = mockServer('username');
+  const server = mockServerInput('username');
   await expect(createServer(server)).resolves.toBeUndefined();
   const result = await getServer('username');
   /* Test resolveResult function */
@@ -74,11 +66,11 @@ test('Create a server and find unique Server', async () => {
 });
 
 test('Create Multi servers with getListServers', async () => {
-  const server1 = mockServer('Megumi');
+  const server1 = mockServerInput('Megumi');
   await expect(createServer(server1)).resolves.toBeUndefined();
-  const server2 = mockServer('Siesta');
+  const server2 = mockServerInput('Siesta');
   await expect(createServer(server2)).resolves.toBeUndefined();
-  const server3 = mockServer('Emilia');
+  const server3 = mockServerInput('Emilia');
   await expect(createServer(server3)).resolves.toBeUndefined();
   expect(emitter.emit.mock.calls.length).toBe(3);
 
@@ -91,16 +83,16 @@ test('Create Multi servers with getListServers', async () => {
 });
 
 test('Create servers with same username', async () => {
-  const server1 = mockServer('username');
+  const server1 = mockServerInput('username');
   await expect(createServer(server1)).resolves.toBeUndefined();
   expect(emitter.emit.mock.calls.length).toBe(1);
-  const server2 = mockServer('username');
+  const server2 = mockServerInput('username');
   await expect(createServer(server2)).rejects.toThrowError('Unique constraint failed');
   expect(emitter.emit.mock.calls.length).toBe(1);
 });
 
 test('Bulk create servers', async () => {
-  const servers = [mockServer('Megumi'), mockServer('Siesta'), mockServer('Emilia')];
+  const servers = [mockServerInput('Megumi'), mockServerInput('Siesta'), mockServerInput('Emilia')];
   await expect(bulkCreateServer(servers)).resolves.toBeUndefined();
 
   const result = await getListServers();
@@ -115,7 +107,7 @@ test('Bulk create servers', async () => {
 });
 
 test('Update server', async () => {
-  const server1 = mockServer('username');
+  const server1 = mockServerInput('username');
 
   await expect(createServer(server1)).resolves.toBeUndefined();
   await expect(getServer('username')).resolves.toHaveProperty('region', 'username');
@@ -156,7 +148,7 @@ test('Update server', async () => {
 });
 
 test('Delete a server', async () => {
-  const servers = [mockServer('Megumi'), mockServer('username'), mockServer('Siesta'), mockServer('Emilia')];
+  const servers = [mockServerInput('Megumi'), mockServerInput('username'), mockServerInput('Siesta'), mockServerInput('Emilia')];
   await expect(bulkCreateServer(servers)).resolves.toBeUndefined();
 
   await expect(delServer('username')).resolves.toBeUndefined();
@@ -173,7 +165,7 @@ test('Delete a server', async () => {
 });
 
 test('Set order', async () => {
-  await expect(bulkCreateServer([mockServer('Megumi'), mockServer('Siesta'), mockServer('Emilia'), mockServer('Irina')])).resolves.toBeUndefined();
+  await expect(bulkCreateServer([mockServerInput('Megumi'), mockServerInput('Siesta'), mockServerInput('Emilia'), mockServerInput('Irina')])).resolves.toBeUndefined();
   const servers = await getListServers();
   const ids = servers.map(({ id }) => id).sort(() => Math.random() - 0.5);
   await setOrder(ids.join(','));
@@ -182,7 +174,7 @@ test('Set order', async () => {
   const result = await getListServers();
   result.forEach(({ id, order }) => expect(order).toBe(ids.findIndex(i => i === id) + 1));
 
-  await createServer(mockServer('username'));
+  await createServer(mockServerInput('username'));
   const server = await getServer('username');
   ids.push(server?.id as number);
   const result2 = await getListServers();
@@ -191,7 +183,7 @@ test('Set order', async () => {
 });
 
 test('Test password', async () => {
-  const server = mockServer('username');
+  const server = mockServerInput('username');
   await expect(createServer(server)).resolves.toBeUndefined();
   await expect(getServerPassword('username')).resolves.not.toBe('username');
   await expect(getServerPassword('username2')).resolves.toBe(null);

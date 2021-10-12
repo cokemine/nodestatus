@@ -1,52 +1,14 @@
 import { mockReset } from 'jest-mock-extended';
 import { hash } from 'bcryptjs';
 import { addServer, authServer, getListServers, getServer, setServer } from '../../server/controller/status';
-import {
-  getListServers as _getListServers,
-  createServer as _addServer,
-  getServer as _getServer,
-  setServer as _setServer,
-  getServerPassword
-} from '../../server/model/server';
-import { IServer, Prisma } from '../../types/server';
+import { mockIServer, mockServerInput } from '../lib';
+import { GetListServers, CreateServer, GetServer, GetServerPassword, SetServer } from './model.mock';
 
 jest.mock('../../server/model/server');
-
-const GetListServers = _getListServers as jest.MockedFunction<typeof _getListServers>;
-const CreateServer = _addServer as jest.MockedFunction<typeof _addServer>;
-const GetServer = _getServer as jest.MockedFunction<typeof _getServer>;
-const SetServer = _setServer as jest.MockedFunction<typeof _setServer>;
-const GetServerPassword = getServerPassword as jest.MockedFunction<typeof getServerPassword>;
 
 afterEach(() => {
   [GetListServers, CreateServer, GetServer, SetServer, GetServerPassword].forEach(mockReset);
 });
-
-const mockServerInput = (str: string): Prisma.ServerCreateInput => ({
-  name: str,
-  username: str,
-  password: str,
-  region: str,
-  type: str,
-  location: str
-});
-
-const mockIServer = (str: string | Prisma.ServerCreateInput, disabled = false): IServer => {
-  let server: Prisma.ServerCreateInput;
-  if (typeof str === 'object') {
-    server = str;
-  } else {
-    server = mockServerInput(str);
-  }
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { password, ...rest } = server;
-  return {
-    ...rest,
-    id: 1,
-    order: 1,
-    disabled
-  };
-};
 
 test('Call get servers first and expect empty object', () => {
   GetListServers.mockResolvedValueOnce([]);
