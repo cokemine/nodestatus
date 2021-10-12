@@ -8,7 +8,9 @@ import {
   getListServers,
   setServer,
   delServer,
-  bulkCreateServer, setOrder
+  bulkCreateServer,
+  setOrder,
+  getServerPassword
 } from '../server/model/server';
 import { emitter as Emitter } from '../server/lib/utils';
 import { Prisma } from '../types/server';
@@ -187,4 +189,11 @@ test('Set order', async () => {
   const result2 = await getListServers();
   expect(result2).toHaveLength(5);
   result2.forEach(({ id, order }) => expect(order).toBe(ids.findIndex(i => i === id) + 1));
+});
+
+test('Test password', async () => {
+  const server = mockServer('username');
+  await expect(createServer(server)).resolves.toBeUndefined();
+  await expect(getServerPassword('username')).resolves.not.toBe('username');
+  await expect(getServerPassword('username2')).resolves.toBe(null);
 });
