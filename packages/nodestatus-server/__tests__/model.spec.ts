@@ -104,8 +104,7 @@ test('Bulk create servers', async () => {
   await expect(bulkCreateServer(servers)).resolves.toBeUndefined();
 
   const result = await getListServers();
-  await expect(result).toMatchObject(servers.map(mockResolve));
-
+  await expect(result).toEqual(expect.arrayContaining(servers.map(mockResolve).map(expect.objectContaining)));
 
   for (let i = 0; i < 3; ++i) {
     expect(result[i].order).toBe(i + 1);
