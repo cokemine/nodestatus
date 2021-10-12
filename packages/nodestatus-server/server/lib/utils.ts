@@ -16,10 +16,12 @@ export const emitter = new EventEmitter();
 
 export function createRes<T = any>(code: 0 | 1 | Partial<IResp<T>> = 0, msg = 'ok', data: T | null = null): IResp<T> {
   if (typeof code === 'object') {
+    const data = code.data || null;
+    delete code.data;
     return {
       code: 0,
       msg: 'ok',
-      data: null,
+      data,
       ...code
     } as IResp<T>;
   }
