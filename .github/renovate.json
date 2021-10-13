@@ -6,6 +6,11 @@
     "on Friday",
     "every weekend"
   ],
+  "ignoreDeps": [
+    "hotaru-theme",
+    "hotaru-admin"
+  ],
+  "pinVersions": false,
   "git-submodules": {
     "enabled": true
   }
