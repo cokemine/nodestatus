@@ -14,7 +14,7 @@
   },
   "include": [
     "packages/**/*.ts",
-    "web/hotaru-theme/types/servers.d.ts"
+    "web/hotaru-theme/src/types/servers.d.ts"
   ],
   "exclude": [
     "node_modules"

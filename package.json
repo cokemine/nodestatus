@@ -12,6 +12,7 @@
     "app:main": "pnpm --filter=nodestatus-*",
     "app:server": "pnpm --filter=nodestatus-server",
     "app:cli": "pnpm --filter=nodestatus-cli",
+    "app:web": "pnpm --filter=hotaru-*",
     "dev": "npm run app:server dev",
     "start": "npm run app:server start",
     "publish": "npm run build && npm run app:server publish",
