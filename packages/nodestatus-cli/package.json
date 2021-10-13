@@ -24,9 +24,9 @@
     "readable-stream": "^3.6.0"
   },
   "devDependencies": {
-    "chalk": "^4.1.2",
-    "commander": "^8.1.0",
-    "i18n-iso-countries": "^6.8.0",
-    "inquirer": "^8.1.2"
+    "chalk": "4.1.2",
+    "commander": "8.2.0",
+    "i18n-iso-countries": "6.8.0",
+    "inquirer": "8.2.0"
   }
 }
