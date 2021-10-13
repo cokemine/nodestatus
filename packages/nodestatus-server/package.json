@@ -49,6 +49,7 @@
     "commander": "^8.1.0",
     "cross-env": "^7.0.3",
     "encoding": "^0.1.13",
+    "hotaru-admin": "workspace:*",
     "hotaru-theme": "workspace:*",
     "https-proxy-agent": "^5.0.0",
     "ipaddr.js": "^2.0.1",

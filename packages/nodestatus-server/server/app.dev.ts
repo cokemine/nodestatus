@@ -9,7 +9,7 @@ import { createStatus } from './lib/status';
 import { logger } from './lib/utils';
 import config from './lib/config';
 
-const webs = [{ name: 'hotaru-theme', publicPath: '/' }];
+const webs = [{ name: 'hotaru-admin', publicPath: '/admin' }, { name: 'hotaru-theme', publicPath: '/' }];
 
 const createMiddleware = async (name: string): Promise<Middleware> => {
   const vite = await createViteServer({
@@ -23,12 +23,18 @@ const createMiddleware = async (name: string): Promise<Middleware> => {
       await next();
     } catch (e: any) {
       ctx.status = 500;
-      console.log(e);
-      if (e.message) ctx.body = e.message;
-      else ctx.body = e;
+      vite.ssrFixStacktrace(e);
+      ctx.body = e.message;
     }
   };
-  return compose([middleware, c2k(vite.middlewares)]);
+  return async (ctx, next) => {
+    const { url } = ctx;
+    if (url.startsWith('/api')) {
+      await next();
+    } else {
+      await compose([middleware, c2k(vite.middlewares)])(ctx, next);
+    }
+  };
 };
 
 (async () => {
