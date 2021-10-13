@@ -5,5 +5,8 @@
   "schedule": [
     "on Friday",
     "every weekend"
-  ]
+  ],
+  "git-submodules": {
+    "enabled": true
+  }
 }
