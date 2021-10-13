@@ -1,0 +1,9 @@
+{
+  "extends": [
+    "config:base"
+  ],
+  "schedule": [
+    "on Friday",
+    "every weekend"
+  ]
+}
