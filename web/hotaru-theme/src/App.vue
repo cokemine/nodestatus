@@ -18,8 +18,7 @@ import ServersTable from '@/components/ServersTable.vue';
 import UpdateTime from '@/components/UpdateTime.vue';
 import ServersCard from '@/components/ServersCard.vue';
 import TheFooter from '@/components/TheFooter.vue';
-
-import type { ServerItem } from './types/';
+import type { ServerItem } from '@/types';
 
 export default defineComponent({
   name: 'App',
