@@ -14,8 +14,10 @@
   },
   "include": [
     "packages/**/*.ts",
+    "packages/**/*.d.ts",
     "web/**/*.ts",
     "web/**/*.tsx",
+    "web/**/*.d.ts",
     "web/**/*.vue"
   ],
   "exclude": [

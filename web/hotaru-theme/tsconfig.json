@@ -13,6 +13,10 @@
       "esnext",
       "dom"
     ],
+    "types": [
+      "node",
+      "jest"
+    ]
   },
   "include": [
     "src/**/*.ts",

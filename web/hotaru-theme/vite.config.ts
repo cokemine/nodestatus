@@ -11,10 +11,5 @@ export default defineConfig({
       iconDirs: [path.resolve(__dirname, './src/assets/img/client')],
       symbolId: '[name]'
     })
-  ],
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src')
-    }
-  }
+  ]
 });

@@ -1,7 +1,6 @@
-import type { Server } from '@prisma/client';
+import type { Server, Prisma } from '@prisma/client';
 
-export type * from '@prisma/client';
-// export type Server = Prisma.ServerCreateInput;
+export { Server, Prisma };
 
 export type BaseItem = Omit<Server, 'password' | 'disabled' | 'created_at' | 'updated_at'> & { order: number };
 

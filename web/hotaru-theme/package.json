@@ -12,6 +12,6 @@
     "vite": "^2.6.4",
     "vite-plugin-svg-icons": "^1.0.5",
     "vue": "^3.2.16",
-    "vue-tsc": "^0.3.0"
+    "vue-tsc": "^0.28.3"
   }
 }
