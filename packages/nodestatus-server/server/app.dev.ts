@@ -17,7 +17,7 @@ const createMiddleware = async (name: string): Promise<Middleware> => {
     root: path.dirname(require.resolve(`${name}/package.json`)),
     server: {
       middlewareMode: 'html'
-    },
+    }
   });
   const middleware: Middleware = async (ctx, next) => {
     try {

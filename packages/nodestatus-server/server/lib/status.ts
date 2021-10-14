@@ -10,7 +10,6 @@ import config from './config';
 import type { Server as NetServer } from 'net';
 
 export async function createStatus(app: Koa): Promise<[Server, NetServer | null]> {
-
   const server = new Server(app.callback());
   let ipc = null;
 

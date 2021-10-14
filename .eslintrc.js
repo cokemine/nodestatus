@@ -1,13 +1,13 @@
 module.exports = {
   root: true,
   env: {
+    browser: true,
     commonjs: true,
     es6: true,
     node: true,
+    jest: true
   },
-  extends: ['eslint:recommended', 'plugin:import/recommended'],
-  parser: '@typescript-eslint/parser',
-  plugins: ['import'],
+  extends: ['airbnb', 'airbnb/hooks'],
   parserOptions: {
     ecmaFeatures: {
       jsx: true
@@ -16,45 +16,66 @@ module.exports = {
     sourceType: 'module'
   },
   rules: {
+    'linebreak-style': 'off',
+    'comma-dangle': [2, 'never'],
+    'no-await-in-loop': 1,
+    'arrow-parens': [2, 'as-needed'],
+    'no-console': 'off',
+    'no-plusplus': 'off',
+    'no-param-reassign': [2, { props: false }],
+    'no-restricted-syntax': 'off',
+    'no-nested-ternary': 'off',
+    'no-shadow': 'off',
+    'no-unused-expressions': [2, { allowShortCircuit: true, allowTernary: true, allowTaggedTemplates: true }],
+    'no-underscore-dangle': 'off',
+    'no-bitwise': 'off',
+    'global-require': 'off',
+    'one-var': 'off',
+    'one-var-declaration-per-line': 'off',
     'max-len': ['error', 120, 2, {
       ignoreUrls: true,
       ignoreComments: false,
       ignoreRegExpLiterals: true,
       ignoreStrings: true,
-      ignoreTemplateLiterals: true,
+      ignoreTemplateLiterals: true
     }],
-    indent: [1, 2],
-    semi: [1, 'always'],
-    quotes: [1, 'single'],
-    'eol-last': [2, 'always'],
-    'quote-props': [2, 'as-needed', { keywords: false, unnecessary: true, numbers: false }],
-    'brace-style': [1, '1tbs'],
+    'require-await': 1,
+    'prefer-object-spread': 'off',
     'template-curly-spacing': [2, 'never'],
-    'object-curly-spacing': [2, 'always'],
-    'array-bracket-spacing': [2, 'never'],
-    'import/no-named-as-default': 'off',
-    'import/order': [
-      2,
-      { groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index', 'object', 'type'] }
-    ],
-    'require-await': 2,
-    'no-return-await': 2,
+    'max-classes-per-file': 'off',
+    'import/prefer-default-export': 'off',
+    'import/order': [1, { groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index', 'object', 'type'] }],
+    'import/no-extraneous-dependencies': 'off',
+    'react/prop-types': 'off',
+    'react/destructuring-assignment': 'off',
+    'react/jsx-fragments': 'off',
+    'react/no-array-index-key': 'off',
+    'react/jsx-props-no-spreading': 'off'
+  },
+  settings: {
+    react: {
+      version: 'latest'
+    }
   },
   overrides: [
     {
       files: ['*.{ts,tsx}'],
-      extends: ['plugin:@typescript-eslint/recommended'],
-      plugins: ['@typescript-eslint'],
+      extends: ['airbnb-typescript'],
+      parserOptions: {
+        project: './tsconfig.json'
+      },
       rules: {
-        '@typescript-eslint/no-explicit-any': 0
+        'import/no-extraneous-dependencies': 'off',
+        '@typescript-eslint/no-explicit-any': 'off',
+        '@typescript-eslint/no-shadow': 'off',
+        '@typescript-eslint/naming-convention': 'off',
+        '@typescript-eslint/no-unused-expressions': [2, {
+          allowShortCircuit: true,
+          allowTernary: true,
+          allowTaggedTemplates: true
+        }],
+        '@typescript-eslint/comma-dangle': [2, 'never']
       }
     }
-  ],
-  settings: {
-    'import/resolver': {
-      node: {
-        extensions: ['.js', '.jsx', '.ts', '.tsx', '.d.ts']
-      }
-    }
-  },
+  ]
 };

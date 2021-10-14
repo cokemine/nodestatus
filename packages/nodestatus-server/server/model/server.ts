@@ -1,12 +1,13 @@
 import { emitter } from '../lib/utils';
 import prisma from '../lib/prisma';
-import type { IServer, Prisma, Server, PrismaClient } from '../../types/server';
+import type {
+  IServer, Prisma, Server, PrismaClient
+} from '../../types/server';
 
 const resolveResult = (item: Server | null): IServer | null => {
   if (!item) return item;
   type Key = keyof Server;
-  for (const key of ['password', 'created_at', 'updated_at'])
-    delete item[key as Key];
+  for (const key of ['password', 'created_at', 'updated_at']) delete item[key as Key];
   return Object.assign(item, { order: orderMap.get(item.id) || item.id || 0 });
 };
 
@@ -17,7 +18,7 @@ export async function getServer(username: string): Promise<IServer | null> {
   const item = await prisma.server.findUnique({
     where: {
       username
-    },
+    }
   });
   return resolveResult(item);
 }
@@ -26,7 +27,7 @@ export async function getServerPassword(username: string): Promise<string | null
   const item = await prisma.server.findUnique({
     where: {
       username
-    },
+    }
   });
   return item?.password || null;
 }
@@ -58,11 +59,9 @@ export async function bulkCreateServer(items: Prisma.ServerCreateInput[]): Promi
   // });
   await prisma.$transaction(async prisma => {
     const order: number[] = [];
-    await Promise.all(items.map(item =>
-      prisma.server
-        .create({ data: item })
-        .then(server => order.push(server.id))
-    ));
+    await Promise.all(items.map(item => prisma.server
+      .create({ data: item })
+      .then(server => order.push(server.id))));
     const newOrder = Array.from(orderMap.keys()).concat(order);
     await setOrder(newOrder.join(','), prisma as PrismaClient);
   });
@@ -74,7 +73,7 @@ export async function delServer(username: string): Promise<void> {
     const server = await prisma.server.delete({
       where: {
         username
-      },
+      }
     });
     orderMap.delete(server.id);
     await setOrder(Array.from(orderMap.keys()).join(','), prisma as PrismaClient);

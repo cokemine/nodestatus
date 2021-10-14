@@ -23,4 +23,3 @@ import config from './lib/config';
 
   ipc && ipc.listen(config.ipcAddress, () => logger.info(`🎉  NodeStatus Ipc is listening on ${config.ipcAddress}`));
 })();
-

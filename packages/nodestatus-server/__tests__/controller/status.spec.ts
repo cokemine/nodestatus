@@ -1,6 +1,8 @@
 import { mockReset } from 'jest-mock-extended';
 import { hash } from 'bcryptjs';
-import { addServer, authServer, getListServers, getServer, setServer } from '../../server/controller/status';
+import {
+  addServer, authServer, getListServers, getServer, setServer
+} from '../../server/controller/status';
 import {
   getListServers as _getListServers,
   createServer as _addServer,
@@ -54,7 +56,8 @@ test('Call get servers first and expect empty object', () => {
 });
 
 test('Create a server and find unique Server', async () => {
-  const server = mockServerInput('username'), iServer = mockIServer(server);
+  const server = mockServerInput('username'); const
+    iServer = mockIServer(server);
   await expect(addServer(server)).resolves.toEqual({ code: 0, data: null, msg: 'ok' });
   GetServer.mockResolvedValueOnce(iServer);
   const result = await getServer('username');

@@ -5,14 +5,14 @@ const { homedir, platform } = require('os');
 const { resolve } = require('path');
 const dotenv = require('dotenv');
 const { backupDatabase } = require('./utils');
+
 dotenv.config({ path: path.resolve(homedir(), '.nodestatus/.env.local') });
 
-let dbPath = process.env.DATABASE || (
+const dbPath = process.env.DATABASE || (
   platform() === 'win32'
     ? resolve(homedir(), '.nodestatus/db.sqlite')
     : '/usr/local/NodeStatus/server/db.sqlite'
 );
-
 
 fs.mkdirSync(path.dirname(dbPath), { recursive: true });
 fs.existsSync(dbPath) && backupDatabase(dbPath);

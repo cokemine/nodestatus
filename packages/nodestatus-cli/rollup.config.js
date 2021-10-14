@@ -15,6 +15,6 @@ export default {
     del({ targets: 'build/*' }),
     nodeResolve({ preferBuiltins: true }),
     commonjs(),
-    json(),
+    json()
   ]
 };
