@@ -9,7 +9,8 @@ import { createStatus } from './lib/status';
 import { logger } from './lib/utils';
 import config from './lib/config';
 
-const webs = [{ name: 'hotaru-admin', publicPath: '/admin' }, { name: 'hotaru-theme', publicPath: '/' }];
+const middlewares: Record<string, Middleware> = {};
+const webs = [{ name: 'hotaru-theme', publicPath: '/' }, { name: 'hotaru-admin', publicPath: '/admin' }];
 
 const createMiddleware = async (name: string): Promise<Middleware> => {
   const vite = await createViteServer({
@@ -42,8 +43,11 @@ const createMiddleware = async (name: string): Promise<Middleware> => {
 
   await Promise.all(webs.map(async ({ name, publicPath }) => {
     const middleware = await createMiddleware(name);
-    app.use(mount(publicPath, middleware));
+    middlewares[name] = mount(publicPath, middleware);
   }));
+
+  app.use(middlewares['hotaru-admin']);
+  app.use(middlewares['hotaru-theme']);
 
   app.use(historyApiFallback({
     whiteList: ['/admin/static', '/telegraf'],
