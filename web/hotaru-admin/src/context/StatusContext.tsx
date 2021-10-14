@@ -1,8 +1,8 @@
 import React, { useState, FC, useEffect } from 'react';
-import { BoxItem, ITable, StatusItem } from '../types';
+import { ITable, ServerItem } from '../types';
 
 interface IData {
-  servers: Array<BoxItem | StatusItem>,
+  servers: Array<ServerItem>,
   updated: number;
 }
 

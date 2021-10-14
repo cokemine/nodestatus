@@ -14,7 +14,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import countries from 'i18n-iso-countries';
 import i18nZh from 'i18n-iso-countries/langs/zh.json';
 import i18nEn from 'i18n-iso-countries/langs/en.json';
-import { IResp, RowServer } from '../types';
+import { IResp, IServer } from '../types';
 import { notify } from '../utils';
 import Loading from '../components/Loading';
 
@@ -32,7 +32,7 @@ const Management: FC = () => {
 
   const [form] = Form.useForm();
   const { confirm } = Modal;
-  const dataSource = data?.data as RowServer[];
+  const dataSource = data?.data as IServer[];
 
   const resetStatus = (fetch = true) => {
     fetch && mutate();
@@ -72,7 +72,7 @@ const Management: FC = () => {
     });
   };
 
-  const columns: ColumnsType<RowServer> = [
+  const columns: ColumnsType<IServer> = [
     {
       title: 'Sort',
       dataIndex: 'sort',
