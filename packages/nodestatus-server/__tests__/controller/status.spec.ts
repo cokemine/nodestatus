@@ -56,7 +56,7 @@ test('Call get servers first and expect empty object', () => {
 });
 
 test('Create a server and find unique Server', async () => {
-  const server = mockServerInput('username'); const
+  const server = mockServerInput('username'),
     iServer = mockIServer(server);
   await expect(addServer(server)).resolves.toEqual({ code: 0, data: null, msg: 'ok' });
   GetServer.mockResolvedValueOnce(iServer);
@@ -89,10 +89,13 @@ test('Set Server with disabled', async () => {
 
 test('get List Servers', async () => {
   const servers = ['Megumi', 'Siesta', 'Emilia'].map(name => mockServerInput(name));
-
-  for (const server of servers) {
-    await expect(addServer(server)).resolves.toEqual({ code: 0, data: null, msg: 'ok' });
-  }
+  await Promise.all(servers.map(
+    server => expect(addServer(server)).resolves.toEqual({
+      code: 0,
+      data: null,
+      msg: 'ok'
+    })
+  ));
   GetListServers.mockResolvedValueOnce(servers.map(({ name }) => mockIServer(name)));
   const result = await getListServers();
   expect(result).toMatchObject({

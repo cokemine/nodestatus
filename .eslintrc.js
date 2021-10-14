@@ -29,7 +29,10 @@ module.exports = {
     'no-unused-expressions': [2, { allowShortCircuit: true, allowTernary: true, allowTaggedTemplates: true }],
     'no-underscore-dangle': 'off',
     'no-bitwise': 'off',
+    'no-continue': 'off',
+    'no-return-assign': 'off',
     'global-require': 'off',
+    'consistent-return': 'off',
     'one-var': 'off',
     'one-var-declaration-per-line': 'off',
     'max-len': ['error', 120, 2, {

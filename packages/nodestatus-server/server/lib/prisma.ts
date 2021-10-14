@@ -30,7 +30,7 @@ const parseFields = async (server: Prisma.ServerCreateInput) => {
 };
 
 prisma.$use(async (params, next) => {
-  if (params.model != 'Server' || !actions.has(params.action)) return next(params);
+  if (params.model !== 'Server' || !actions.has(params.action)) return next(params);
   const { data } = params.args;
 
   if (data instanceof Array) {

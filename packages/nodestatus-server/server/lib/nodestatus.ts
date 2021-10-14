@@ -188,8 +188,10 @@ export class NodeStatus {
     const timerMap = new Map<string, NodeJS.Timer>();
     const entities = new Set(['_', '*', '[', ']', '(', ')', '~', '`', '>', '#', '+', '-', '=', '|', '{', '}', '.', '!', '\\']);
 
-    const parseEntities = (str: any): string => {
-      if (typeof str !== 'string') str = str.toString();
+    const parseEntities = (msg: any): string => {
+      let str: string;
+      if (typeof msg !== 'string') str = msg.toString();
+      else str = msg;
       let newStr = '';
       for (const char of str) {
         if (entities.has(char)) {
