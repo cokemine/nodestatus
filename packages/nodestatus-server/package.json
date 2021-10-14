@@ -56,7 +56,6 @@
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.13.1",
     "koa-body": "^4.2.0",
-    "koa-compose": "^4.1.0",
     "koa-connect": "^2.1.0",
     "koa-jwt": "^4.0.1",
     "koa-mount": "^4.0.0",

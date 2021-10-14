@@ -3,7 +3,6 @@ import { createServer as createViteServer } from 'vite';
 import Koa, { Middleware } from 'koa';
 import historyApiFallback from 'koa2-connect-history-api-fallback';
 import c2k from 'koa-connect';
-import compose from 'koa-compose';
 import mount from 'koa-mount';
 import { createStatus } from './lib/status';
 import { logger } from './lib/utils';
@@ -19,21 +18,13 @@ const createMiddleware = async (name: string): Promise<Middleware> => {
       middlewareMode: 'html'
     }
   });
-  const middleware: Middleware = async (ctx, next) => {
-    try {
-      await next();
-    } catch (e: any) {
-      ctx.status = 500;
-      vite.ssrFixStacktrace(e);
-      ctx.body = e.message;
-    }
-  };
+
   return async (ctx, next) => {
     const { url } = ctx;
     if (url.startsWith('/api')) {
       await next();
     } else {
-      await compose([middleware, c2k(vite.middlewares)])(ctx, next);
+      await c2k(vite.middlewares)(ctx, next);
     }
   };
 };
