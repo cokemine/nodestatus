@@ -15,7 +15,8 @@
   "include": [
     "packages/**/*.ts",
     "web/**/*.ts",
-    "web/**/*.tsx"
+    "web/**/*.tsx",
+    "web/**/*.vue"
   ],
   "exclude": [
     "node_modules"

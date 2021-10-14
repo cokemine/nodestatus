@@ -8,8 +8,8 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import CardItem from '@/components/CardItem.vue';
-import { ServerItem } from '@/types';
+import CardItem from './CardItem.vue';
+import type { ServerItem } from '../types';
 
 export default defineComponent({
   name: 'ServersCard',

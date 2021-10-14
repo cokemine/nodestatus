@@ -17,14 +17,14 @@
     </thead>
     <tbody id="servers">
     <!-- Servers here \o/ -->
-    <table-item v-for="server of servers" :key="server.id" :server="server"/>
+    <table-item v-for="server of servers" :key="server.id" :server="server" />
     </tbody>
   </table>
 </template>
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import TableItem from '@/components/TableItem.vue';
-import { ServerItem } from '@/types';
+import TableItem from './TableItem.vue';
+import type { ServerItem } from '../types';
 
 export default defineComponent({
   name: 'ServersTable',

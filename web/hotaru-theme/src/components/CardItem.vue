@@ -25,7 +25,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
 import useStatus from './useStatus';
-import { ServerItem } from '@/types';
+import type { ServerItem } from '../types';
 
 export default defineComponent({
   name: 'CardItem',

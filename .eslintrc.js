@@ -62,10 +62,11 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['*.{ts,tsx}'],
+      files: ['*.{ts,tsx,vue}'],
       extends: ['airbnb-typescript'],
       parserOptions: {
-        project: './tsconfig.json'
+        project: ['./tsconfig.json', './web/**/tsconfig.json'],
+        extraFileExtensions: ['.vue']
       },
       rules: {
         'import/no-extraneous-dependencies': 'off',
@@ -78,6 +79,20 @@ module.exports = {
           allowTaggedTemplates: true
         }],
         '@typescript-eslint/comma-dangle': [2, 'never']
+      }
+    },
+    {
+      files: ['*.vue'],
+      extends: ['plugin:vue/vue3-essential'],
+      parser: 'vue-eslint-parser',
+      plugins: ['vue'],
+      parserOptions: {
+        parser: '@typescript-eslint/parser',
+        project: ['./tsconfig.json', './web/**/tsconfig.json'],
+        extraFileExtensions: ['.vue']
+      },
+      rules: {
+        'react-hooks/rules-of-hooks': 'off'
       }
     }
   ]

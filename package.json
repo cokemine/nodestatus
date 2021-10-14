@@ -16,7 +16,7 @@
     "dev": "npm run app:server dev",
     "start": "npm run app:server start",
     "publish": "npm run build && npm run app:server publish",
-    "lint": "eslint . --ext .{js,jsx,ts,tsx,vue} --ignore-pattern build --ignore-pattern dist --fix",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx,.vue --ignore-pattern build --ignore-pattern dist --fix",
     "test": "cross-env NODE_ENV=TEST jest"
   },
   "devDependencies": {

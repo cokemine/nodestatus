@@ -25,7 +25,9 @@
       }}
     </td>
     <td>{{
-        getStatus ? `${tableRowByteConvert(server.status.network_in)} | ${tableRowByteConvert(server.status.network_out)}` : '–'
+        getStatus
+            ? `${tableRowByteConvert(server.status.network_in)} | ${tableRowByteConvert(server.status.network_out)}`
+            : '–'
       }}
     </td>
     <td>
@@ -54,15 +56,24 @@
     <td colspan="12">
       <div :class="{collapsed}" :style="{'max-height': getStatus ? '' : '0'}">
         <div id="expand_mem">内存信息: {{
-            getStatus ? `${expandRowByteConvert(server.status.memory_used * 1024)} / ${expandRowByteConvert(server.status.memory_total * 1024)}` : '–'
+            getStatus
+                ? `${expandRowByteConvert(server.status.memory_used * 1024)}
+                 / ${expandRowByteConvert(server.status.memory_total * 1024)}`
+                : '–'
           }}
         </div>
         <div id="expand_swap">交换分区: {{
-            getStatus ? `${expandRowByteConvert(server.status.swap_used * 1024)} / ${expandRowByteConvert(server.status.swap_total * 1024)}` : '–'
+            getStatus
+                ? `${expandRowByteConvert(server.status.swap_used * 1024)}
+                 / ${expandRowByteConvert(server.status.swap_total * 1024)}`
+                : '–'
           }}
         </div>
         <div id="expand_hdd">硬盘信息: {{
-            getStatus ? `${expandRowByteConvert(server.status.hdd_used * 1024 * 1024)} / ${expandRowByteConvert(server.status.hdd_total * 1024 * 1024)}` : '–'
+            getStatus
+                ? `${expandRowByteConvert(server.status.hdd_used * 1024 * 1024)}
+                 / ${expandRowByteConvert(server.status.hdd_total * 1024 * 1024)}`
+                : '–'
           }}
         </div>
         <!--        <div id="expand_custom">{{server.custom}}</div>-->
@@ -72,10 +83,10 @@
 </template>
 
 <script lang="ts">
-import { ServerItem } from '@/types';
 import { defineComponent, ref, PropType } from 'vue';
 
 import useStatus from './useStatus';
+import type { ServerItem } from '../types';
 
 export default defineComponent({
   name: 'TableItem',

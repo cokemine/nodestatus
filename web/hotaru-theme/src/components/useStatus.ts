@@ -1,6 +1,6 @@
 import { computed, toRefs } from 'vue';
-// eslint-disable-next-line import/no-unresolved
-import { ServerItem } from '@/types';
+
+import { ServerItem } from '../types';
 
 interface Props {
   server: ServerItem;
