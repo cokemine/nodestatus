@@ -104,7 +104,7 @@ test('get List Servers', async () => {
   });
   const { data } = result;
   expect(Object.keys(data)).toHaveLength(3);
-  for (const name in data) {
+  for (const name of Object.keys(data)) {
     ['password', 'created_at', 'updated_at', 'username', 'disabled'].forEach(prop => expect(data[name]).not.toHaveProperty(prop));
   }
 });

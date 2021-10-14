@@ -11,23 +11,36 @@ export default (props: Props) => {
   const { server } = toRefs(props);
   const getStatus = computed((): boolean => server.value.status.online4 || server.value.status.online6);
 
-  const getCpuStatus = computed((): number => (server.value.status.cpu === undefined
-    ? 100
-    : Math.round(server.value.status.cpu)));
+  const getCpuStatus = computed(
+    (): number => (
+      server.value.status.cpu === undefined
+        ? 100
+        : Math.round(server.value.status.cpu)
+    )
+  );
 
-  const getRAMStatus = computed((): number => (server.value.status.memory_total === undefined
-    ? 100
-    : Math.round((server.value.status.memory_used / server.value.status.memory_total * 100))));
+  const getRAMStatus = computed(
+    (): number => (
+      server.value.status.memory_total === undefined
+        ? 100
+        : Math.round(((server.value.status.memory_used / server.value.status.memory_total) * 100))
+    )
+  );
 
-  const getHDDStatus = computed((): number => (server.value.status.hdd_total === undefined
-    ? 100
-    : Math.round((server.value.status.hdd_used / server.value.status.hdd_total * 100))));
+  const getHDDStatus = computed(
+    (): number => (server.value.status.hdd_total === undefined
+      ? 100
+      : Math.round(((server.value.status.hdd_used / server.value.status.hdd_total) * 100))
+    )
+  );
 
-  const getProcessBarStatus = computed(() => (data: number) => {
-    if (data > 90) return 'error';
-    if (data > 70) return 'warning';
-    return 'success';
-  });
+  const getProcessBarStatus = computed(
+    () => (data: number) => {
+      if (data > 90) return 'error';
+      if (data > 70) return 'warning';
+      return 'success';
+    }
+  );
 
   const getUpTime = computed((): string => {
     let str = '-';
@@ -36,7 +49,7 @@ export default (props: Props) => {
       if (uptime >= 86400) str = `${Math.floor(uptime / 86400)} 天`;
       else {
         let h: string | number = Math.floor(uptime / 3600);
-        let m: string | number = Math.floor(uptime / 60 % 60);
+        let m: string | number = Math.floor((uptime / 60) % 60);
         let s: string | number = Math.floor(uptime % 60);
         h < 10 && (h = `0${h}`);
         m < 10 && (m = `0${m}`);

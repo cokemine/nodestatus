@@ -225,8 +225,8 @@ export class NodeStatus {
         }
         str += `当前负载: ${parseEntities(item.status.load.toFixed(2))} \n`;
         str += `当前CPU占用: ${Math.round(item.status.cpu)}% \n`;
-        str += `当前内存占用: ${Math.round(item.status.memory_used / item.status.memory_total * 100)}% \n`;
-        str += `当前硬盘占用: ${Math.round(item.status.hdd_used / item.status.hdd_total * 100)}% \n`;
+        str += `当前内存占用: ${Math.round((item.status.memory_used / item.status.memory_total) * 100)}% \n`;
+        str += `当前硬盘占用: ${Math.round((item.status.hdd_used / item.status.hdd_total) * 100)}% \n`;
         str += '\n\n';
       });
       return `🍊*NodeStatus* \n🤖 当前有 ${this.serversPub.length} 台服务器, 其中在线 ${online} 台\n\n${str}`;
