@@ -41,7 +41,7 @@ const createMiddleware = async (name: string): Promise<Middleware> => {
   app.use(middlewares['hotaru-theme']);
 
   app.use(historyApiFallback({
-    whiteList: ['/admin/static', '/telegraf'],
+    whiteList: ['/admin/assets', '/telegraf'],
     rewrites: [
       { from: /^\/admin/ as any, to: '/admin/index.html' }
     ]
