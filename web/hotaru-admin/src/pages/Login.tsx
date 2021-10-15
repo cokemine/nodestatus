@@ -6,7 +6,8 @@ import { useSWRConfig } from 'swr';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { notify } from '../utils';
 
-import ImageLight from '../assets/img/login-office.jpeg';
+/* https://unsplash.com/photos/McsNra2VRQQ */
+import cherry from '../assets/img/cherry.jpg';
 
 import { IResp } from '../types';
 
@@ -26,14 +27,14 @@ const Login: FC = () => {
   };
 
   return (
-    <div className="flex items-center min-h-screen p-6 bg-gray-50">
+    <div className="flex items-center min-h-screen p-6 bg-violet-50 bg-login">
       <div className="flex-1 h-full max-w-xl md:max-w-4xl mx-auto overflow-hidden bg-white rounded-lg shadow-xl">
         <div className="flex flex-col md:flex-row">
           <div className="h-60 md:h-auto md:w-1/2">
             <img
               aria-hidden="true"
               className="object-cover w-full h-full"
-              src={ImageLight}
+              src={cherry}
               alt="Office"
             />
           </div>
