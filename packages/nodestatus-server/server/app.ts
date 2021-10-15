@@ -15,7 +15,7 @@ import config from './lib/config';
       { from: /^\/admin/ as any, to: '/admin/index.html' }
     ]
   }));
-  app.use(serve(resolve(__dirname, '../dist'), { maxage: 2592000 }));
+  app.use(serve(resolve(__dirname, './dist'), { maxage: 2592000 }));
 
   const [server, ipc] = await createStatus(app);
 

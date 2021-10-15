@@ -4,7 +4,7 @@ const { findModPath } = require('./utils');
 
 const list = findModPath();
 
-const outputDir = path.resolve(__dirname, '../packages/nodestatus-server/dist');
+const outputDir = path.resolve(__dirname, '../packages/nodestatus-server/build/dist');
 
 if (fs.pathExistsSync(outputDir)) {
   fs.removeSync(outputDir);
