@@ -3,7 +3,6 @@ import { createServer as createViteServer } from 'vite';
 import Koa, { Middleware } from 'koa';
 import historyApiFallback from 'koa2-connect-history-api-fallback';
 import c2k from 'koa-connect';
-import mount from 'koa-mount';
 import { createStatus } from './lib/status';
 import { logger } from './lib/utils';
 import config from './lib/config';
@@ -11,17 +10,21 @@ import config from './lib/config';
 const middlewares: Record<string, Middleware> = {};
 const webs = [{ name: 'hotaru-theme', publicPath: '/' }, { name: 'hotaru-admin', publicPath: '/admin' }];
 
-const createMiddleware = async (name: string): Promise<Middleware> => {
+let { port } = config;
+const createMiddleware = async (name: string, publicPath: string): Promise<Middleware> => {
   const vite = await createViteServer({
     root: path.dirname(require.resolve(`${name}/package.json`)),
     server: {
+      hmr: {
+        port: ++port
+      },
       middlewareMode: 'html'
     }
   });
 
   return async (ctx, next) => {
     const { url } = ctx;
-    if (url.startsWith('/api')) {
+    if (url.startsWith('/api') || !url.startsWith(publicPath)) {
       await next();
     } else {
       await c2k(vite.middlewares)(ctx, next);
@@ -32,10 +35,10 @@ const createMiddleware = async (name: string): Promise<Middleware> => {
 (async () => {
   const app = new Koa();
 
-  await Promise.all(webs.map(async ({ name, publicPath }) => {
-    const middleware = await createMiddleware(name);
-    middlewares[name] = mount(publicPath, middleware);
-  }));
+  await Promise.all(webs.map(async ({
+    name,
+    publicPath
+  }) => middlewares[name] = await createMiddleware(name, publicPath)));
 
   app.use(middlewares['hotaru-admin']);
   app.use(middlewares['hotaru-theme']);
