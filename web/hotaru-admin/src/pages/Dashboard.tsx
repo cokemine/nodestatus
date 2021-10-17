@@ -2,7 +2,7 @@ import React, {
   FC, useContext, useEffect, useState
 } from 'react';
 import {
-  Col, Row, Typography, Table, Tag
+  Col, Row, Typography, Table, Tag, Card
 } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 
@@ -14,6 +14,7 @@ import RoundIcon from '../components/RoundIcon';
 import { StatusContext } from '../context/StatusContext';
 
 import { ITable } from '../types';
+import MapChart from '../components/MapChart';
 
 const { Title } = Typography;
 
@@ -34,9 +35,8 @@ const Dashboard: FC = () => {
     const add = (key: string) => {
       if (typeof record[key] === 'undefined') {
         record[key] = 0;
-      } else {
-        record[key]++;
       }
+      record[key]++;
     };
     for (const item of servers) {
       if (item.status) online++;
@@ -113,44 +113,53 @@ const Dashboard: FC = () => {
     <>
       <Title level={2} className="my-6 text-3xl">Dashboard</Title>
       <Row gutter={32}>
-        <Col xs={{ span: 24 }} lg={{ span: 8 }} className="mb-8">
-          <StateCard
-            title="Servers Total"
-            count={servers.length}
-            icon={(
-              <RoundIcon
-                icon={BiServer}
-                iconColorClass="text-yellow-500"
-                bgColorClass="bg-yellow-100"
-              />
-            )}
-          />
+        <Col xs={{ span: 24 }} lg={{ span: 12 }}>
+          <div className="bg-rose-500">
+            <MapChart count={count.record} />
+          </div>
         </Col>
-        <Col xs={{ span: 24 }} lg={{ span: 8 }} className="mb-8">
-          <StateCard
-            title="Servers Online"
-            count={count.online}
-            icon={(
-              <RoundIcon
-                icon={HiOutlineStatusOnline}
-                iconColorClass="text-green-500"
-                bgColorClass="bg-green-100"
+        <Col xs={{ span: 24 }} lg={{ span: 12 }} className="flex justify-items-center">
+          <Row>
+            <Col xs={{ span: 24 }} className="mb-4">
+              <StateCard
+                title="Servers Total"
+                count={servers.length}
+                icon={(
+                  <RoundIcon
+                    icon={BiServer}
+                    iconColorClass="text-yellow-500"
+                    bgColorClass="bg-yellow-100"
+                  />
+                )}
               />
-            )}
-          />
-        </Col>
-        <Col xs={{ span: 24 }} lg={{ span: 8 }} className="mb-8">
-          <StateCard
-            title="Servers Offline"
-            count={servers.length - count.online}
-            icon={(
-              <RoundIcon
-                icon={AiFillWarning}
-                iconColorClass="text-blue-500"
-                bgColorClass="bg-blue-100"
+            </Col>
+            <Col xs={{ span: 24 }} className="mb-4">
+              <StateCard
+                title="Servers Online"
+                count={count.online}
+                icon={(
+                  <RoundIcon
+                    icon={HiOutlineStatusOnline}
+                    iconColorClass="text-green-500"
+                    bgColorClass="bg-green-100"
+                  />
+                )}
               />
-            )}
-          />
+            </Col>
+            <Col xs={{ span: 24 }} className="mb-4">
+              <StateCard
+                title="Servers Offline"
+                count={servers.length - count.online}
+                icon={(
+                  <RoundIcon
+                    icon={AiFillWarning}
+                    iconColorClass="text-blue-500"
+                    bgColorClass="bg-blue-100"
+                  />
+                )}
+              />
+            </Col>
+          </Row>
         </Col>
       </Row>
       <Table

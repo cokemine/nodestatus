@@ -1,4 +1,4 @@
-const { violet } = require('tailwindcss/colors');
+const { violet, rose } = require('tailwindcss/colors');
 
 module.exports = {
   purge: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
@@ -6,7 +6,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        violet
+        violet,
+        rose
       },
       backgroundImage: {
         login: "url('./assets/img/bg_howatama.png')"
