@@ -36,7 +36,6 @@ const Dashboard: FC = () => {
     };
     for (const item of servers) {
       if (item.status) online++;
-      if (item.region === 'HK' || item.region === 'MO' || item.region === 'TW') add('CN');
       add(item.region);
     }
     setCount({
