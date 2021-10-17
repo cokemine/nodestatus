@@ -6,6 +6,7 @@ import {
 } from 'react-simple-maps';
 
 import isEqual from 'fast-deep-equal/es6/react';
+import coordinates from '../utils/coordinates.json';
 
 const geoUrl = 'https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json';
 
@@ -21,32 +22,33 @@ const MapChart: FC<Props> = props => (
       projectionConfig={{ center: [0, 40] }}
     >
       <Geographies geography={geoUrl}>
-        {({ geographies }) => geographies.filter(d => d.properties.REGION_UN !== 'Antarctica').map(geo => {
-          const region = geo.properties.ISO_A2;
-          const { coordinates } = geo.geometry;
-          if (props.count[region]) {
-            console.log(region, coordinates);
-          }
-          return (
-            <Geography
-              key={geo.rsmKey}
-              geography={geo}
-              fill="#f9fafb"
-              style={{
-                default: { outline: 'none' },
-                hover: { outline: 'none' },
-                pressed: { outline: 'none' }
-              }}
-            />
-          );
-        })}
+        {({ geographies }) => geographies.filter(d => d.properties.REGION_UN !== 'Antarctica').map(geo => (
+          <Geography
+            key={geo.rsmKey}
+            geography={geo}
+            fill="#f9fafb"
+            style={{
+              default: { outline: 'none' },
+              hover: { outline: 'none' },
+              pressed: { outline: 'none' }
+            }}
+          />
+        ))}
       </Geographies>
-      <Marker
-        coordinates={[116, 39.91]}
-      >
-        <circle r={10} fill="#8B5CF6" stroke="#fff" strokeWidth={2} />
-
-      </Marker>
+      {
+        Object.keys(props.count).map(key => {
+          const count = props.count[key];
+          const K = key as keyof typeof coordinates;
+          if (!coordinates[K]) return;
+          return (
+            <Marker
+              coordinates={[coordinates[K].lng, coordinates[K].lat]}
+            >
+              <circle r={8 + count} fill="#8B5CF6" stroke="#fff" strokeWidth={2} />
+            </Marker>
+          );
+        })
+      }
     </ComposableMap>
   </div>
 );

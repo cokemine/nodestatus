@@ -22,15 +22,11 @@ const Dashboard: FC = () => {
   const { servers, timeSince } = useContext(StatusContext);
   const [count, setCount] = useState({
     online: 0,
-    min: Infinity,
-    max: 0,
     record: {}
   });
 
   useEffect(() => {
     let online = 0;
-    let min = Infinity;
-    let max = 0;
     const record: Record<string, number> = {};
     const add = (key: string) => {
       if (typeof record[key] === 'undefined') {
@@ -42,11 +38,9 @@ const Dashboard: FC = () => {
       if (item.status) online++;
       if (item.region === 'HK' || item.region === 'MO' || item.region === 'TW') add('CN');
       add(item.region);
-      min = Math.min(min, record[item.region]);
-      max = Math.max(min, record[item.region]);
     }
     setCount({
-      min, max, online, record
+      online, record
     });
   }, [servers]);
 

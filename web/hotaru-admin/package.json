@@ -10,7 +10,6 @@
   "devDependencies": {
     "@ant-design/icons": "^4.6.4",
     "@tailwindcss/postcss7-compat": "^2.2.8",
-    "@types/d3-scale": "^4.0.1",
     "@types/react": "^17.0.0",
     "@types/react-beautiful-dnd": "^13.1.2",
     "@types/react-dom": "^17.0.0",
@@ -21,7 +20,6 @@
     "array-move": "^4.0.0",
     "autoprefixer": "^10.3.7",
     "axios": "^0.21.1",
-    "d3-scale": "^4.0.2",
     "i18n-iso-countries": "^6.8.0",
     "postcss": "^8.3.9",
     "react": "^17.0.0",
