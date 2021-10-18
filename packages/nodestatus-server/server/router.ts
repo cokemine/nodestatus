@@ -1,6 +1,8 @@
 import Router from '@koa/router';
 import { createSession, verifySession } from './controller/user';
-import { delServer, listServers, addServer, setServer, modifyOrder } from './controller/web';
+import {
+  delServer, listServers, addServer, setServer, modifyOrder
+} from './controller/web';
 
 const router = new Router({ prefix: '/api' });
 

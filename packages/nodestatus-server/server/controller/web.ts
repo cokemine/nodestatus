@@ -8,7 +8,6 @@ import {
   setOrder
 } from '../model/server';
 import { createRes } from '../lib/utils';
-import type { Server } from '../../types/server';
 
 async function handleRequest<T>(ctx: Context, handler: Promise<T>): Promise<void> {
   try {
@@ -25,7 +24,7 @@ const listServers: Middleware = async ctx => {
 
 const setServer: Middleware = async ctx => {
   const { username } = ctx.request.body;
-  const data: Partial<Server> = ctx.request.body.data;
+  const { data } = ctx.request.body;
   if (!username || !data) {
     ctx.status = 400;
     ctx.body = createRes(1, 'Wrong request');
@@ -49,7 +48,6 @@ const addServer: Middleware = async ctx => {
     } catch (error: any) {
       ctx.status = 400;
       ctx.body = createRes(1, 'Wrong request');
-      return;
     }
   } else {
     await handleRequest(ctx, _addServer(data));

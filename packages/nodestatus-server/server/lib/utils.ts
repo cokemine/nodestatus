@@ -4,7 +4,7 @@ import { IResp } from '../../types/server';
 
 configure({
   appenders: {
-    out: { type: 'stdout' },
+    out: { type: 'stdout' }
   },
   categories: {
     default: { appenders: ['out'], level: 'info' }

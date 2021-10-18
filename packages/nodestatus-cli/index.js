@@ -16,7 +16,7 @@ const socket = net.connect({
 });
 
 socket.on('error', error => {
-  console.log(ERROR + ` 启动 NodeStatus-cli 出错, 错误信息: ${error.message}, 请检查 NodeStatus 是否正常运行`);
+  console.log(`${ERROR} 启动 NodeStatus-cli 出错, 错误信息: ${error.message}, 请检查 NodeStatus 是否正常运行`);
 });
 socket.on('data', buf => {
   const status = JSON.parse(buf.toString());
@@ -25,13 +25,12 @@ socket.on('data', buf => {
     return;
   }
   if (status.code) {
-    console.log(ERROR + ` 请求失败, 错误信息: ${status.msg}`);
+    console.log(`${ERROR} 请求失败, 错误信息: ${status.msg}`);
   } else {
-    console.log(INFO + ` 请求成功: ${status.msg}`);
+    console.log(`${INFO} 请求成功: ${status.msg}`);
   }
   process.exit(status.code);
 });
-
 
 function getCode(value) {
   const code = countries.getAlpha2Code(value, 'zh');
@@ -63,7 +62,7 @@ const questions = [
   {
     name: 'location',
     type: 'input',
-    message: '请输入 NodeStatus 服务端要设置的节点位置[location]:',
+    message: '请输入 NodeStatus 服务端要设置的节点位置[location]:'
   },
   {
     name: 'region',
@@ -72,7 +71,7 @@ const questions = [
     validate(value) {
       const code = getCode(value);
       if (countries.isValid(code)) return true;
-      else return '你输入的节点地区不合法';
+      return '你输入的节点地区不合法';
     },
     transformer: getCode
   },
@@ -87,16 +86,18 @@ const questions = [
 
 function createQuestions(key) {
   return questions.map(item => {
-    if (key === 'disabled' && item.name === 'disabled')
+    if (key === 'disabled' && item.name === 'disabled') {
       return {
         ...item,
         when: () => true
       };
-    if (item.name !== key)
+    }
+    if (item.name !== key) {
       return {
         ...item,
         when: () => false
       };
+    }
     return item;
   });
 }
@@ -175,7 +176,7 @@ function init() {
       figlet.textSync('Node Status', {
         font: 'Ghost',
         horizontalLayout: 'default',
-        verticalLayout: 'default',
+        verticalLayout: 'default'
       })
     )
   );
@@ -205,6 +206,4 @@ function init() {
     .action(handleDelete);
 
   program.parse(process.argv);
-
 })();
-

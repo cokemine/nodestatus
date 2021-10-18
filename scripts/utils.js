@@ -1,6 +1,7 @@
 const fs = require('fs');
 const os = require('os');
-const resolve = require('path').resolve;
+const { resolve } = require('path');
+
 const libDir = resolve(__dirname, '../web');
 
 function findModPath() {
@@ -9,9 +10,7 @@ function findModPath() {
     const list = [];
     for (const mod of lib) {
       const modPath = resolve(libDir, mod);
-      const exist = fileName => {
-        return fs.existsSync(resolve(modPath, fileName));
-      };
+      const exist = fileName => fs.existsSync(resolve(modPath, fileName));
 
       if (!exist('package.json')) {
         continue;
@@ -25,7 +24,6 @@ function findModPath() {
     }
 
     return list;
-
   } catch (e) {
     return [];
   }

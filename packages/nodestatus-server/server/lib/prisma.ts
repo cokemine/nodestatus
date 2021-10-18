@@ -30,8 +30,8 @@ const parseFields = async (server: Prisma.ServerCreateInput) => {
 };
 
 prisma.$use(async (params, next) => {
-  if (params.model != 'Server' || !actions.has(params.action)) return next(params);
-  const data: Prisma.ServerCreateInput | Prisma.ServerCreateInput[] = params.args.data;
+  if (params.model !== 'Server' || !actions.has(params.action)) return next(params);
+  const { data } = params.args;
 
   if (data instanceof Array) {
     await Promise.all(data.map(server => parseFields(server)));

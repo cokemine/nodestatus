@@ -3,7 +3,6 @@ import jwt from 'jsonwebtoken';
 import { createRes } from '../lib/utils';
 import config from '../lib/config';
 
-
 export const createSession: Middleware = ctx => {
   const { username = '', password = '' } = ctx.request.body;
   if (!username || !password) {
@@ -26,7 +25,7 @@ export const verifySession: Middleware = ctx => {
     if (parts.length === 2) {
       const scheme = parts[0].trim().toLowerCase();
       const token = parts[1].trim();
-      if (scheme == 'bearer') {
+      if (scheme === 'bearer') {
         try {
           const { username } = jwt.verify(token, config.webSecret) as any;
           if (username !== config.webUsername) {

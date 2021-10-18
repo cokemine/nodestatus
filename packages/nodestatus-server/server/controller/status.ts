@@ -8,7 +8,9 @@ import {
   getServerPassword
 } from '../model/server';
 import { createRes } from '../lib/utils';
-import type { Prisma, Server, IResp, Box, IServer, BoxItem } from '../../types/server';
+import type {
+  Prisma, Server, IResp, Box, IServer, BoxItem
+} from '../../types/server';
 
 async function handleRequest<T = any>(handler: Promise<T>): Promise<IResp<T>> {
   let data: T;
@@ -17,7 +19,7 @@ async function handleRequest<T = any>(handler: Promise<T>): Promise<IResp<T>> {
   } catch (error: any) {
     return createRes(1, error.message);
   }
-  return createRes({ data: data });
+  return createRes({ data });
 }
 
 export async function authServer(username: string, password: string): Promise<boolean> {
@@ -54,17 +56,13 @@ export async function getListServers(): Promise<IResp<Box>> {
 export async function getServer(username: string): Promise<IResp<BoxItem | null>> {
   const result = await handleRequest(_getServer(username));
   if (result.code || !result.data) return result;
-  const data = result.data;
+  const { data } = result;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { username: _, disabled, ...item } = data;
   if (disabled) return createRes(1, 'Server disabled');
   return createRes({ data: item });
 }
 
-
 export function getRawListServers(): Promise<IResp<IServer[]>> {
   return handleRequest(_getListServers());
 }
-
-
-

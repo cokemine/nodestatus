@@ -28,4 +28,3 @@ try {
   console.log('Fallback to non-pm2 daemon');
   require('./status-server');
 }
-

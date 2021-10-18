@@ -1,6 +1,8 @@
 import { mockReset } from 'jest-mock-extended';
 import { hash } from 'bcryptjs';
-import { addServer, authServer, getListServers, getServer, setServer } from '../../server/controller/status';
+import {
+  addServer, authServer, getListServers, getServer, setServer
+} from '../../server/controller/status';
 import {
   getListServers as _getListServers,
   createServer as _addServer,
@@ -54,7 +56,8 @@ test('Call get servers first and expect empty object', () => {
 });
 
 test('Create a server and find unique Server', async () => {
-  const server = mockServerInput('username'), iServer = mockIServer(server);
+  const server = mockServerInput('username'),
+    iServer = mockIServer(server);
   await expect(addServer(server)).resolves.toEqual({ code: 0, data: null, msg: 'ok' });
   GetServer.mockResolvedValueOnce(iServer);
   const result = await getServer('username');
@@ -86,10 +89,13 @@ test('Set Server with disabled', async () => {
 
 test('get List Servers', async () => {
   const servers = ['Megumi', 'Siesta', 'Emilia'].map(name => mockServerInput(name));
-
-  for (const server of servers) {
-    await expect(addServer(server)).resolves.toEqual({ code: 0, data: null, msg: 'ok' });
-  }
+  await Promise.all(servers.map(
+    server => expect(addServer(server)).resolves.toEqual({
+      code: 0,
+      data: null,
+      msg: 'ok'
+    })
+  ));
   GetListServers.mockResolvedValueOnce(servers.map(({ name }) => mockIServer(name)));
   const result = await getListServers();
   expect(result).toMatchObject({
@@ -98,7 +104,7 @@ test('get List Servers', async () => {
   });
   const { data } = result;
   expect(Object.keys(data)).toHaveLength(3);
-  for (const name in data) {
+  for (const name of Object.keys(data)) {
     ['password', 'created_at', 'updated_at', 'username', 'disabled'].forEach(prop => expect(data[name]).not.toHaveProperty(prop));
   }
 });

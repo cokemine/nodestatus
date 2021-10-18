@@ -1,15 +1,14 @@
-import type { Server } from '@prisma/client';
+import type { Server, Prisma, PrismaClient } from '@prisma/client';
 
-export type * from '@prisma/client';
-//export type Server = Prisma.ServerCreateInput;
+export { Server, Prisma, PrismaClient };
 
-export type BaseItem = Omit<Server, 'password' | 'disabled' | 'created_at' | 'updated_at'> & { order: number }
+export type BaseItem = Omit<Server, 'password' | 'disabled' | 'created_at' | 'updated_at'> & { order: number };
 
-export type BoxItem = Omit<BaseItem, 'username'>
+export type BoxItem = Omit<BaseItem, 'username'>;
 
 export type IServer = BaseItem & { disabled: boolean };
 
-export type Box = Record<string, BoxItem>
+export type Box = Record<string, BoxItem>;
 
 export type ServerItem = BoxItem & {
   status: {
@@ -30,13 +29,13 @@ export type ServerItem = BoxItem & {
     hdd_used: number;
     custom: string;
   } | Record<string, never>
-}
+};
 
 export type IResp<T = any> = {
   code: 0 | 1,
   data: T,
   msg: string
-}
+};
 
 export type Options = {
   interval: number;
@@ -48,5 +47,4 @@ export type Options = {
     web_hook?: string;
     proxy?: string;
   }
-}
-
+};

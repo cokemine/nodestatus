@@ -1,0 +1,24 @@
+/* Tailwind */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom */
+.ant-table {
+    overflow: auto;
+    /* fix table footer display */
+    background-color: #fafafa !important;
+}
+
+.ant-table .ant-table-thead .ant-table-cell {
+    /* font-semibold */
+    font-weight: 600;
+}
+
+.ant-table .ant-table-tbody {
+    background-color: #fff;
+}
+
+.ant-drawer-content {
+    background-color: #001529 !important;
+}

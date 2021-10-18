@@ -6,13 +6,15 @@ import { decode } from '@msgpack/msgpack';
 import { Telegraf } from 'telegraf';
 import HttpsProxyAgent from 'https-proxy-agent';
 import { IPv6 } from 'ipaddr.js';
-import { Box, Options, ServerItem, BoxItem } from '../../types/server';
+import {
+  Box, Options, ServerItem, BoxItem
+} from '../../types/server';
 import { authServer, getListServers, getServer } from '../controller/status';
 import { logger, emitter } from './utils';
 
 function callHook(instance: NodeStatus, hook: keyof NodeStatus, ...args: any[]) {
   try {
-    if (typeof instance[hook] == 'function') {
+    if (typeof instance[hook] === 'function') {
       (instance[hook] as any).call(instance, ...args);
     }
   } catch (error: any) {
@@ -21,25 +23,33 @@ function callHook(instance: NodeStatus, hook: keyof NodeStatus, ...args: any[]) 
 }
 
 export class NodeStatus {
-
   private server !: Server;
+
   private options !: Options;
 
   private ioPub = new ws.Server({ noServer: true });
+
   private ioConn = new ws.Server({ noServer: true });
+
   /* socket -> ip */
   private map = new WeakMap<ws, string>();
+
   /* username -> socket */
   private userMap = new Map<string, ws>();
+
   /* ip -> banned */
   private isBanned = new Map<string, boolean>();
 
   public servers: Record<string, ServerItem> = {};
+
   public serversPub: ServerItem[] = [];
 
   public onServerConnect?: (socket: ws) => unknown;
+
   public onServerBanned?: (address: string, reason: string) => unknown;
+
   public onServerConnected ?: (socket: ws, username: string) => unknown;
+
   public onServerDisconnected ?: (socket: ws, username: string) => unknown;
 
   constructor(server: Server, options: Options) {
@@ -110,33 +120,31 @@ export class NodeStatus {
         if (!await authServer(username, password)) {
           socket.send('Wrong username and/or password.');
           return this.setBan(socket, address, 60, 'use wrong username and/or password.');
-        } else {
-          socket.send('Authentication successful. Access granted.');
-          let ipType = 'IPv6';
-          if (isIPv4(address) || IPv6.parse(address).isIPv4MappedAddress()) {
-            ipType = 'IPv4';
-          }
-          socket.send(`You are connecting via: ${ipType}`);
-          logger.info(`${address} has connected to server`);
-          socket.on('message', (buf: Buffer) => this.servers[username]['status'] = decode(buf) as any);
-          this.userMap.set(username, socket);
-          callHook(this, 'onServerConnected', socket, username);
-          socket.once('close', () => {
-            this.userMap.delete(username);
-            this.servers[username] && (this.servers[username]['status'] = {});
-            logger.warn(`${address} disconnected`);
-            callHook(this, 'onServerDisconnected', socket, username);
-          });
         }
+        socket.send('Authentication successful. Access granted.');
+        let ipType = 'IPv6';
+        if (isIPv4(address) || IPv6.parse(address).isIPv4MappedAddress()) {
+          ipType = 'IPv4';
+        }
+        socket.send(`You are connecting via: ${ipType}`);
+        logger.info(`${address} has connected to server`);
+        socket.on('message', (buf: Buffer) => this.servers[username].status = decode(buf) as any);
+        this.userMap.set(username, socket);
+        callHook(this, 'onServerConnected', socket, username);
+        socket.once('close', () => {
+          this.userMap.delete(username);
+          this.servers[username] && (this.servers[username].status = {});
+          logger.warn(`${address} disconnected`);
+          callHook(this, 'onServerDisconnected', socket, username);
+        });
       });
     });
 
     this.ioPub.on('connection', socket => {
-      const runPush = () =>
-        socket.send(JSON.stringify({
-          servers: this.serversPub,
-          updated: ~~(Date.now() / 1000)
-        }));
+      const runPush = () => socket.send(JSON.stringify({
+        servers: this.serversPub,
+        updated: ~~(Date.now() / 1000)
+      }));
       runPush();
       const id = setInterval(runPush, this.options.interval);
       socket.on('close', () => clearInterval(id));
@@ -150,10 +158,8 @@ export class NodeStatus {
   private async updateStatus(username ?: string, shouldDisconnect = false): Promise<void> {
     if (username) {
       const server = (await getServer(username)).data as BoxItem | null;
-      if (!server)
-        delete this.servers[username];
-      else
-        this.servers[username] = Object.assign(server, { status: this.servers?.[username]?.status || {} });
+      if (!server) delete this.servers[username];
+      else this.servers[username] = Object.assign(server, { status: this.servers?.[username]?.status || {} });
       shouldDisconnect && this.userMap.get(username)?.terminate() && this.userMap.delete(username);
     } else {
       const box = (await getListServers()).data as Box | null;
@@ -182,8 +188,10 @@ export class NodeStatus {
     const timerMap = new Map<string, NodeJS.Timer>();
     const entities = new Set(['_', '*', '[', ']', '(', ')', '~', '`', '>', '#', '+', '-', '=', '|', '{', '}', '.', '!', '\\']);
 
-    const parseEntities = (str: any): string => {
-      if (typeof str !== 'string') str = str.toString();
+    const parseEntities = (msg: any): string => {
+      let str: string;
+      if (typeof msg !== 'string') str = msg.toString();
+      else str = msg;
       let newStr = '';
       for (const char of str) {
         if (entities.has(char)) {
@@ -217,8 +225,8 @@ export class NodeStatus {
         }
         str += `当前负载: ${parseEntities(item.status.load.toFixed(2))} \n`;
         str += `当前CPU占用: ${Math.round(item.status.cpu)}% \n`;
-        str += `当前内存占用: ${Math.round(item.status.memory_used / item.status.memory_total * 100)}% \n`;
-        str += `当前硬盘占用: ${Math.round(item.status.hdd_used / item.status.hdd_total * 100)}% \n`;
+        str += `当前内存占用: ${Math.round((item.status.memory_used / item.status.memory_total) * 100)}% \n`;
+        str += `当前硬盘占用: ${Math.round((item.status.hdd_used / item.status.hdd_total) * 100)}% \n`;
         str += '\n\n';
       });
       return `🍊*NodeStatus* \n🤖 当前有 ${this.serversPub.length} 台服务器, 其中在线 ${online} 台\n\n${str}`;
@@ -227,7 +235,6 @@ export class NodeStatus {
     const tgConfig = this.options.telegram;
 
     if (tgConfig?.bot_token) {
-
       const bot = new Telegraf(tgConfig.bot_token, {
         ...(tgConfig.proxy && {
           telegram: {
@@ -285,7 +292,7 @@ export class NodeStatus {
           timerMap.delete(ip);
         } else {
           return Promise.all(pushList.map(
-            fn => fn(`🍊*NodeStatus* \n😀 One new server has connected\\! \n\n *用户名*: ${parseEntities(username)} \n *节点名*: ${parseEntities(this.servers[username]['name'])} \n *时间*: ${parseEntities(new Date())}`)
+            fn => fn(`🍊*NodeStatus* \n😀 One new server has connected\\! \n\n *用户名*: ${parseEntities(username)} \n *节点名*: ${parseEntities(this.servers[username].name)} \n *时间*: ${parseEntities(new Date())}`)
           ));
         }
       }
@@ -295,7 +302,7 @@ export class NodeStatus {
       const timer = setTimeout(
         () => {
           Promise.all(pushList.map(
-            fn => fn(`🍊*NodeStatus* \n😰 One server has disconnected\\! \n\n *用户名*: ${parseEntities(username)} \n *节点名*: ${parseEntities(this.servers[username]?.['name'])} \n *时间*: ${parseEntities(new Date())}`)
+            fn => fn(`🍊*NodeStatus* \n😰 One server has disconnected\\! \n\n *用户名*: ${parseEntities(username)} \n *节点名*: ${parseEntities(this.servers[username]?.name)} \n *时间*: ${parseEntities(new Date())}`)
           )).then();
           ip && timerMap.delete(ip);
         },

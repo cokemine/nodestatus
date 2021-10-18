@@ -16,8 +16,8 @@ const options = program.opts();
 const config = {
   NODE_ENV: process.env.NODE_ENV,
   database: process.env.DATABASE || (
-    process.env.NODE_ENV === 'TEST' ?
-      resolve(__dirname, '../../db.base.sqlite')
+    process.env.NODE_ENV === 'TEST'
+      ? resolve(__dirname, '../../db.base.sqlite')
       : options.database
   ),
   port: process.env.PORT || options.port,
@@ -43,12 +43,12 @@ const config = {
   }
 };
 
-if (isNaN(parseInt(config.port))) {
+if (Number.isNaN(parseInt(config.port, 10))) {
   logger.fatal('Please enter the correct port number.');
   process.exit(1);
 }
 
-if (isNaN(parseInt(config.interval))) {
+if (Number.isNaN(parseInt(config.interval, 10))) {
   logger.fatal('Please enter the correct interval.');
   process.exit(1);
 }

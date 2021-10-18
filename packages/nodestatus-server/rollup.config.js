@@ -21,7 +21,7 @@ export default {
   output: {
     dir: './build',
     format: 'cjs',
-    sourcemap: !isProd,
+    sourcemap: !isProd
   },
   context: 'global',
   external,
