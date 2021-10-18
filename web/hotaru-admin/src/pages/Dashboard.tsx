@@ -2,7 +2,7 @@ import React, {
   FC, useContext, useEffect, useState
 } from 'react';
 import {
-  Col, Row, Typography, Table, Tag, Card
+  Col, Row, Typography, Table, Tag
 } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 

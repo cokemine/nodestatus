@@ -6,9 +6,10 @@ import {
 } from 'react-simple-maps';
 
 import isEqual from 'fast-deep-equal/es6/react';
+/* https://simplemaps.com/data/world-cities */
 import coordinates from '../utils/coordinates.json';
-
-const geoUrl = 'https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json';
+/* https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json */
+import geoMaps from '../utils/world-110m.json';
 
 interface Props {
   count: Record<string, number>,
@@ -21,7 +22,7 @@ const MapChart: FC<Props> = props => (
       projection="geoMercator"
       projectionConfig={{ center: [0, 40] }}
     >
-      <Geographies geography={geoUrl}>
+      <Geographies geography={geoMaps}>
         {({ geographies }) => geographies.filter(d => d.properties.REGION_UN !== 'Antarctica').map(geo => (
           <Geography
             key={geo.rsmKey}
