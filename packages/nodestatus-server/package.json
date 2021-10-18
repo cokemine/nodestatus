@@ -16,7 +16,6 @@
   "files": [
     "bin",
     "build",
-    "dist",
     "scripts",
     "prisma"
   ],
