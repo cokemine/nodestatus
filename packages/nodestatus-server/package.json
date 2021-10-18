@@ -1,6 +1,6 @@
 {
   "name": "nodestatus-server",
-  "version": "1.2.0-alpha.2",
+  "version": "1.2.0-alpha.3",
   "repository": {
     "type": "git",
     "url": "https://github.com/cokemine/nodestatus.git",
@@ -23,9 +23,9 @@
   "scripts": {
     "postinstall": "node scripts/postinstall.js",
     "prestart": "node scripts/prestart.js",
+    "start": "node build/app.js",
     "dev": "cross-env NODE_ENV=development rollup -c --watch",
     "build": "rollup -c",
-    "start": "node build/app.js",
     "lint": "eslint . --ext .js --ext .ts --ignore-pattern build --ignore-pattern dist --fix"
   },
   "dependencies": {
