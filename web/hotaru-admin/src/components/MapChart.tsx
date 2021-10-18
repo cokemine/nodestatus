@@ -18,7 +18,7 @@ interface Props {
 }
 
 const MapChart: FC<Props> = props => (
-  <div>
+  <div className="bg-rose-500 w-full">
     <ComposableMap
       projection="geoMercator"
       projectionConfig={{ center: [0, 45] }}

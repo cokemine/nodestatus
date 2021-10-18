@@ -104,9 +104,7 @@ const Dashboard: FC = () => {
       <Title level={2} className="my-6 text-3xl">Dashboard</Title>
       <Row gutter={32} className="mb-4">
         <Col xs={{ span: 24 }} lg={{ span: 12 }} className="flex items-center mb-4 xs:mb-0">
-          <div className="bg-rose-500 w-full">
-            <MapChart count={count.record} />
-          </div>
+          <MapChart count={count.record} />
         </Col>
         <Col xs={{ span: 24 }} lg={{ span: 12 }}>
           <Row>
