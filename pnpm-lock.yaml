@@ -173,6 +173,7 @@ importers:
       array-move: ^4.0.0
       autoprefixer: ^10.3.7
       axios: ^0.21.1
+      fast-deep-equal: ^3.1.3
       i18n-iso-countries: ^6.8.0
       postcss: ^8.3.9
       react: ^17.0.0
@@ -181,6 +182,7 @@ importers:
       react-icons: ^4.2.0
       react-router-dom: ^5.2.1
       react-simple-maps: ^2.3.0
+      react-tooltip: ^4.2.21
       swr: ^1.0.1
       tailwindcss: ^2.2.16
       typescript: ^4.3.2
@@ -199,6 +201,7 @@ importers:
       array-move: 4.0.0
       autoprefixer: 10.3.7_postcss@8.3.9
       axios: 0.21.4
+      fast-deep-equal: 3.1.3
       i18n-iso-countries: 6.8.0
       postcss: 8.3.9
       react: 17.0.2
@@ -207,6 +210,7 @@ importers:
       react-icons: 4.3.1_react@17.0.2
       react-router-dom: 5.3.0_react@17.0.2
       react-simple-maps: 2.3.0_react-dom@17.0.2+react@17.0.2
+      react-tooltip: 4.2.21_react-dom@17.0.2+react@17.0.2
       swr: 1.0.1_react@17.0.2
       tailwindcss: 2.2.16_96f83969316717847b3edf58a3f353f3
       typescript: 4.4.3
@@ -8311,6 +8315,19 @@ packages:
       topojson-client: 3.1.0
     dev: true
 
+  /react-tooltip/4.2.21_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-zSLprMymBDowknr0KVDiJ05IjZn9mQhhg4PRsqln0OZtURAJ1snt1xi5daZfagsh6vfsziZrc9pErPTDY1ACig==}
+    engines: {npm: '>=6.13'}
+    peerDependencies:
+      react: '>=16.0.0'
+      react-dom: '>=16.0.0'
+    dependencies:
+      prop-types: 15.7.2
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+      uuid: 7.0.3
+    dev: true
+
   /react/17.0.2:
     resolution: {integrity: sha512-gnhPt75i/dq/z3/6q/0asP78D0u592D5L1pd7M8P+dck6Fu/jJeL6iVVK23fptSUZj8Vjf++7wXA8UNclGQcbA==}
     engines: {node: '>=0.10.0'}
@@ -9601,6 +9618,11 @@ packages:
   /uuid/3.4.0:
     resolution: {integrity: sha512-HjSDRw6gZE5JMggctHBcjVak08+KEVhSIiDzFnT9S9aegmp85S/bReBVTb4QTFaRNptJ9kuYaNhnbNEOkbKb/A==}
     deprecated: Please upgrade  to version 7 or higher.  Older versions may use Math.random() in certain circumstances, which is known to be problematic.  See https://v8.dev/blog/math-random for details.
+    hasBin: true
+    dev: true
+
+  /uuid/7.0.3:
+    resolution: {integrity: sha512-DPSke0pXhTZgoF/d+WSt2QaKMCFSfx7QegxEWT+JOuHF5aWrKEn0G+ztjuJg/gG8/ItK+rbPCD/yNv8yyih6Cg==}
     hasBin: true
     dev: true
 

@@ -9,6 +9,7 @@ import { ColumnsType } from 'antd/es/table';
 import { BiServer } from 'react-icons/bi';
 import { AiFillWarning } from 'react-icons/ai';
 import { HiOutlineStatusOnline } from 'react-icons/hi';
+import ReactTooltip from 'react-tooltip';
 import StateCard from '../components/StateCard';
 import RoundIcon from '../components/RoundIcon';
 import { StatusContext } from '../context/StatusContext';
@@ -20,10 +21,8 @@ const { Title } = Typography;
 
 const Dashboard: FC = () => {
   const { servers, timeSince } = useContext(StatusContext);
-  const [count, setCount] = useState({
-    online: 0,
-    record: {}
-  });
+  const [count, setCount] = useState({ online: 0, record: {} });
+  const [tooltipContent, setTooltipContent] = useState('');
 
   useEffect(() => {
     let online = 0;
@@ -108,7 +107,8 @@ const Dashboard: FC = () => {
       <Row gutter={32}>
         <Col xs={{ span: 24 }} lg={{ span: 12 }}>
           <div className="bg-rose-500">
-            <MapChart count={count.record} />
+            <MapChart count={count.record} setTooltipContent={setTooltipContent} />
+            <ReactTooltip>{tooltipContent}</ReactTooltip>
           </div>
         </Col>
         <Col xs={{ span: 24 }} lg={{ span: 12 }} className="flex justify-items-center">

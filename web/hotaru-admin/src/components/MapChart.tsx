@@ -7,12 +7,14 @@ import {
 
 import isEqual from 'fast-deep-equal/es6/react';
 /* https://simplemaps.com/data/world-cities */
+import countries from 'i18n-iso-countries';
 import coordinates from '../utils/coordinates.json';
 /* https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json */
 import geoMaps from '../utils/world-110m.json';
 
 interface Props {
   count: Record<string, number>,
+  setTooltipContent: (str: string) => void
 }
 
 const MapChart: FC<Props> = props => (
@@ -21,6 +23,7 @@ const MapChart: FC<Props> = props => (
       style={{ width: '100%', height: 280 }}
       projection="geoMercator"
       projectionConfig={{ center: [0, 40] }}
+      data-tip=""
     >
       <Geographies geography={geoMaps}>
         {({ geographies }) => geographies.filter(d => d.properties.REGION_UN !== 'Antarctica').map(geo => (
@@ -44,8 +47,13 @@ const MapChart: FC<Props> = props => (
           return (
             <Marker
               coordinates={[coordinates[K].lng, coordinates[K].lat]}
+              onMouseEnter={() => {
+                const country = countries.getName(key, 'en', { select: 'official' });
+                props.setTooltipContent(`${country}: ${count}`);
+              }}
+              onMouseLeave={() => props.setTooltipContent('')}
             >
-              <circle r={8 + count} fill="#8B5CF6" stroke="#fff" strokeWidth={2} />
+              <circle r={6 + count} fill="#8B5CF6" stroke="#fff" strokeWidth={2} />
             </Marker>
           );
         })
