@@ -52,6 +52,7 @@ const MapChart: FC<Props> = props => (
                 props.setTooltipContent(`${country}: ${count}`);
               }}
               onMouseLeave={() => props.setTooltipContent('')}
+              key={key}
             >
               <circle r={6 + count} fill="#8B5CF6" stroke="#fff" strokeWidth={2} />
             </Marker>
