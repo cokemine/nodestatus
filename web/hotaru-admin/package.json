@@ -29,7 +29,6 @@
     "react-icons": "^4.2.0",
     "react-router-dom": "^5.2.1",
     "react-simple-maps": "^2.3.0",
-    "react-tooltip": "^4.2.21",
     "swr": "^1.0.1",
     "tailwindcss": "^2.2.16",
     "typescript": "^4.3.2",

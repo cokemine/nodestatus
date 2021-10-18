@@ -8,13 +8,13 @@ import {
 import isEqual from 'fast-deep-equal/es6/react';
 /* https://simplemaps.com/data/world-cities */
 import countries from 'i18n-iso-countries';
+import { Tooltip } from 'antd';
 import coordinates from '../utils/coordinates.json';
 /* https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json */
 import geoMaps from '../utils/world-110m.json';
 
 interface Props {
   count: Record<string, number>,
-  setTooltipContent: (str: string) => void
 }
 
 const MapChart: FC<Props> = props => (
@@ -22,7 +22,6 @@ const MapChart: FC<Props> = props => (
     <ComposableMap
       projection="geoMercator"
       projectionConfig={{ center: [0, 45] }}
-      data-tip=""
       className="w-full h-52 xl:h-72 lg:64 md:h-60 sm:h-56"
     >
       <Geographies geography={geoMaps}>
@@ -44,18 +43,16 @@ const MapChart: FC<Props> = props => (
           const count = props.count[key];
           const K = key as keyof typeof coordinates;
           if (!coordinates[K]) return;
+          const country = countries.getName(key, 'en', { select: 'official' });
           return (
-            <Marker
-              coordinates={[coordinates[K].lng, coordinates[K].lat]}
-              onMouseEnter={() => {
-                const country = countries.getName(key, 'en', { select: 'official' });
-                props.setTooltipContent(`${country}: ${count}`);
-              }}
-              onMouseLeave={() => props.setTooltipContent('')}
+            <Tooltip
+              title={`${country}: ${count}`}
               key={key}
             >
-              <circle r={6 + count} fill="#8B5CF6" stroke="#fff" strokeWidth={2} />
-            </Marker>
+              <Marker coordinates={[coordinates[K].lng, coordinates[K].lat]}>
+                <circle r={6 + count} fill="#8B5CF6" stroke="#fff" strokeWidth={2} />
+              </Marker>
+            </Tooltip>
           );
         })
       }
