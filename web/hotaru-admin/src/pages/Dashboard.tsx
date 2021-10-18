@@ -104,14 +104,14 @@ const Dashboard: FC = () => {
   return (
     <>
       <Title level={2} className="my-6 text-3xl">Dashboard</Title>
-      <Row gutter={32}>
-        <Col xs={{ span: 24 }} lg={{ span: 12 }}>
-          <div className="bg-rose-500">
+      <Row gutter={32} className="mb-4">
+        <Col xs={{ span: 24 }} lg={{ span: 12 }} className="flex items-center">
+          <div className="bg-rose-500 w-full">
             <MapChart count={count.record} setTooltipContent={setTooltipContent} />
             <ReactTooltip>{tooltipContent}</ReactTooltip>
           </div>
         </Col>
-        <Col xs={{ span: 24 }} lg={{ span: 12 }} className="flex justify-items-center">
+        <Col xs={{ span: 24 }} lg={{ span: 12 }}>
           <Row>
             <Col xs={{ span: 24 }} className="mb-4">
               <StateCard
@@ -139,7 +139,7 @@ const Dashboard: FC = () => {
                 )}
               />
             </Col>
-            <Col xs={{ span: 24 }} className="mb-4">
+            <Col xs={{ span: 24 }}>
               <StateCard
                 title="Servers Offline"
                 count={servers.length - count.online}

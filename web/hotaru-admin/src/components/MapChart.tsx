@@ -20,10 +20,10 @@ interface Props {
 const MapChart: FC<Props> = props => (
   <div>
     <ComposableMap
-      style={{ width: '100%', height: 280 }}
       projection="geoMercator"
-      projectionConfig={{ center: [0, 40] }}
+      projectionConfig={{ center: [0, 45] }}
       data-tip=""
+      className="w-full h-52 xl:h-72 lg:64 md:h-60 sm:h-56"
     >
       <Geographies geography={geoMaps}>
         {({ geographies }) => geographies.filter(d => d.properties.REGION_UN !== 'Antarctica').map(geo => (
