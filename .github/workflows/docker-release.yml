@@ -47,7 +47,7 @@ jobs:
           # https://github.com/prisma/prisma/issues/5379
           command: |
             docker buildx build \
-            --platform=linux/amd64,linux/arm64 \
+            --platform=linux/amd64 \
             --output "type=image,push=true" \
             --file ./Dockerfile . \
             --tag $(echo "${DOCKER_USERNAME}" | tr '[:upper:]' '[:lower:]')/nodestatus:latest \
