@@ -17,6 +17,7 @@ services:
 
 
       PUSH_TIMEOUT: 30
+      PUSH_DELAY: 15
       TGBOT_TOKEN: ""
       TGBOT_CHATID: ""
       TGBOT_PROXY: ""

@@ -2,7 +2,7 @@
 
 Yet another servers monitor written in TypeScript.
 
-Current Version: 1.2.0-alpha.3
+Current Version: 1.2.0-alpha.4
 
 ## How To Install
 
@@ -103,6 +103,8 @@ Node.js Version: https://github.com/cokemine/nodestatus-client
 
 **PUSH_TIMEOUT**: 客户端报警推送超时时间 (在这个时间内无论客户端发生了什么只要重新恢复与客户端的连接就不会推送),  默认`30` (30秒)
 
+**PUSH_DELAY**: 报警推送服务启动延迟 (防止重启服务端后导致的集中推送),  默认`15` (15秒)
+
 **TGBOT_TOKEN**: Telegram Bot Token (从 BotFather 申请到)
 
 **TGBOT_CHATID**: Telegram Bot 需要推送的 chat_id, 如不清楚可以先启动 NodeStatus, 对 Bot 发送 `/start` 获取这个 id, 多个请用`,`隔开
@@ -130,7 +132,7 @@ status-cli help # check cli help
 
 同时通过 Web 面板你可以很简单的从 ServerStatus 迁移至 NodeStatus, 你可以在面板`Import`处将 ServerStatus 的 JSON文件粘贴过去一键添加服务器。（需要去除多余的 `host` 字段）
 
-面板开源地址：https://github.com/cokemine/hotaru-admin
+面板开源地址：https://github.com/cokemine/nodestatus/tree/master/web/hotaru-admin
 
 ## Telegram Commands
 

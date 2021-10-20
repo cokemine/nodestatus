@@ -20,8 +20,8 @@ const config = {
       ? resolve(__dirname, '../../db.base.sqlite')
       : options.database
   ),
-  port: process.env.PORT || options.port,
-  interval: process.env.INTERVAL || options.interval,
+  port: Number(process.env.PORT || options.port),
+  interval: Number(process.env.INTERVAL || options.interval),
 
   useIpc: process.env.USE_IPC !== 'false',
   useWeb: process.env.USE_WEB !== 'false',
@@ -34,6 +34,7 @@ const config = {
   ipcAddress: process.env.IPC_ADDRESS || (platform() !== 'win32' ? '/tmp/status_unix.sock' : '\\\\.\\pipe\\status_ipc'),
 
   pushTimeOut: Number(process.env.PUSH_TIMEOUT) || 30,
+  pushDelay: Number(process.env.PUSH_DELAY) || 15,
 
   telegram: {
     proxy: process.env.TGBOT_PROXY,
@@ -43,12 +44,12 @@ const config = {
   }
 };
 
-if (Number.isNaN(parseInt(config.port, 10))) {
+if (Number.isNaN(config.port)) {
   logger.fatal('Please enter the correct port number.');
   process.exit(1);
 }
 
-if (Number.isNaN(parseInt(config.interval, 10))) {
+if (Number.isNaN(config.interval)) {
   logger.fatal('Please enter the correct interval.');
   process.exit(1);
 }

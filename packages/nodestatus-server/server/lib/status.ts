@@ -15,20 +15,23 @@ export async function createStatus(app: Koa): Promise<[Server, NetServer | null]
   let ipc = null;
 
   const instance = new NodeStatus(server, {
-    interval: Number(config.interval)
+    interval: config.interval
   });
 
-  if (config.usePush) {
-    createPush.call(instance, {
-      pushTimeOut: config.pushTimeOut,
-      telegram: {
-        ...config.telegram,
-        chat_id: config.telegram.chat_id.split(',')
-      }
-    });
-  }
-
   await instance.launch();
+
+  if (config.usePush) {
+    setTimeout(
+      createPush.bind(instance, {
+        pushTimeOut: config.pushTimeOut,
+        telegram: {
+          ...config.telegram,
+          chat_id: config.telegram.chat_id.split(',')
+        }
+      }),
+      config.pushDelay * 1000
+    );
+  }
 
   if (config.useIpc) {
     fs.existsSync(config.ipcAddress) && fs.unlinkSync(config.ipcAddress);
