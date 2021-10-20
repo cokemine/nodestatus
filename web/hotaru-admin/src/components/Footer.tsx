@@ -2,8 +2,8 @@ import React, { FC } from 'react';
 
 const Footer: FC = () => (
   <div className="text-center">
-    Powered by
-    <a href="https://github.com/cokemine/nodestatus">NodeStatus</a>
+    <span className="align-middle">Powered by</span>
+    <a href="https://github.com/cokemine/nodestatus" className="pl-1 align-middle">NodeStatus</a>
   </div>
 );
 
