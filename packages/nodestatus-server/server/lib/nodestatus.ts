@@ -1,14 +1,9 @@
 import { Server } from 'http';
 import { isIPv4 } from 'net';
-import { timingSafeEqual } from 'crypto';
 import ws from 'ws';
 import { decode } from '@msgpack/msgpack';
-import { Telegraf } from 'telegraf';
-import HttpsProxyAgent from 'https-proxy-agent';
 import { IPv6 } from 'ipaddr.js';
-import {
-  Box, Options, ServerItem, BoxItem
-} from '../../types/server';
+import { Box, ServerItem, BoxItem } from '../../types/server';
 import { authServer, getListServers, getServer } from '../controller/status';
 import { logger, emitter } from './utils';
 
@@ -22,17 +17,21 @@ function callHook(instance: NodeStatus, hook: keyof NodeStatus, ...args: any[]) 
   }
 }
 
-export class NodeStatus {
-  private server !: Server;
+type Options = {
+  interval: number;
+};
 
+export default class NodeStatus {
   private options !: Options;
+
+  public server !: Server;
 
   private ioPub = new ws.Server({ noServer: true });
 
   private ioConn = new ws.Server({ noServer: true });
 
   /* socket -> ip */
-  private map = new WeakMap<ws, string>();
+  public ipMap = new WeakMap<ws, string>();
 
   /* username -> socket */
   private userMap = new Map<string, ws>();
@@ -72,7 +71,7 @@ export class NodeStatus {
       const pathname = request.url;
       if (pathname === '/connect') {
         this.ioConn.handleUpgrade(request, socket as any, head, ws => {
-          this.map.set(
+          this.ipMap.set(
             ws,
             (request.headers['x-forwarded-for'] as any)?.split(',')?.[0]?.trim() || request.socket.remoteAddress
           );
@@ -88,7 +87,7 @@ export class NodeStatus {
     });
 
     this.ioConn.on('connection', socket => {
-      const address = this.map.get(socket);
+      const address = this.ipMap.get(socket);
       if (typeof address === 'undefined') {
         return socket.close();
       }
@@ -150,8 +149,6 @@ export class NodeStatus {
       socket.on('close', () => clearInterval(id));
     });
 
-    this.options.usePush && this.createPush();
-
     return this.updateStatus();
   }
 
@@ -179,136 +176,5 @@ export class NodeStatus {
       }
     }
     this.serversPub = Object.values(this.servers).sort((x, y) => y.order - x.order);
-  }
-
-  /* This should move to another file later */
-  private createPush(): void {
-    const pushList: Array<(message: string) => void> = [];
-    /* ip -> timer */
-    const timerMap = new Map<string, NodeJS.Timer>();
-    const entities = new Set(['_', '*', '[', ']', '(', ')', '~', '`', '>', '#', '+', '-', '=', '|', '{', '}', '.', '!', '\\']);
-
-    const parseEntities = (msg: any): string => {
-      let str: string;
-      if (typeof msg !== 'string') str = msg.toString();
-      else str = msg;
-      let newStr = '';
-      for (const char of str) {
-        if (entities.has(char)) {
-          newStr += '\\';
-        }
-        newStr += char;
-      }
-      return newStr;
-    };
-
-    const getBotStatus = (): string => {
-      let str = '';
-      let online = 0;
-      this.serversPub.forEach(obj => {
-        const item = new Proxy(obj, {
-          get(target, key) {
-            const value = Reflect.get(target, key);
-            return typeof value === 'string'
-              ? parseEntities(value)
-              : value;
-          }
-        });
-        str += `节点名: *${item.name}*\n当前状态: `;
-        if (item.status.online4 || item.status.online6) {
-          str += '✅*在线*\n';
-          online++;
-        } else {
-          str += '❌*离线*';
-          str += '\n\n';
-          return;
-        }
-        str += `当前负载: ${parseEntities(item.status.load.toFixed(2))} \n`;
-        str += `当前CPU占用: ${Math.round(item.status.cpu)}% \n`;
-        str += `当前内存占用: ${Math.round((item.status.memory_used / item.status.memory_total) * 100)}% \n`;
-        str += `当前硬盘占用: ${Math.round((item.status.hdd_used / item.status.hdd_total) * 100)}% \n`;
-        str += '\n\n';
-      });
-      return `🍊*NodeStatus* \n🤖 当前有 ${this.serversPub.length} 台服务器, 其中在线 ${online} 台\n\n${str}`;
-    };
-
-    const tgConfig = this.options.telegram;
-
-    if (tgConfig?.bot_token) {
-      const bot = new Telegraf(tgConfig.bot_token, {
-        ...(tgConfig.proxy && {
-          telegram: {
-            agent: HttpsProxyAgent(tgConfig.proxy)
-          }
-        })
-      });
-
-      const chatId = new Set<string>(tgConfig.chat_id);
-
-      bot.command('start', ctx => {
-        const currentChat = ctx.message.chat.id.toString();
-        if (chatId.has(currentChat)) {
-          ctx.reply(`🍊NodeStatus\n🤖 Hi, this chat id is *${currentChat}*\\.\nYou have access to this service\\. I will alert you when your servers changed\\.\nYou are currently using NodeStatus: *${parseEntities(process.env.npm_package_version)}*`, { parse_mode: 'MarkdownV2' });
-        } else {
-          ctx.reply(`🍊NodeStatus\n🤖 Hi, this chat id is *${currentChat}*\\.\nYou *do not* have permission to use this service\\.\nPlease check your settings\\.`, { parse_mode: 'MarkdownV2' });
-        }
-      });
-
-      bot.command('status', ctx => {
-        if (chatId.has(ctx.message.chat.id.toString())) {
-          ctx.reply(getBotStatus(), { parse_mode: 'MarkdownV2' });
-        } else {
-          ctx.reply('🍊NodeStatus\n*No permission*', { parse_mode: 'MarkdownV2' });
-        }
-      });
-
-      if (tgConfig.web_hook) {
-        const secretPath = `/telegraf/${bot.secretPathComponent()}`;
-        bot.telegram.setWebhook(`${tgConfig.web_hook}${secretPath}`).then(() => logger.info('🤖 Telegram Bot is running using webhook'));
-
-        this.server.on('request', (req, res) => {
-          if (
-            req.url
-            && req.url.length === secretPath.length
-            && timingSafeEqual(Buffer.from(secretPath), Buffer.from(req.url))
-          ) {
-            bot.webhookCallback(secretPath)(req, res);
-            res.statusCode = 200;
-          }
-        });
-      } else {
-        bot.launch().then(() => logger.info('🤖 Telegram Bot is running using polling'));
-      }
-
-      pushList.push(message => [...chatId].map(id => bot.telegram.sendMessage(id, `${message}`, { parse_mode: 'MarkdownV2' })));
-    }
-
-    this.onServerConnected = (socket, username) => {
-      const ip = this.map.get(socket);
-      if (ip) {
-        const timer = timerMap.get(ip);
-        if (timer) {
-          clearTimeout(timer);
-          timerMap.delete(ip);
-        } else {
-          return Promise.all(pushList.map(
-            fn => fn(`🍊*NodeStatus* \n😀 One new server has connected\\! \n\n *用户名*: ${parseEntities(username)} \n *节点名*: ${parseEntities(this.servers[username].name)} \n *时间*: ${parseEntities(new Date())}`)
-          ));
-        }
-      }
-    };
-    this.onServerDisconnected = (socket, username) => {
-      const ip = this.map.get(socket);
-      const timer = setTimeout(
-        () => {
-          Promise.all(pushList.map(
-            fn => fn(`🍊*NodeStatus* \n😰 One server has disconnected\\! \n\n *用户名*: ${parseEntities(username)} \n *节点名*: ${parseEntities(this.servers[username]?.name)} \n *时间*: ${parseEntities(new Date())}`)
-          )).then();
-          ip && timerMap.delete(ip);
-        },
-        this.options.pushTimeOut * 1000
-      );
-      ip && timerMap.set(ip, timer);
-    };
   }
 }

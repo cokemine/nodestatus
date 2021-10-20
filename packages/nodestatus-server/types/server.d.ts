@@ -36,15 +36,3 @@ export type IResp<T = any> = {
   data: T,
   msg: string
 };
-
-export type Options = {
-  interval: number;
-  usePush: boolean;
-  pushTimeOut: number;
-  telegram?: {
-    bot_token: string;
-    chat_id: string[];
-    web_hook?: string;
-    proxy?: string;
-  }
-};

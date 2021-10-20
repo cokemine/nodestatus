@@ -4,8 +4,9 @@ import Koa from 'koa';
 import koaJwt from 'koa-jwt';
 import koaBody from 'koa-body';
 import router from '../router';
+import NodeStatus from './nodestatus';
 import createIpc from './ipc';
-import { NodeStatus } from './nodestatus';
+import createPush from './push';
 import config from './config';
 import type { Server as NetServer } from 'net';
 
@@ -14,14 +15,18 @@ export async function createStatus(app: Koa): Promise<[Server, NetServer | null]
   let ipc = null;
 
   const instance = new NodeStatus(server, {
-    interval: Number(config.interval),
-    usePush: config.usePush,
-    pushTimeOut: config.pushTimeOut,
-    telegram: {
-      ...config.telegram,
-      chat_id: config.telegram.chat_id.split(',')
-    }
+    interval: Number(config.interval)
   });
+
+  if (config.usePush) {
+    createPush.call(instance, {
+      pushTimeOut: config.pushTimeOut,
+      telegram: {
+        ...config.telegram,
+        chat_id: config.telegram.chat_id.split(',')
+      }
+    });
+  }
 
   await instance.launch();
 
