@@ -117,7 +117,7 @@ importers:
       telegraf: ^4.4.1
       typescript: ^4.3.5
       utf-8-validate: ^5.0.5
-      vite: 2.6.7
+      vite: 2.6.13
       ws: ^8.2.0
     dependencies:
       '@prisma/client': 3.3.0_prisma@3.3.0
@@ -156,7 +156,7 @@ importers:
       pm2: 5.1.1_72ef9f06cb99540da679cbf1bf7a3256
       prisma: 3.3.0
       typescript: 4.4.3
-      vite: 2.6.7
+      vite: 2.6.13
       ws: 8.2.2_72ef9f06cb99540da679cbf1bf7a3256
 
   web/hotaru-admin:
@@ -9643,6 +9643,30 @@ packages:
       vite: 2.6.7
     transitivePeerDependencies:
       - supports-color
+    dev: true
+
+  /vite/2.6.13:
+    resolution: {integrity: sha512-+tGZ1OxozRirTudl4M3N3UTNJOlxdVo/qBl2IlDEy/ZpTFcskp+k5ncNjayR3bRYTCbqSOFz2JWGN1UmuDMScA==}
+    engines: {node: '>=12.2.0'}
+    hasBin: true
+    peerDependencies:
+      less: '*'
+      sass: '*'
+      stylus: '*'
+    peerDependenciesMeta:
+      less:
+        optional: true
+      sass:
+        optional: true
+      stylus:
+        optional: true
+    dependencies:
+      esbuild: 0.13.4
+      postcss: 8.3.9
+      resolve: 1.20.0
+      rollup: 2.58.0
+    optionalDependencies:
+      fsevents: 2.3.2
     dev: true
 
   /vite/2.6.7:
