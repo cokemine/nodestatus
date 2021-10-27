@@ -14,7 +14,7 @@ importers:
       '@types/node': ^16.11.6
       '@typescript-eslint/eslint-plugin': ^4.33.0
       '@typescript-eslint/parser': ^4.33.0
-      '@vercel/nft': ^0.13.1
+      '@vercel/nft': ^0.17.0
       esbuild: ^0.13.9
       eslint: ^7.32.0
       eslint-config-airbnb: ^18.2.1
@@ -44,7 +44,7 @@ importers:
       '@types/node': 16.11.6
       '@typescript-eslint/eslint-plugin': 4.33.0_cc617358c89d3f38c52462f6d809db4c
       '@typescript-eslint/parser': 4.33.0_eslint@7.32.0+typescript@4.4.4
-      '@vercel/nft': 0.13.1
+      '@vercel/nft': 0.17.0
       esbuild: 0.13.9
       eslint: 7.32.0
       eslint-config-airbnb: 18.2.1_b16360b5f82b82e80b8e91bb59fed09f
@@ -1798,16 +1798,17 @@ packages:
       eslint-visitor-keys: 2.1.0
     dev: true
 
-  /@vercel/nft/0.13.1:
-    resolution: {integrity: sha512-7pBTfSkwhhcPAeGVsFml5YX7LCZgtocP+zTAknnRK2u/RsV3GGqOD5yw7CtbgTpfjY8NfXWzwoxF1zOUEVsbww==}
+  /@vercel/nft/0.17.0:
+    resolution: {integrity: sha512-dXz4RAODHpEPl1Yfzk1UfVpZfqhY9O80FdI9sF/Hw2bXWj5022U9Z46VpdNYe8pDluSuQv/JUo/ZP4/OcsfDRw==}
     hasBin: true
     dependencies:
       '@mapbox/node-pre-gyp': 1.0.6
       acorn: 8.5.0
       acorn-class-fields: 1.0.0_acorn@8.5.0
+      acorn-private-class-elements: 1.0.0_acorn@8.5.0
       acorn-static-class-features: 1.0.0_acorn@8.5.0
       bindings: 1.5.0
-      estree-walker: 0.6.1
+      estree-walker: 2.0.2
       glob: 7.2.0
       graceful-fs: 4.2.8
       micromatch: 4.0.4
@@ -9960,7 +9961,7 @@ packages:
   /wide-align/1.1.5:
     resolution: {integrity: sha512-eDMORYaPNZ4sQIuuYPDHdQvf4gyCF9rEEV/yPxGfwPkRodwEgiMUUXTx/dex+Me0wxx53S+NgUHaP7y3MGlDmg==}
     dependencies:
-      string-width: 2.1.1
+      string-width: 4.2.3
     dev: true
 
   /with/7.0.2:
