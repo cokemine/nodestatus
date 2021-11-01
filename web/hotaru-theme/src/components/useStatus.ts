@@ -60,7 +60,7 @@ export default (props: Props) => {
     return str;
   });
 
-  const tableRowByteConvert = computed(() => (data: number): string => {
+  const formatNetwork = computed(() => (data: number): string => {
     if (data < 1024) return `${data.toFixed(0)}B`;
     if (data < 1024 * 1024) return `${(data / 1024).toFixed(0)}K`;
     if (data < 1024 * 1024 * 1024) return `${(data / 1024 / 1024).toFixed(1)}M`;
@@ -68,7 +68,7 @@ export default (props: Props) => {
     return `${(data / 1024 / 1024 / 1024 / 1024).toFixed(2)}T`;
   });
 
-  const expandRowByteConvert = computed(() => (data: number): string => {
+  const formatByte = computed(() => (data: number): string => {
     if (data < 1024) return `${data.toFixed(0)} B`;
     if (data < 1024 * 1024) return `${(data / 1024).toFixed(2)} KiB`;
     if (data < 1024 * 1024 * 1024) return `${(data / 1024 / 1024).toFixed(2)} MiB`;
@@ -83,7 +83,7 @@ export default (props: Props) => {
     getHDDStatus,
     getProcessBarStatus,
     getUpTime,
-    tableRowByteConvert,
-    expandRowByteConvert
+    formatNetwork,
+    formatByte
   };
 };

@@ -1,6 +1,6 @@
 <template>
   <p class="error">
-    若長時間出現此消息，請確保您已啟用Javascript！<br>否則雲監控主服務（服務端）未啟動或已關閉。
+    若長時間出現此消息，請確保您的雲監控主服務（服務端）已啟動。
   </p>
 </template>
 <script lang="ts">
@@ -11,9 +11,9 @@ export default defineComponent({
 });
 </script>
 <style>
-p.error {
+.error {
+  margin-bottom: 0;
   text-align: center;
   color: #616366;
-  margin-bottom: 0;
 }
 </style>

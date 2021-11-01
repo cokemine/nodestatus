@@ -113,13 +113,13 @@ div.bar {
     width: 40px;
   }
 
-  #cards .card div.card-header span {
-    font-size: 1.55rem;
+  #cards .card .card__header span {
+    font-size: 1.5rem;
   }
 
-  #cards .card div.card-content p {
+  #cards .card .card__content p {
     margin-bottom: .6rem;
-    font-size: 1.25rem;
+    font-size: 1.2rem;
   }
 
   #app #header {

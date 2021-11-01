@@ -1,6 +1,6 @@
 <template>
   <div class="ui vertical masthead center aligned" id="header">
-    <div id="header-content">
+    <div class="header__content">
       <h1 class="ui inverted header">
         {{ header }}
       </h1>
@@ -51,7 +51,7 @@ export default defineComponent({
   text-shadow: 1px 1px 1px #666;
 }
 
-#header-content {
+.header__content {
   position: absolute;
   z-index: 3;
   top: 50%;
