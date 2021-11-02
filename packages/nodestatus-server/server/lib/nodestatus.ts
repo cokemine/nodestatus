@@ -19,6 +19,7 @@ function callHook(instance: NodeStatus, hook: keyof NodeStatus, ...args: any[]) 
 
 type Options = {
   interval: number;
+  verbose: boolean;
 };
 
 export default class NodeStatus {
@@ -61,12 +62,13 @@ export default class NodeStatus {
     socket.close();
     if (this.isBanned.get(address)) return;
     this.isBanned.set(address, true);
-    logger.warn(`${address} was banned ${t} seconds, reason: ${reason}`);
+    this.options.verbose && logger.warn(`${address} was banned ${t} seconds, reason: ${reason}`);
     callHook(this, 'onServerBanned', address, reason);
     setTimeout(() => this.isBanned.delete(address), t * 1000);
   }
 
   public launch(): Promise<void> {
+    const { verbose, interval } = this.options;
     this.server.on('upgrade', (request, socket, head) => {
       const pathname = request.url;
       if (pathname === '/connect') {
@@ -93,7 +95,7 @@ export default class NodeStatus {
       }
       callHook(this, 'onServerConnect', socket);
       socket.send('Authentication required');
-      logger.info(`${address} is trying to connect to server`);
+      verbose && logger.info(`${address} is trying to connect to server`);
       socket.once('message', async (buf: Buffer) => {
         if (this.isBanned.get(address)) {
           socket.send('You are banned. Please try connecting after 60 / 120 seconds');
@@ -145,7 +147,7 @@ export default class NodeStatus {
         updated: ~~(Date.now() / 1000)
       }));
       runPush();
-      const id = setInterval(runPush, this.options.interval);
+      const id = setInterval(runPush, interval);
       socket.on('close', () => clearInterval(id));
     });
 

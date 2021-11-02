@@ -22,6 +22,7 @@ const config = {
   ),
   port: Number(process.env.PORT || options.port),
   interval: Number(process.env.INTERVAL || options.interval),
+  verbose: process.env.VERBOSE === 'true',
 
   useIpc: process.env.USE_IPC !== 'false',
   useWeb: process.env.USE_WEB !== 'false',

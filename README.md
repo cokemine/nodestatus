@@ -82,6 +82,8 @@ Node.js Version: https://github.com/cokemine/nodestatus-client
 
 **PORT**: NodeStatus 所用端口, 默认 `35601`
 
+**VERBOSE**: 是否启动 verbose 模式，启动后会输出更多信息，默认 `false`
+
 &nbsp;
 
 **USE_PUSH**: 是否使用 Telegram 推送, 默认 `true`

@@ -15,7 +15,8 @@ export async function createStatus(app: Koa): Promise<[Server, NetServer | null]
   let ipc = null;
 
   const instance = new NodeStatus(server, {
-    interval: config.interval
+    interval: config.interval,
+    verbose: config.verbose
   });
 
   await instance.launch();

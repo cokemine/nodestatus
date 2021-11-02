@@ -6,6 +6,7 @@ services:
 
     environment:
       PORT: 35601
+      VERBOSE: "false"
 
       USE_PUSH: "true"
       USE_IPC: "true"
