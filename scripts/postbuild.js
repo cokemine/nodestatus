@@ -13,9 +13,5 @@ if (fs.pathExistsSync(outputDir)) {
 list.forEach(({ modPath }) => {
   const buildDirName = fs.existsSync(`${modPath}/dist`) ? 'dist' : 'build';
   const buildPath = path.join(modPath, `./${buildDirName}`);
-  if (modPath.includes('admin')) {
-    fs.copySync(buildPath, `${outputDir}/admin`);
-  } else {
-    fs.copySync(buildPath, outputDir);
-  }
+  fs.copySync(buildPath, `${outputDir}/${path.basename(modPath)}`);
 });

@@ -7,6 +7,7 @@ services:
     environment:
       PORT: 35601
       VERBOSE: "false"
+      THEME: "hotaru-theme"
 
       USE_PUSH: "true"
       USE_IPC: "true"

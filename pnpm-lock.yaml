@@ -90,8 +90,8 @@ importers:
       '@types/jsonwebtoken': ^8.5.5
       '@types/koa': ^2.13.4
       '@types/koa__router': ^8.0.8
+      '@types/koa-mount': ^4.0.1
       '@types/koa-static': ^4.0.2
-      '@types/koa-webpack': ^6.0.4
       '@types/ws': ^7.4.7
       bcryptjs: ^2.4.3
       bufferutil: ^4.0.5
@@ -108,6 +108,7 @@ importers:
       koa-body: ^4.2.0
       koa-connect: ^2.1.0
       koa-jwt: ^4.0.3
+      koa-mount: ^4.0.0
       koa-static: ^5.0.0
       koa2-connect-history-api-fallback: ^0.1.3
       log4js: ^6.3.0
@@ -134,8 +135,8 @@ importers:
       '@types/jsonwebtoken': 8.5.5
       '@types/koa': 2.13.4
       '@types/koa__router': 8.0.8
+      '@types/koa-mount': 4.0.1
       '@types/koa-static': 4.0.2
-      '@types/koa-webpack': 6.0.4
       '@types/ws': 7.4.7
       bcryptjs: 2.4.3
       commander: 8.3.0
@@ -150,6 +151,7 @@ importers:
       koa-body: 4.2.0
       koa-connect: 2.1.0
       koa-jwt: 4.0.3
+      koa-mount: 4.0.0
       koa-static: 5.0.0
       koa2-connect-history-api-fallback: 0.1.3
       log4js: 6.3.0
@@ -1464,6 +1466,12 @@ packages:
       '@types/koa': 2.13.4
     dev: true
 
+  /@types/koa-mount/4.0.1:
+    resolution: {integrity: sha512-HNeg80CVS9Dfq8dGYqCZZCAUm7g6jPCNJ1ydqVLEJxLrjmeburpvq+lOZkE4rxBZ6O38dr3tj9IA3IfbdoI05w==}
+    dependencies:
+      '@types/koa': 2.13.4
+    dev: true
+
   /@types/koa-send/4.1.3:
     resolution: {integrity: sha512-daaTqPZlgjIJycSTNjKpHYuKhXYP30atFc1pBcy6HHqB9+vcymDgYTguPdx9tO4HMOqNyz6bz/zqpxt5eLR+VA==}
     dependencies:
@@ -1475,15 +1483,6 @@ packages:
     dependencies:
       '@types/koa': 2.13.4
       '@types/koa-send': 4.1.3
-    dev: true
-
-  /@types/koa-webpack/6.0.4:
-    resolution: {integrity: sha512-HoIx5mhWZhxk/xV9sYXCX7zmuTltdSJM/AC3jUsO/n0FpVcsh1Y9n8Mqywo4rYWBFLPZ4Jk1PZ+AHD6GCKkWoQ==}
-    dependencies:
-      '@types/koa': 2.13.4
-      '@types/webpack': 4.41.31
-      '@types/webpack-dev-middleware': 3.7.5
-      '@types/webpack-hot-client': 4.1.2
     dev: true
 
   /@types/koa/2.13.4:
@@ -1503,12 +1502,6 @@ packages:
     resolution: {integrity: sha512-9pGCaDtzCsj4HJ8HmGuqzk8+s57sPj4njWd08GG5o92n5Xp9io2snc40CPpXFhoKcZ8OKhuu6ht4gNou9e1C2w==}
     dependencies:
       '@types/koa': 2.13.4
-    dev: true
-
-  /@types/memory-fs/0.3.3:
-    resolution: {integrity: sha512-rLEYzl1xODshz+Lm+YX8NYws8Xw7/qcYbQInMkotl96VpLZmUvoCfYYGxfajMSiugANV02QO5Fc+R98KKeE4gQ==}
-    dependencies:
-      '@types/node': 16.11.6
     dev: true
 
   /@types/mime/1.3.2:
@@ -1616,10 +1609,6 @@ packages:
       '@types/node': 16.11.6
     dev: true
 
-  /@types/source-list-map/0.1.2:
-    resolution: {integrity: sha512-K5K+yml8LTo9bWJI/rECfIPrGgxdpeNbj+d53lwN4QjW1MCwlkhUms+gtdzigTeUyBr09+u8BwOIY3MXvHdcsA==}
-    dev: true
-
   /@types/stack-utils/2.0.1:
     resolution: {integrity: sha512-Hl219/BT5fLAaz6NDkSuhzasy49dwQS/DSdu4MdggFB8zcXv7vflBI3xp7FEmkmdDkBUI2bPUNeMttp2knYdxw==}
     dev: true
@@ -1628,52 +1617,6 @@ packages:
     resolution: {integrity: sha512-VSdhb3KTOglle1SLQD4+TB6ezj/MS3rN98gOUkXzbTUhG8VjFKHXN3OVgEFlTnW5fYBxt+lzZlD3PFqkwMj36Q==}
     dependencies:
       '@types/node': 16.11.6
-    dev: true
-
-  /@types/tapable/1.0.8:
-    resolution: {integrity: sha512-ipixuVrh2OdNmauvtT51o3d8z12p6LtFW9in7U79der/kwejjdNchQC5UMn5u/KxNoM7VHHOs/l8KS8uHxhODQ==}
-    dev: true
-
-  /@types/uglify-js/3.13.1:
-    resolution: {integrity: sha512-O3MmRAk6ZuAKa9CHgg0Pr0+lUOqoMLpc9AS4R8ano2auvsg7IE8syF3Xh/NPr26TWklxYcqoEEFdzLLs1fV9PQ==}
-    dependencies:
-      source-map: 0.6.1
-    dev: true
-
-  /@types/webpack-dev-middleware/3.7.5:
-    resolution: {integrity: sha512-jHcCoRc2Hh6oDozoc27ibKAqrfn8nlewheoFV704EMJqheaOe7HxZZp9Q39bPh2eUDLtEJApLNQy6l20yT/4jA==}
-    dependencies:
-      '@types/connect': 3.4.35
-      '@types/memory-fs': 0.3.3
-      '@types/webpack': 4.41.31
-      loglevel: 1.7.1
-    dev: true
-
-  /@types/webpack-hot-client/4.1.2:
-    resolution: {integrity: sha512-3bON4+5yLp4FKSC4OCnxqgUo4WU/uChIyIDhg+r79D2xAV+tKBfeUuROlNdasgaw2wzMdmlhtUzLXJmOt9iVjA==}
-    dependencies:
-      '@types/node': 16.11.6
-      '@types/webpack': 4.41.31
-      '@types/ws': 7.4.7
-    dev: true
-
-  /@types/webpack-sources/3.2.0:
-    resolution: {integrity: sha512-Ft7YH3lEVRQ6ls8k4Ff1oB4jN6oy/XmU6tQISKdhfh+1mR+viZFphS6WL0IrtDOzvefmJg5a0s7ZQoRXwqTEFg==}
-    dependencies:
-      '@types/node': 16.11.6
-      '@types/source-list-map': 0.1.2
-      source-map: 0.7.3
-    dev: true
-
-  /@types/webpack/4.41.31:
-    resolution: {integrity: sha512-/i0J7sepXFIp1ZT7FjUGi1eXMCg8HCCzLJEQkKsOtbJFontsJLolBcDC+3qxn5pPwiCt1G0ZdRmYRzNBtvpuGQ==}
-    dependencies:
-      '@types/node': 16.11.6
-      '@types/tapable': 1.0.8
-      '@types/uglify-js': 3.13.1
-      '@types/webpack-sources': 3.2.0
-      anymatch: 3.1.2
-      source-map: 0.6.1
     dev: true
 
   /@types/ws/7.4.7:
@@ -6196,6 +6139,16 @@ packages:
       p-any: 2.1.0
     dev: true
 
+  /koa-mount/4.0.0:
+    resolution: {integrity: sha512-rm71jaA/P+6HeCpoRhmCv8KVBIi0tfGuO/dMKicbQnQW/YJntJ6MnnspkodoA4QstMVEZArsCphmd0bJEtoMjQ==}
+    engines: {node: '>= 7.6.0'}
+    dependencies:
+      debug: 4.3.2
+      koa-compose: 4.1.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
   /koa-send/5.0.1:
     resolution: {integrity: sha512-tmcyQ/wXXuxpDxyNXv5yNNkdAMdFRqwtegBXUaowiQzUKqJehttS0x2j0eOZDQAyloAth5w6wwBImnFzkUz3pQ==}
     engines: {node: '>= 8'}
@@ -6401,11 +6354,6 @@ packages:
       streamroller: 2.2.4
     transitivePeerDependencies:
       - supports-color
-    dev: true
-
-  /loglevel/1.7.1:
-    resolution: {integrity: sha512-Hesni4s5UkWkwCGJMQGAh71PaLUmKFM60dHvq0zi/vDhhrzuk+4GgNbTXJ12YYQJn6ZKBDNIjYcuQGKudvqrIw==}
-    engines: {node: '>= 0.6.0'}
     dev: true
 
   /loose-envify/1.4.0:

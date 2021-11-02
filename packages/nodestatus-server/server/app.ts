@@ -1,6 +1,7 @@
 import { resolve } from 'path';
 import Koa from 'koa';
 import serve from 'koa-static';
+import mount from 'koa-mount';
 import historyApiFallback from 'koa2-connect-history-api-fallback';
 import { logger } from './lib/utils';
 import { createStatus } from './lib/status';
@@ -15,7 +16,9 @@ import config from './lib/config';
       { from: /^\/admin/ as any, to: '/admin/index.html' }
     ]
   }));
-  app.use(serve(resolve(__dirname, './dist'), { maxage: 2592000 }));
+
+  app.use(mount('/admin', serve(resolve(__dirname, './dist/hotaru-admin'), { maxage: 2592000 })));
+  app.use(serve(resolve(__dirname, `./dist/${config.theme}`), { maxage: 2592000 }));
 
   const [server, ipc] = await createStatus(app);
 
