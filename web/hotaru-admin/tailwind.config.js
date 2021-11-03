@@ -9,9 +9,6 @@ module.exports = {
         violet,
         rose
       },
-      backgroundImage: {
-        login: "url('./assets/img/bg_howatama.png')"
-      },
       screens: {
         xs: '576px'
       }
