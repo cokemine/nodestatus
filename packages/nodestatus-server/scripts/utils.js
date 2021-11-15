@@ -6,7 +6,7 @@ const cp = require('child_process');
 const replace = require('replace-in-file');
 
 function backupDatabase(dbPath) {
-  if (!path.exists(dbPath)) return;
+  if (!fs.existsSync(dbPath)) return;
   console.log('The database file is detected to already exist.');
   console.log('Trying to update database schema.....');
   const date = new Date();
