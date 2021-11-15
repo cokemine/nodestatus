@@ -1,3 +1,4 @@
+/* Deprecated */
 /*
 * From https://raw.githubusercontent.com/DIYgod/RSSHub/master/scripts/docker/minify-docker.js under MIT License
 */

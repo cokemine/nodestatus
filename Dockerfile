@@ -20,8 +20,7 @@ RUN if [ "$USE_CHINA_MIRROR" = 1 ]; then \
   && yarn config set network-timeout 600000 \
   && npm install pnpm -g \
   && pnpm install --unsafe-perm \
-  && pnpm build \
-  && node scripts/minify-docker.js
+  && pnpm build
 
 
 FROM node:16-alpine as app
@@ -34,14 +33,16 @@ COPY --from=0 /app/app-minimal ./
 ENV IS_DOCKER=true
 ENV NODE_ENV=production
 ARG USE_CHINA_MIRROR=0
-
 RUN if [ "$USE_CHINA_MIRROR" = 1 ]; then \
   sed -i 's/dl-cdn.alpinelinux.org/mirrors.cloud.tencent.com/g' /etc/apk/repositories \
   && npm config set registry https://mirrors.cloud.tencent.com/npm/ \
   && yarn config set registry https://mirrors.cloud.tencent.com/npm/; \
   fi;\
-  npm install pm2 prisma@3.4.2 -g \
-  && npm cache clean --force
+  apk add --no-cache --virtual .build-deps git make gcc g++ python3 \
+  && npm install pm2 pnpm prisma@3.4.2 -g \
+  && pnpm install --prod \
+  && npm cache clean --force \
+  && apk del .build-deps
 
 WORKDIR /app/packages/nodestatus-server
 
