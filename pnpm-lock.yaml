@@ -115,6 +115,7 @@ importers:
       pm2: ^5.1.2
       prisma: 3.4.2
       readable-stream: ^3.6.0
+      replace-in-file: ^6.3.2
       telegraf: ^4.4.2
       typescript: ^4.4.4
       utf-8-validate: ^5.0.7
@@ -157,6 +158,7 @@ importers:
       log4js: 6.3.0
       pm2: 5.1.2_5971b5a749a91823f5467a6d31a2f8b3
       prisma: 3.4.2
+      replace-in-file: 6.3.2
       typescript: 4.4.4
       vite: 2.6.13
       ws: 8.2.3_5971b5a749a91823f5467a6d31a2f8b3
@@ -8384,6 +8386,16 @@ packages:
     engines: {node: '>=0.10'}
     dev: true
 
+  /replace-in-file/6.3.2:
+    resolution: {integrity: sha512-Dbt5pXKvFVPL3WAaEB3ZX+95yP0CeAtIPJDwYzHbPP5EAHn+0UoegH/Wg3HKflU9dYBH8UnBC2NvY3P+9EZtTg==}
+    engines: {node: '>=10'}
+    hasBin: true
+    dependencies:
+      chalk: 4.1.2
+      glob: 7.2.0
+      yargs: 17.2.1
+    dev: true
+
   /request-light/0.5.4:
     resolution: {integrity: sha512-t3566CMweOFlUk7Y1DJMu5OrtpoZEb6aSTsLQVT3wtrIEJ5NhcY9G/Oqxvjllzl4a15zXfFlcr9q40LbLVQJqw==}
     dev: true
@@ -10060,6 +10072,19 @@ packages:
   /yargs/16.2.0:
     resolution: {integrity: sha512-D1mvvtDG0L5ft/jGWkLpG1+m0eQxOfaBvTNELraWj22wSVUMWxZUvYgJYcKh6jGGIkJFhH4IZPQhR4TKpc8mBw==}
     engines: {node: '>=10'}
+    dependencies:
+      cliui: 7.0.4
+      escalade: 3.1.1
+      get-caller-file: 2.0.5
+      require-directory: 2.1.1
+      string-width: 4.2.3
+      y18n: 5.0.8
+      yargs-parser: 20.2.9
+    dev: true
+
+  /yargs/17.2.1:
+    resolution: {integrity: sha512-XfR8du6ua4K6uLGm5S6fA+FIJom/MdJcFNVY8geLlp2v8GYbOXD4EB1tPNZsRn4vBzKGMgb5DRZMeWuFc2GO8Q==}
+    engines: {node: '>=12'}
     dependencies:
       cliui: 7.0.4
       escalade: 3.1.1
