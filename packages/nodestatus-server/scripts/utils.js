@@ -30,6 +30,7 @@ function checkDatabaseType() {
 const databaseType = checkDatabaseType();
 
 function initDatabase() {
+  const isDocker = process.env.IS_DOCKER === 'true';
   const dbPath = process.env.DATABASE || (
     platform() === 'win32'
       ? `file:${resolve(homedir(), '.nodestatus/db.sqlite')}`
@@ -53,7 +54,10 @@ function initDatabase() {
   let cmd = 'prisma';
   platform() === 'win32' && (cmd += '.cmd');
 
-  const prisma = cp.spawn(cmd, ['db', 'push', '--accept-data-loss'], {
+  const cliOption = ['db', 'push', '--accept-data-loss'];
+  isDocker && cliOption.push('--skip-generate');
+
+  const prisma = cp.spawn(cmd, cliOption, {
     env: envOption,
     cwd: resolve(__dirname, '../'),
     stdio: 'inherit'
