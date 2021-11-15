@@ -6,7 +6,7 @@ import config from './config';
 const prisma = new PrismaClient({
   datasources: {
     db: {
-      url: `file:${config.database}`
+      url: `${config.database}`
     }
   }
 });

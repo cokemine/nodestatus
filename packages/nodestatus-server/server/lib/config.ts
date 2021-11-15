@@ -7,19 +7,25 @@ import { logger } from './utils';
 dotenv.config({ path: resolve(homedir(), '.nodestatus/.env.local') });
 
 program
-  .option('-db, --database <db>', 'the path of database', platform() === 'win32' ? resolve(homedir(), '.nodestatus/db.sqlite') : '/usr/local/NodeStatus/server/db.sqlite')
+  .option('-db, --database <db>', 'the path of database', platform() === 'win32' ? `file:${resolve(homedir(), '.nodestatus/db.sqlite')}` : 'file:/usr/local/NodeStatus/server/db.sqlite')
   .option('-p, --port <port>', 'the port of NodeStatus', '35601')
   .option('-i, --interval <interval>', 'update interval', '1500')
   .parse(process.argv);
 const options = program.opts();
 
+let database = process.env.DATABASE || (
+  process.env.NODE_ENV === 'TEST'
+    ? resolve(__dirname, '../../db.base.sqlite')
+    : options.database
+);
+
+if (!(database.includes('file:') || database.includes('mysql:') || database.includes('postgresql:'))) {
+  database = `file:${database}`;
+}
+
 const config = {
   NODE_ENV: process.env.NODE_ENV,
-  database: process.env.DATABASE || (
-    process.env.NODE_ENV === 'TEST'
-      ? resolve(__dirname, '../../db.base.sqlite')
-      : options.database
-  ),
+  database,
   port: Number(process.env.PORT || options.port),
   interval: Number(process.env.INTERVAL || options.interval),
   verbose: process.env.VERBOSE === 'true',
