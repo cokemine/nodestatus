@@ -44,8 +44,6 @@ RUN if [ "$USE_CHINA_MIRROR" = 1 ]; then \
   && npm cache clean --force \
   && apk del .build-deps
 
-WORKDIR /app/packages/nodestatus-server
-
 EXPOSE 35601
 
 CMD ["pm2-runtime", "start", "npm" , "--", "start"]
