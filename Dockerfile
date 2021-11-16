@@ -54,7 +54,7 @@ RUN if [ "$USE_CHINA_MIRROR" = 1 ]; then \
   && yarn config set registry https://mirrors.cloud.tencent.com/npm/; \
   fi;\
   apk add --no-cache --virtual .build-deps git make gcc g++ python3 \
-  && npm install pm2 pnpm prisma@3.4.2 -g \
+  && npm install pm2 pnpm prisma -g \
   && pnpm install --prod --frozen-lockfile \
   && npm cache clean --force \
   && apk del .build-deps
