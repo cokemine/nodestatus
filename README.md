@@ -78,7 +78,7 @@ Node.js Version: https://github.com/cokemine/nodestatus-client
 
 **INTERVAL**: 服务端推送间隔时间, 默认 `1500` (1.5秒)
 
-**DATABASE**: 数据库位置文件存放位置, 默认使用 SQLite (Linux): `file:/usr/local/NodeStatus/server/db.sqlite`，支持的数据库有 `sqlite`、`MySQL`、`PostgreSQL`，请使用对应的正确数据源链接格式填写：`SQLite `应以`file:`开头, `MySQL`应以`mysql:`开头, `PostgreSQL`应以`postgresql:`开头。
+**DATABASE**: 数据库位置文件存放位置, 默认使用 SQLite (Linux): `file:/usr/local/NodeStatus/server/db.sqlite`，支持的数据库有 `sqlite`、`MySQL`、`PostgreSQL`，请使用对应的正确数据源链接格式填写：`SQLite`应以`file:`开头, `MySQL`应以`mysql:`开头, `PostgreSQL`应以`postgresql:`开头。
 
 **PORT**: NodeStatus 所用端口, 默认 `35601`
 
