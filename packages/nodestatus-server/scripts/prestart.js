@@ -1,3 +1,4 @@
+/* deprecated */
 /* Initializing database for Docker */
 const { initDatabase } = require('./utils');
 

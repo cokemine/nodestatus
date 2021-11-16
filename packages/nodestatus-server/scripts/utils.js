@@ -33,7 +33,6 @@ function checkDatabaseType() {
 const databaseType = checkDatabaseType();
 
 function initDatabase() {
-  const isDocker = process.env.IS_DOCKER === 'true';
   const dbPath = process.env.DATABASE || (
     platform() === 'win32'
       ? `file:${resolve(homedir(), '.nodestatus/db.sqlite')}`
@@ -47,9 +46,10 @@ function initDatabase() {
     backupDatabase(dbPath.replace('file:', ''));
   } else {
     envOption.DATABASE_URL = dbPath;
+    /* Replace provider since prisma dropped provider array notation support */
     replace.sync({
       files: path.resolve(__dirname, '../prisma/schema.prisma'),
-      from: 'provider = "sqlite"',
+      from: /provider = "\w+"/,
       to: `provider = "${databaseType}"`
     });
   }
@@ -57,6 +57,7 @@ function initDatabase() {
   let cmd = 'prisma';
   platform() === 'win32' && (cmd += '.cmd');
 
+  /* Regenerate correct prisma client */
   const prisma = cp.spawn(cmd, ['db', 'push', '--accept-data-loss'], {
     env: envOption,
     cwd: resolve(__dirname, '../'),
@@ -66,7 +67,7 @@ function initDatabase() {
   prisma.on('close', code => {
     if (code) {
       console.log('Something wrong while updating database schema.');
-      process.exit(1);
+      process.exit(code);
     } else {
       console.log(`Database file location: ${dbPath}`);
     }
