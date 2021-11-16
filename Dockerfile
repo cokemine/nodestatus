@@ -6,7 +6,7 @@ WORKDIR /app
 COPY . /app
 
 ENV IS_DOCKER=true
-ARG TARGETARCH
+ARG BINARY_TARGETS="[\"linux-musl\"]"
 ARG USE_CHINA_MIRROR=0
 
 RUN if [ "$USE_CHINA_MIRROR" = 1 ]; then \
@@ -14,37 +14,50 @@ RUN if [ "$USE_CHINA_MIRROR" = 1 ]; then \
   && npm config set registry https://mirrors.cloud.tencent.com/npm/ \
   && yarn config set registry https://mirrors.cloud.tencent.com/npm/; \
   fi;\
-  [ "$TARGETARCH" = "arm64" ] && export BINARY_TARGETS="[\"linux-arm64-openssl-1.1.x\"]" || export BINARY_TARGETS="[\"linux-musl\"]" \
-  && apt-get -y update \
+  apt-get -y update \
   && apt-get install -y git python3 apt-transport-https ca-certificates build-essential \
   && ln -s /usr/bin/python3 /usr/bin/python \
   && yarn config set network-timeout 600000 \
   && npm install pnpm -g \
   && pnpm install --unsafe-perm \
-  && pnpm build \
-  && node scripts/minify-docker.js
+  && pnpm build
 
 
 FROM node:16-alpine as app
 
 WORKDIR /app
 
-COPY --from=0 /app/app-minimal ./
+
+COPY --from=0 /app/package.json ./
+COPY --from=0 /app/.npmrc ./
+COPY --from=0 /app/LICENSE ./
+COPY --from=0 /app/pnpm-lock.yaml ./
+COPY --from=0 /app/pnpm-workspace.yaml ./
+
+COPY --from=0 /app/packages/nodestatus-cli/package.json ./packages/nodestatus-cli/
+
+COPY --from=0 /app/packages/nodestatus-server/package.json ./packages/nodestatus-server/
+COPY --from=0 /app/packages/nodestatus-server/build ./packages/nodestatus-server/build
+COPY --from=0 /app/packages/nodestatus-server/scripts ./packages/nodestatus-server/scripts
+COPY --from=0 /app/packages/nodestatus-server/prisma ./packages/nodestatus-server/prisma
+
+COPY --from=0 /app/web/hotaru-theme/package.json ./web/hotaru-theme/
+COPY --from=0 /app/web/hotaru-admin/package.json ./web/hotaru-admin/
 
 
 ENV IS_DOCKER=true
 ENV NODE_ENV=production
 ARG USE_CHINA_MIRROR=0
-
 RUN if [ "$USE_CHINA_MIRROR" = 1 ]; then \
   sed -i 's/dl-cdn.alpinelinux.org/mirrors.cloud.tencent.com/g' /etc/apk/repositories \
   && npm config set registry https://mirrors.cloud.tencent.com/npm/ \
   && yarn config set registry https://mirrors.cloud.tencent.com/npm/; \
   fi;\
-  npm install pm2 prisma -g \
-  && npm cache clean --force
-
-WORKDIR /app/packages/nodestatus-server
+  apk add --no-cache --virtual .build-deps git make gcc g++ python3 \
+  && npm install pm2 pnpm prisma@3.4.2 -g \
+  && pnpm install --prod --frozen-lockfile \
+  && npm cache clean --force \
+  && apk del .build-deps
 
 EXPOSE 35601
 

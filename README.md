@@ -2,7 +2,7 @@
 
 Yet another servers monitor written in TypeScript.
 
-Current Version: 1.2.0-beta.1
+Current Version: 1.2.1-beta
 
 ## How To Install
 
@@ -78,7 +78,7 @@ Node.js Version: https://github.com/cokemine/nodestatus-client
 
 **INTERVAL**: 服务端推送间隔时间, 默认 `1500` (1.5秒)
 
-**DATABASE**: sqlite 数据库文件存放位置, 默认(Linux): `/usr/local/NodeStatus/server/db.sqlite`
+**DATABASE**: 数据库位置文件存放位置, 默认使用 SQLite (Linux): `file:/usr/local/NodeStatus/server/db.sqlite`，支持的数据库有 `sqlite`、`MySQL`、`PostgreSQL`，请使用对应的正确数据源链接格式填写：`SQLite`应以`file:`开头, `MySQL`应以`mysql:`开头, `PostgreSQL`应以`postgresql:`开头。
 
 **PORT**: NodeStatus 所用端口, 默认 `35601`
 
@@ -115,6 +115,12 @@ Node.js Version: https://github.com/cokemine/nodestatus-client
 **TGBOT_PROXY**: Telegram 代理服务器配置，例`http://127.0.0.1:10808`，仅支持 http 代理
 
 **TGBOT_WEBHOOK**: Telegram Webhook 配置，不填写默认 Polling,例: `https://tz.mydomain.com`，使用 Webhook 务必需要开启 https，若你使用了https，则建议填写你的域名以开启  Webhook, 而非 Polling
+
+## 部署到容器服务
+
+如果你需要将 NodeStatus 部署到如 Railway 或 Okteto 等容器服务中。请注意数据持久化问题。你应该使用外部的`MySQL`或是 `PostgreSQL`而不是本项目默认的`SQLite`，因为如果使用`SQLite`在每次重置服务端都会导致原有的配置失效。使用时注意通过调整环境变量以使用可持续存储的数据库服务。
+
+目前本项目还无法部署到如 Vercel 等 Serverless 服务中，因为目前 Serverless 不支持 WebSocket。
 
 ## 修改客户端配置
 
