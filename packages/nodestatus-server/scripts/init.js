@@ -53,29 +53,29 @@ function initDatabase() {
   }
 
   /* Replace provider since prisma dropped provider array notation support */
-  replace.sync({
+  replace.replaceInFile({
     files: path.resolve(__dirname, '../prisma/schema.prisma'),
     from: /provider = "\w+"/,
     to: `provider = "${databaseType}"`
-  });
+  }).then(() => {
+    let cmd = 'prisma';
+    platform() === 'win32' && (cmd += '.cmd');
 
-  let cmd = 'prisma';
-  platform() === 'win32' && (cmd += '.cmd');
+    /* Regenerate correct prisma client */
+    const prisma = cp.spawn(cmd, ['db', 'push', '--accept-data-loss'], {
+      env: envOption,
+      cwd: resolve(__dirname, '../'),
+      stdio: 'inherit'
+    });
 
-  /* Regenerate correct prisma client */
-  const prisma = cp.spawn(cmd, ['db', 'push', '--accept-data-loss'], {
-    env: envOption,
-    cwd: resolve(__dirname, '../'),
-    stdio: 'inherit'
-  });
-
-  prisma.on('close', code => {
-    if (code) {
-      console.log('Something wrong while updating database schema.');
-      process.exit(code);
-    } else {
-      console.log(`Database file location: ${dbPath}`);
-    }
+    prisma.on('close', code => {
+      if (code) {
+        console.log('Something wrong while updating database schema.');
+        process.exit(code);
+      } else {
+        console.log(`Database file location: ${dbPath}`);
+      }
+    });
   });
 }
 
