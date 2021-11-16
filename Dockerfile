@@ -27,7 +27,22 @@ FROM node:16-alpine as app
 
 WORKDIR /app
 
-COPY --from=0 /app/app-minimal ./
+
+COPY --from=0 /app/package.json ./
+COPY --from=0 /app/.npmrc ./
+COPY --from=0 /app/LICENSE ./
+COPY --from=0 /app/pnpm-lock.yaml ./
+COPY --from=0 /app/pnpm-workspace.yaml ./
+
+COPY --from=0 /app/packages/nodestatus-cli/package.json ./packages/nodestatus-cli/
+
+COPY --from=0 /app/packages/nodestatus-server/package.json ./packages/nodestatus-server/
+COPY --from=0 /app/packages/nodestatus-server/build ./packages/nodestatus-server/build
+COPY --from=0 /app/packages/nodestatus-server/scripts ./packages/nodestatus-server/scripts
+COPY --from=0 /app/packages/nodestatus-server/prisma ./packages/nodestatus-server/prisma
+
+COPY --from=0 /app/web/hotaru-theme/package.json ./web/hotaru-theme/
+COPY --from=0 /app/web/hotaru-admin/package.json ./web/hotaru-admin/
 
 
 ENV IS_DOCKER=true
@@ -40,7 +55,7 @@ RUN if [ "$USE_CHINA_MIRROR" = 1 ]; then \
   fi;\
   apk add --no-cache --virtual .build-deps git make gcc g++ python3 \
   && npm install pm2 pnpm prisma@3.4.2 -g \
-  && pnpm install --prod \
+  && pnpm install --prod --frozen-lockfile \
   && npm cache clean --force \
   && apk del .build-deps
 

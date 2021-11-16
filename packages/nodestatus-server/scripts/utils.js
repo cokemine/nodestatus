@@ -4,6 +4,9 @@ const { resolve } = require('path');
 const path = require('path');
 const cp = require('child_process');
 const replace = require('replace-in-file');
+const dotenv = require('dotenv');
+
+dotenv.config({ path: path.resolve(homedir(), '.nodestatus/.env.local') });
 
 function backupDatabase(dbPath) {
   if (!fs.existsSync(dbPath)) return;
@@ -54,10 +57,7 @@ function initDatabase() {
   let cmd = 'prisma';
   platform() === 'win32' && (cmd += '.cmd');
 
-  const cliOption = ['db', 'push', '--accept-data-loss'];
-  isDocker && cliOption.push('--skip-generate');
-
-  const prisma = cp.spawn(cmd, cliOption, {
+  const prisma = cp.spawn(cmd, ['db', 'push', '--accept-data-loss'], {
     env: envOption,
     cwd: resolve(__dirname, '../'),
     stdio: 'inherit'
