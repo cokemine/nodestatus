@@ -46,13 +46,14 @@ function initDatabase() {
     backupDatabase(dbPath.replace('file:', ''));
   } else {
     envOption.DATABASE_URL = dbPath;
-    /* Replace provider since prisma dropped provider array notation support */
-    replace.sync({
-      files: path.resolve(__dirname, '../prisma/schema.prisma'),
-      from: /provider = "\w+"/,
-      to: `provider = "${databaseType}"`
-    });
   }
+
+  /* Replace provider since prisma dropped provider array notation support */
+  replace.sync({
+    files: path.resolve(__dirname, '../prisma/schema.prisma'),
+    from: /provider = "\w+"/,
+    to: `provider = "${databaseType}"`
+  });
 
   let cmd = 'prisma';
   platform() === 'win32' && (cmd += '.cmd');
