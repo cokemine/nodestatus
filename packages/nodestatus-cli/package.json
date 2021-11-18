@@ -26,7 +26,7 @@
   "devDependencies": {
     "chalk": "^4.1.2",
     "commander": "^8.3.0",
-    "i18n-iso-countries": "^6.8.0",
+    "i18n-iso-countries": "^7.0.0",
     "inquirer": "^8.2.0"
   }
 }
