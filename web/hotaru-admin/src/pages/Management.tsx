@@ -27,6 +27,7 @@ const Management: FC = () => {
   const [currentNode, setCurrentNode] = useState<string>('');
   const [multiImport, setMultiImport] = useState<boolean>(false);
   const [sortOrder, setSortOrder] = useState(false);
+  const [shouldPagination, setShouldPagination] = useState<false | undefined>(undefined);
   const [regionResult, setRegionResult] = useState<string[]>([]);
   const { data, mutate } = useSWR<IResp>('/api/server');
 
@@ -222,6 +223,7 @@ const Management: FC = () => {
                   row: DraggableBodyRow
                 }
               }}
+              pagination={shouldPagination}
               footer={() => (
                 <>
                   <Button type="primary" className="mr-6" onClick={() => setModifyVisible(true)}>New</Button>
@@ -245,6 +247,7 @@ const Management: FC = () => {
                         handleSortOrder(order.join(','));
                       }
                       setSortOrder(val => !val);
+                      setShouldPagination(val => (val === undefined ? false : undefined));
                     }}
                   >
                     {!sortOrder ? 'Sort' : 'Save'}
