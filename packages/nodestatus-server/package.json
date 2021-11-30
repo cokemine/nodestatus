@@ -28,7 +28,7 @@
     "lint": "eslint . --ext .js --ext .ts --ignore-pattern build --ignore-pattern dist --fix"
   },
   "dependencies": {
-    "@prisma/client": "3.4.2",
+    "@prisma/client": "3.6.0",
     "dotenv": "^10.0.0",
     "readable-stream": "^3.6.0",
     "replace-in-file": "^6.3.2",
@@ -62,7 +62,7 @@
     "koa2-connect-history-api-fallback": "^0.1.3",
     "log4js": "^6.3.0",
     "pm2": "^5.1.2",
-    "prisma": "3.4.2",
+    "prisma": "3.6.0",
     "typescript": "^4.4.4",
     "vite": "^2.6.13",
     "ws": "^8.2.3"
