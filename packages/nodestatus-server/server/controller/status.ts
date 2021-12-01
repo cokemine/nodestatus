@@ -7,6 +7,10 @@ import {
   delServer as _delServer,
   getServerPassword
 } from '../model/server';
+import {
+  createEvent,
+  updateEvent
+} from '../model/event';
 import { createRes } from '../lib/utils';
 import type {
   Prisma, Server, IResp, Box, IServer, BoxItem
@@ -65,4 +69,12 @@ export async function getServer(username: string): Promise<IResp<BoxItem | null>
 
 export function getRawListServers(): Promise<IResp<IServer[]>> {
   return handleRequest(_getListServers());
+}
+
+export function createNewEvent(username: string): Promise<IResp> {
+  return handleRequest(createEvent(username));
+}
+
+export function resolveEvent(username: string): Promise<IResp> {
+  return handleRequest(updateEvent(username, true));
 }

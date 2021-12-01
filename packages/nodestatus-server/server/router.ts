@@ -1,7 +1,7 @@
 import Router from '@koa/router';
 import { createSession, verifySession } from './controller/user';
 import {
-  delServer, listServers, addServer, setServer, modifyOrder
+  delServer, listServers, addServer, setServer, modifyOrder, queryEvents
 } from './controller/web';
 
 const router = new Router({ prefix: '/api' });
@@ -15,5 +15,7 @@ router.post('/server', addServer);
 router.put('/server', setServer);
 router.put('/server/order', modifyOrder);
 router.delete('/server/:username', delServer);
+
+router.get('/event', queryEvents);
 
 export default router;

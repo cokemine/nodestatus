@@ -62,7 +62,7 @@ function initDatabase() {
     platform() === 'win32' && (cmd += '.cmd');
 
     /* Regenerate correct prisma client */
-    const prisma = cp.spawn(cmd, ['db', 'push', '--accept-data-loss'], {
+    const prisma = cp.spawn(cmd, ['db', 'push'], {
       env: envOption,
       cwd: resolve(__dirname, '../'),
       stdio: 'inherit'

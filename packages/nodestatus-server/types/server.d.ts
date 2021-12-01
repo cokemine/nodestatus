@@ -1,6 +1,10 @@
-import type { Server, Prisma, PrismaClient } from '@prisma/client';
+import type {
+  Server, Prisma, PrismaClient, Event
+} from '@prisma/client';
 
-export { Server, Prisma, PrismaClient };
+export {
+  Server, Prisma, PrismaClient, Event
+};
 
 export type BaseItem = Omit<Server, 'password' | 'disabled' | 'created_at' | 'updated_at'> & { order: number };
 

@@ -32,3 +32,13 @@ model Option {
 
   @@map("options")
 }
+
+model Event {
+  id         Int      @id @default(autoincrement())
+  username   String
+  resolved   Boolean  @default(false)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  @@map("events")
+}

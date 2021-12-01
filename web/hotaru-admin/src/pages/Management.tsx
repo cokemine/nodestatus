@@ -66,7 +66,7 @@ const Management: FC = () => {
     });
   };
 
-  const handleSortOrder = (order: string) => {
+  const handleSortOrder = (order: number[]) => {
     axios.put<IResp>('/api/server/order', { order }).then(res => {
       notify('Success', res.data.msg, 'success');
       resetStatus();
@@ -244,7 +244,7 @@ const Management: FC = () => {
                       if (sortOrder) {
                         const order = dataSource.map(item => item.id);
                         order.reverse();
-                        handleSortOrder(order.join(','));
+                        handleSortOrder(order);
                       }
                       setSortOrder(val => !val);
                       setShouldPagination(val => (val === undefined ? false : undefined));

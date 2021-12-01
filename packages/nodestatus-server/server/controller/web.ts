@@ -8,6 +8,7 @@ import {
   setOrder
 } from '../model/server';
 import { createRes } from '../lib/utils';
+import { readEvents } from '../model/event';
 
 async function handleRequest<T>(ctx: Context, handler: Promise<T>): Promise<void> {
   try {
@@ -65,13 +66,17 @@ const delServer: Middleware = async ctx => {
 };
 
 const modifyOrder: Middleware = async ctx => {
-  const { order = '' } = ctx.request.body;
-  if (!order) {
+  const { order = [] } = ctx.request.body as { order: number[] };
+  if (!order.length) {
     ctx.status = 400;
     ctx.body = createRes(1, 'Wrong request');
     return;
   }
-  await handleRequest(ctx, setOrder(order));
+  await handleRequest(ctx, setOrder(order.join(',')));
+};
+
+const queryEvents: Middleware = async ctx => {
+  await handleRequest(ctx, readEvents());
 };
 
 export {
@@ -79,5 +84,6 @@ export {
   setServer,
   addServer,
   delServer,
-  modifyOrder
+  modifyOrder,
+  queryEvents
 };

@@ -4,7 +4,9 @@ import ws from 'ws';
 import { decode } from '@msgpack/msgpack';
 import { IPv6 } from 'ipaddr.js';
 import { Box, ServerItem, BoxItem } from '../../types/server';
-import { authServer, getListServers, getServer } from '../controller/status';
+import {
+  authServer, createNewEvent, getListServers, getServer, resolveEvent
+} from '../controller/status';
 import { logger, emitter } from './utils';
 
 function callHook(instance: NodeStatus, hook: keyof NodeStatus, ...args: any[]) {
@@ -129,12 +131,14 @@ export default class NodeStatus {
         }
         socket.send(`You are connecting via: ${ipType}`);
         logger.info(`${address} has connected to server`);
+        resolveEvent(username).then();
         socket.on('message', (buf: Buffer) => this.servers[username].status = decode(buf) as any);
         this.userMap.set(username, socket);
         callHook(this, 'onServerConnected', socket, username);
         socket.once('close', () => {
           this.userMap.delete(username);
           this.servers[username] && (this.servers[username].status = {});
+          createNewEvent(username).then();
           logger.warn(`${address} disconnected`);
           callHook(this, 'onServerDisconnected', socket, username);
         });

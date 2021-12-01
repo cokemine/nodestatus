@@ -1,5 +1,6 @@
 import Dashboard from '../pages/Dashboard';
 import Management from '../pages/Management';
+import Incidents from '../pages/Incidents';
 
 const routes = [
   {
@@ -9,6 +10,10 @@ const routes = [
   {
     path: '/management',
     component: Management
+  },
+  {
+    path: '/incidents',
+    component: Incidents
   }
 ];
 

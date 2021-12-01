@@ -1,4 +1,6 @@
-export type { IResp, IServer, ServerItem } from '../../../../types';
+export type {
+  IResp, IServer, ServerItem, Event
+} from '../../../../types';
 
 export interface ITable {
   name: string;

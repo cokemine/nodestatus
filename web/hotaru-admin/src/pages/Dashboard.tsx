@@ -44,7 +44,6 @@ const Dashboard: FC = () => {
     {
       title: 'SERVER',
       dataIndex: 'server',
-      // eslint-disable-next-line react/display-name
       render(_, record) {
         return (
           <div className="flex items-center text-sm">
@@ -63,7 +62,6 @@ const Dashboard: FC = () => {
       title: 'STATUS',
       dataIndex: 'status',
       align: 'center',
-      // eslint-disable-next-line react/display-name
       render: status => (
         status
           ? <Tag color="success">Online</Tag>
@@ -74,7 +72,6 @@ const Dashboard: FC = () => {
       title: 'UPTIME',
       dataIndex: 'uptime',
       align: 'center',
-      // eslint-disable-next-line react/display-name
       render(uptime) {
         let str = '-';
         if (uptime !== '-') {
