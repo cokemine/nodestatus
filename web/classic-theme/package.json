@@ -1,0 +1,17 @@
+{
+  "name": "classic-theme",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "serve": "vite preview"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^1.9.4",
+    "typescript": "^4.4.4",
+    "vite": "^2.6.13",
+    "vue": "^3.2.20",
+    "vue-tsc": "^0.29.0"
+  }
+}
