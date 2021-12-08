@@ -1,15 +1,4 @@
 <template>
-  <div id="loading-notice">
-    <noscript>
-      <div class="alert alert-danger" style="text-align: center;">
-        <strong>Enable JavaScript</strong> , please do it.
-      </div>
-    </noscript>
-    <div style="text-align: center;">
-      警告:如果出现此消息，请确保您已启用Javascript! <br />否则云监控主服务没启动或已关闭.
-    </div>
-    <p></p>
-  </div>
   <table class="table table-striped table-condensed table-hover">
     <thead>
     <tr>

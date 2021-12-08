@@ -12,6 +12,7 @@
     "app:cli": "pnpm --filter=nodestatus-cli",
     "app:web": "pnpm --filter=hotaru-*",
     "dev": "npm run app:server dev",
+    "dev:classic": "cross-env THEME=classic-theme npm run dev",
     "build": "npm run app:main build && npm run app:web build",
     "postbuild": "node scripts/postbuild.js",
     "start": "npm run app:server start",

@@ -1,8 +1,9 @@
 <template>
   <the-header />
   <div class="container content">
-  <servers-table :servers="servers" />
-  <UpdateTime :updated="updated"/>
+    <the-error v-show="!servers" />
+    <servers-table :servers="servers" />
+    <UpdateTime :updated="updated" />
   </div>
   <the-footer />
 </template>
@@ -11,6 +12,7 @@
 import { onBeforeUnmount, ref } from 'vue';
 import TheHeader from './components/TheHeader.vue';
 import TheFooter from './components/TheFooter.vue';
+import TheError from './components/TheError.vue';
 import ServersTable from './components/ServersTable.vue';
 import UpdateTime from './components/UpdateTime.vue';
 import type { ServerItem } from './types';
@@ -36,6 +38,7 @@ body {
   padding-bottom: 30px;
   background: #ebebeb url('./assets/img/light.png');
 }
+
 .content {
   background: #ffffff;
   padding: 20px;

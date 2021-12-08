@@ -1,42 +1,44 @@
 <template>
-  <tr id="r0" data-toggle="collapse" data-target="#rt0" class="accordion-toggle even collapsed" aria-expanded="false">
-    <td id="online_status">
+  <tr>
+    <td class="online_status">
       <div class="progress">
-        <div style="width: 100%;" class="progress-bar progress-bar-success"><small>IPv4</small></div>
+        <div style="width: 100%;" :class="`progress-bar progress-bar-${getStatus ? 'success' : 'danger'}`">
+          <small>{{ getStatus ? getNetworkProtocol : '维护中' }}</small>
+        </div>
       </div>
     </td>
-    <td id="name">{{ server.name }}</td>
-    <td id="type">{{ server.type }}</td>
-    <td id="location">{{ server.location }}</td>
-    <td id="uptime">{{ getUpTime }}</td>
-    <td id="load">{{ server.load }}</td>
-    <td id="network">{{
+    <td class="name">{{ server.name }}</td>
+    <td class="type">{{ server.type }}</td>
+    <td class="location">{{ server.location }}</td>
+    <td class="uptime">{{ getUpTime }}</td>
+    <td class="load">{{ server.load }}</td>
+    <td class="network">{{
         getStatus
             ? `${formatNetwork(server.status.network_rx)} | ${formatNetwork(server.status.network_tx)}`
             : '–'
       }}
     </td>
-    <td id="traffic">{{
+    <td class="traffic">{{
         getStatus
             ? `${formatNetwork(server.status.network_in)} | ${formatNetwork(server.status.network_out)}`
             : '–'
       }}
     </td>
-    <td id="cpu">
+    <td class="cpu">
       <div class="progress">
         <div :class="`progress-bar progress-bar-${getProcessBarStatus(getCpuStatus)}`"
             :style="{'width': `${getCpuStatus.toString()}%`}">
           <small>{{ getStatus ? `${getCpuStatus.toString()}%` : '维护中' }}</small></div>
       </div>
     </td>
-    <td id="memory">
+    <td class="memory">
       <div class="progress">
         <div :class="`progress-bar progress-bar-${getProcessBarStatus(getRAMStatus)}`"
             :style="{'width': `${getRAMStatus.toString()}%`}">
           <small>{{ getStatus ? `${getRAMStatus.toString()}%` : '维护中' }}</small></div>
       </div>
     </td>
-    <td id="hdd">
+    <td class="hdd">
       <div class="progress">
         <div :class="`progress-bar progress-bar-${getProcessBarStatus(getHDDStatus)}`"
             :style="{'width': `${getHDDStatus.toString()}%`}">
@@ -47,7 +49,7 @@
 </template>
 
 <script lang="ts" setup>
-import { PropType } from 'vue';
+import { PropType, computed } from 'vue';
 import useStatus from '@nodestatus/web-utils/hooks/useStatus';
 import type { ServerItem } from '../types';
 // eslint-disable-next-line no-undef
@@ -59,14 +61,25 @@ const props = defineProps({
 });
 const {
   getStatus,
+  getNetworkProtocol,
   getCpuStatus,
   getRAMStatus,
   getHDDStatus,
-  getProcessBarStatus,
+  getProcessBarStatus: GetProcessBarStatus,
   getUpTime,
   formatNetwork,
   formatByte
 } = useStatus(props);
+
+// patch
+const getProcessBarStatus = computed(
+  () => (data: number) => {
+    const value = GetProcessBarStatus.value(data);
+    return value === 'error'
+      ? 'danger'
+      : value;
+  }
+);
 </script>
 
 <style>
