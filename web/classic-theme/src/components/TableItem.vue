@@ -48,7 +48,7 @@
 
 <script lang="ts" setup>
 import { PropType } from 'vue';
-import useStatus from './useStatus';
+import useStatus from '@nodestatus/web-utils/hooks/useStatus';
 import type { ServerItem } from '../types';
 // eslint-disable-next-line no-undef
 const props = defineProps({

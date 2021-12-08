@@ -165,12 +165,14 @@ importers:
 
   web/classic-theme:
     specifiers:
+      '@nodestatus/web-utils': workspace:*
       '@vitejs/plugin-vue': ^1.9.4
       typescript: ^4.4.4
       vite: ^2.6.13
       vue: ^3.2.20
       vue-tsc: ^0.29.0
     devDependencies:
+      '@nodestatus/web-utils': link:../utils
       '@vitejs/plugin-vue': 1.9.4_vite@2.6.13
       typescript: 4.4.4
       vite: 2.6.13
@@ -235,6 +237,7 @@ importers:
 
   web/hotaru-theme:
     specifiers:
+      '@nodestatus/web-utils': workspace:*
       '@vitejs/plugin-vue': ^1.9.4
       typescript: ^4.4.4
       vite: ^2.6.13
@@ -242,12 +245,19 @@ importers:
       vue: ^3.2.20
       vue-tsc: ^0.29.0
     devDependencies:
+      '@nodestatus/web-utils': link:../utils
       '@vitejs/plugin-vue': 1.9.4_vite@2.6.13
       typescript: 4.4.4
       vite: 2.6.13
       vite-plugin-svg-icons: 1.0.5_vite@2.6.13
       vue: 3.2.20
       vue-tsc: 0.29.5_typescript@4.4.4
+
+  web/utils:
+    specifiers:
+      vue: ^3.2.20
+    devDependencies:
+      vue: 3.2.20
 
 packages:
 
