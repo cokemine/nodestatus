@@ -11,7 +11,7 @@
     <td class="type">{{ server.type }}</td>
     <td class="location">{{ server.location }}</td>
     <td class="uptime">{{ getUpTime }}</td>
-    <td class="load">{{ server.load }}</td>
+    <td class="load">{{ getStatus ? getLoad : '-' }}</td>
     <td class="network">{{
         getStatus
             ? `${formatNetwork(server.status.network_rx)} | ${formatNetwork(server.status.network_tx)}`
@@ -61,6 +61,7 @@ const props = defineProps({
 });
 const {
   getStatus,
+  getLoad,
   getNetworkProtocol,
   getCpuStatus,
   getRAMStatus,

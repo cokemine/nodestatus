@@ -10,7 +10,7 @@
     "app:main": "pnpm --filter=nodestatus-*",
     "app:server": "pnpm --filter=nodestatus-server",
     "app:cli": "pnpm --filter=nodestatus-cli",
-    "app:web": "pnpm --filter=hotaru-*",
+    "app:web": "pnpm --filter=*-theme --filter=*-admin",
     "dev": "npm run app:server dev",
     "dev:classic": "cross-env THEME=classic-theme npm run dev",
     "build": "npm run app:main build && npm run app:web build",
