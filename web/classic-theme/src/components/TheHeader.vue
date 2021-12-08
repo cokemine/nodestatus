@@ -23,18 +23,8 @@
 
 <script lang="ts" setup>
 
-const setActiveStyleSheet = (theme: string): void => {
-  // const links = document.getElementsByTagName('link');
-  // for (let i = 0; i < links.length; i++) {
-  //   const link = links[i];
-  //   if (link.getAttribute('rel').indexOf('style') != -1 && link.getAttribute('title')) {
-  //     link.disabled = true;
-  //     if (link.getAttribute('title') === theme) {
-  //       link.disabled = false;
-  //     }
-  //   }
-  // }
-};
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const setActiveStyleSheet = (theme: string): void => {};
 
 </script>
 
