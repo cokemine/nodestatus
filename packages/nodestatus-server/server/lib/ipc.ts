@@ -1,6 +1,6 @@
 import net from 'net';
 import {
-  addServer, delServer, getRawListServers, setServer
+  addServer, removeServer, getRawListServers, setServer
 } from '../controller/status';
 import { createRes } from './utils';
 import type { Server } from '../../types/server';
@@ -35,7 +35,7 @@ export default function createIpc(): net.Server {
             break;
           }
           case 'del': {
-            const status = await delServer(payload);
+            const status = await removeServer(payload);
             client.write(JSON.stringify(status));
             break;
           }

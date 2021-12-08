@@ -11,6 +11,11 @@ export default (props: Props) => {
   const { server } = toRefs(props);
   const getStatus = computed((): boolean => server.value.status.online4 || server.value.status.online6);
 
+  const getLoad = computed((): string | number => {
+    const load = Number(server.value.status.load.toFixed(2));
+    return load % 1 ? load : Math.round(load);
+  });
+
   const getCpuStatus = computed(
     (): number => (
       server.value.status.cpu === undefined
@@ -78,6 +83,7 @@ export default (props: Props) => {
 
   return {
     getStatus,
+    getLoad,
     getCpuStatus,
     getRAMStatus,
     getHDDStatus,

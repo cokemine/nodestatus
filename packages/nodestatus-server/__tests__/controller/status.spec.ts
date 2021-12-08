@@ -4,24 +4,24 @@ import {
   addServer, authServer, getListServers, getServer, setServer
 } from '../../server/controller/status';
 import {
-  getListServers as _getListServers,
-  createServer as _addServer,
-  getServer as _getServer,
-  setServer as _setServer,
-  getServerPassword
+  readServersList,
+  createServer,
+  readServer,
+  updateServer,
+  readServerPassword
 } from '../../server/model/server';
 import { IServer, Prisma } from '../../types/server';
 
 jest.mock('../../server/model/server');
 
-const GetListServers = _getListServers as jest.MockedFunction<typeof _getListServers>;
-const CreateServer = _addServer as jest.MockedFunction<typeof _addServer>;
-const GetServer = _getServer as jest.MockedFunction<typeof _getServer>;
-const SetServer = _setServer as jest.MockedFunction<typeof _setServer>;
-const GetServerPassword = getServerPassword as jest.MockedFunction<typeof getServerPassword>;
+const ReadServersList = readServersList as jest.MockedFunction<typeof readServersList>;
+const CreateServer = createServer as jest.MockedFunction<typeof createServer>;
+const ReadServer = readServer as jest.MockedFunction<typeof readServer>;
+const UpdateServer = updateServer as jest.MockedFunction<typeof updateServer>;
+const ReadServerPassword = readServerPassword as jest.MockedFunction<typeof readServerPassword>;
 
 afterEach(() => {
-  [GetListServers, CreateServer, GetServer, SetServer, GetServerPassword].forEach(mockReset);
+  [ReadServersList, CreateServer, ReadServer, UpdateServer, ReadServerPassword].forEach(mockReset);
 });
 
 const mockServerInput = (str: string): Prisma.ServerCreateInput => ({
@@ -51,7 +51,7 @@ const mockIServer = (str: string | Prisma.ServerCreateInput, disabled = false): 
 };
 
 test('Call get servers first and expect empty object', () => {
-  GetListServers.mockResolvedValueOnce([]);
+  ReadServersList.mockResolvedValueOnce([]);
   expect(getListServers()).resolves.toEqual({ code: 0, data: {}, msg: 'ok' });
 });
 
@@ -59,7 +59,7 @@ test('Create a server and find unique Server', async () => {
   const server = mockServerInput('username'),
     iServer = mockIServer(server);
   await expect(addServer(server)).resolves.toEqual({ code: 0, data: null, msg: 'ok' });
-  GetServer.mockResolvedValueOnce(iServer);
+  ReadServer.mockResolvedValueOnce(iServer);
   const result = await getServer('username');
   expect(result.code).toBe(0);
   expect(result.msg).toBe('ok');
@@ -79,7 +79,7 @@ test('Set Server with disabled', async () => {
   await expect(setServer('username', {
     disabled: true
   })).resolves.toEqual({ code: 0, data: null, msg: 'ok' });
-  GetServer.mockResolvedValueOnce(mockIServer('username', true));
+  ReadServer.mockResolvedValueOnce(mockIServer('username', true));
   await expect(getServer('username')).resolves.toEqual({
     code: 1,
     data: null,
@@ -96,7 +96,7 @@ test('get List Servers', async () => {
       msg: 'ok'
     })
   ));
-  GetListServers.mockResolvedValueOnce(servers.map(({ name }) => mockIServer(name)));
+  ReadServersList.mockResolvedValueOnce(servers.map(({ name }) => mockIServer(name)));
   const result = await getListServers();
   expect(result).toMatchObject({
     code: 0,
@@ -111,10 +111,10 @@ test('get List Servers', async () => {
 
 test('auth password', async () => {
   const password = await hash('username', 8);
-  GetServerPassword.mockResolvedValue(password);
+  ReadServerPassword.mockResolvedValue(password);
   await expect(authServer('username', 'username')).resolves.toBe(true);
   await expect(authServer('username', 'false_password')).resolves.toBe(false);
   /* NULL USERNAME */
-  GetServerPassword.mockResolvedValue(null);
+  ReadServerPassword.mockResolvedValue(null);
   return expect(authServer('username2', 'username2')).resolves.toBe(false);
 });

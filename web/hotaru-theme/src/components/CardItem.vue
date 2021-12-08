@@ -16,7 +16,7 @@
         <p>Network: {{
             `${formatNetwork(server.status.network_rx)} | ${formatNetwork(server.status.network_tx)}`
           }}</p>
-        <p>负载状态: {{ getStatus ? server.status.load : 'Offline' }}</p>
+        <p>负载状态: {{ getStatus ? getLoad : 'Offline' }}</p>
       </div>
     </div>
   </div>
@@ -36,9 +36,12 @@ export default defineComponent({
     }
   },
   setup(props) {
-    const { getStatus, getRAMStatus, formatNetwork } = useStatus(props);
+    const {
+      getStatus, getLoad, getRAMStatus, formatNetwork
+    } = useStatus(props);
     return {
       getStatus,
+      getLoad,
       getRAMStatus,
       formatNetwork
     };
