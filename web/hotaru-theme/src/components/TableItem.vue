@@ -12,9 +12,7 @@
     <td>{{ getUpTime || '–' }}</td>
     <td>{{
         getStatus
-            ? Number(server.status.load.toFixed(2)) % 1
-                ? server.status.load.toFixed(2)
-                : Math.round(server.status.load)
+            ? getLoad
             : '-'
       }}
     </td>

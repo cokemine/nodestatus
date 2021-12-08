@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Menu } from 'antd';
 import {
-  DashboardOutlined, ProfileFilled, PieChartFilled, AlertFilled
+  DashboardOutlined, ProfileFilled, AlertFilled
 } from '@ant-design/icons';
 import logo from '../assets/img/logo.png';
 import smallLogo from '../assets/img/logo.svg';

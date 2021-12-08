@@ -1,11 +1,11 @@
 import { compare } from 'bcryptjs';
 import {
-  getListServers as _getListServers,
-  createServer as _addServer,
-  getServer as _getServer,
-  setServer as _setServer,
-  delServer as _delServer,
-  getServerPassword
+  readServersList,
+  createServer,
+  readServer,
+  updateServer,
+  deleteServer,
+  readServerPassword
 } from '../model/server';
 import {
   createEvent,
@@ -27,25 +27,25 @@ async function handleRequest<T = any>(handler: Promise<T>): Promise<IResp<T>> {
 }
 
 export async function authServer(username: string, password: string): Promise<boolean> {
-  const res = await handleRequest(getServerPassword(username));
+  const res = await handleRequest(readServerPassword(username));
   if (res.code || !res.data) return false;
   return compare(password, res.data);
 }
 
 export function addServer(obj: Prisma.ServerCreateInput): Promise<IResp<void>> {
-  return handleRequest(_addServer(obj));
+  return handleRequest(createServer(obj));
 }
 
 export function setServer(username: string, obj: Partial<Server>): Promise<IResp<void>> {
-  return handleRequest(_setServer(username, obj));
+  return handleRequest(updateServer(username, obj));
 }
 
-export function delServer(username: string): Promise<IResp<void>> {
-  return handleRequest(_delServer(username));
+export function removeServer(username: string): Promise<IResp<void>> {
+  return handleRequest(deleteServer(username));
 }
 
 export async function getListServers(): Promise<IResp<Box>> {
-  const result = await handleRequest(_getListServers());
+  const result = await handleRequest(readServersList());
   if (result.code) return result as any;
   const obj: Box = {};
 
@@ -58,7 +58,7 @@ export async function getListServers(): Promise<IResp<Box>> {
 }
 
 export async function getServer(username: string): Promise<IResp<BoxItem | null>> {
-  const result = await handleRequest(_getServer(username));
+  const result = await handleRequest(readServer(username));
   if (result.code || !result.data) return result;
   const { data } = result;
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -68,7 +68,7 @@ export async function getServer(username: string): Promise<IResp<BoxItem | null>
 }
 
 export function getRawListServers(): Promise<IResp<IServer[]>> {
-  return handleRequest(_getListServers());
+  return handleRequest(readServersList());
 }
 
 export function createNewEvent(username: string): Promise<IResp> {
