@@ -4,7 +4,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import useUpTime from '@nodestatus/web-utils/hooks/useUpTime';
+import useUpTime from '@nodestatus/web-utils/vue/hooks/useUpTime';
 
 export default defineComponent({
   name: 'UpdateTime',

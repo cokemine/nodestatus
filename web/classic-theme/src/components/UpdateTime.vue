@@ -3,7 +3,7 @@
 </template>
 
 <script lang="ts" setup>
-import useUpTime from '@nodestatus/web-utils/hooks/useUpTime';
+import useUpTime from '@nodestatus/web-utils/vue/hooks/useUpTime';
 // eslint-disable-next-line no-undef
 const props = defineProps({
   updated: Number

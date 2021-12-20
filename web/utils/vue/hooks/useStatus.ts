@@ -1,6 +1,6 @@
 import { computed, toRefs } from 'vue';
 
-import { ServerItem } from '../types';
+import { ServerItem } from '../../types';
 
 interface Props {
   server: ServerItem;

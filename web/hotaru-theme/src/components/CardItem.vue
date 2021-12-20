@@ -24,7 +24,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from 'vue';
-import useStatus from '@nodestatus/web-utils/hooks/useStatus';
+import useStatus from '@nodestatus/web-utils/vue/hooks/useStatus';
 import type { ServerItem } from '../types';
 
 export default defineComponent({
