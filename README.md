@@ -47,7 +47,7 @@ npm i nodestatus-server@latest --unsafe-perm -g
 curl -fsSL https://get.docker.com | bash -s docker
 docker --version
 mkdir -p ~/.docker/cli-plugins/
-curl -SL https://github.com/docker/compose/releases/download/v2.0.0-rc.3/docker-compose-linux-amd64 -o ~/.docker/cli-plugins/docker-compose # for x86_64
+curl -SL https://github.com/docker/compose/releases/latest/download/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose # for x86_64
 chmod +x ~/.docker/cli-plugins/docker-compose
 
 # Download docker-compose.yml
