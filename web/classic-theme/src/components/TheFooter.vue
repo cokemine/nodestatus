@@ -9,7 +9,7 @@
 <style>
 .footer {
   text-align: center;
-  font-size: 14px;
+  font-size: 1.2rem;
   letter-spacing: .08rem;
 }
 </style>

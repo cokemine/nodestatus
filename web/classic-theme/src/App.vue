@@ -3,7 +3,7 @@
   <div class="container content">
     <the-error v-show="!servers" />
     <servers-table :servers="servers" />
-    <UpdateTime :updated="updated" />
+    <UpdateTime :updated="updated" style="padding: 10px" />
   </div>
   <the-footer />
 </template>
@@ -44,9 +44,62 @@ body {
   padding: 20px;
   border-radius: 5px;
   border: 1px #cecece solid;
-  -webkit-box-shadow: 0 1px 10px rgba(0, 0, 0, .1);
-  -moz-box-shadow: 0 1px 10px rgba(0, 0, 0, .1);
   box-shadow: 0 1px 10px rgba(0, 0, 0, .1);
   margin-bottom: 20px;
 }
+
+/* Responsive */
+
+@media only screen and (max-width: 1080px) {
+  .type, #type,
+  .uptime, #uptime {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .container {
+    margin: 0 5px 20px 5px;
+  }
+}
+
+@media only screen and (max-width: 720px) {
+  body {
+    font-size: 12px;
+  }
+}
+
+@media only screen and (max-width: 620px) {
+  .location, #location {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 533px) {
+  .traffic, #traffic {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 450px) {
+  .name, #name {
+    min-width: 55px;
+    max-width: 85px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .cpu, .ram, .hdd {
+    min-width: 25px;
+    max-width: 50px;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  body {
+    font-size: 10px;
+  }
+}
+
 </style>

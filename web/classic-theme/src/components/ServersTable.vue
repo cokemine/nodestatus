@@ -10,7 +10,7 @@
       <th id="load">负载</th>
       <th id="network">网络 ↓|↑</th>
       <th id="traffic">流量 ↓|↑</th>
-      <th id="cpu">处理器</th>
+      <th id="cpu">CPU</th>
       <th id="ram">内存</th>
       <th id="hdd">硬盘</th>
       <th id="ping" style="display:none">丢包率(CU|CT|CM)</th>

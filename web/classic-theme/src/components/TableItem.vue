@@ -148,17 +148,9 @@ tr.odd + .expandRow {
   max-height: 0;
 }
 
-.network {
-  min-width: 115px;
-}
-
 .cpu, .memory, .hdd {
   min-width: 45px;
   max-width: 90px;
-}
-
-.ping {
-  max-width: 95px;
 }
 
 </style>
