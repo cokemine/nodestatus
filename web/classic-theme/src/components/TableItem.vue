@@ -1,5 +1,5 @@
 <template>
-  <tr>
+  <tr :class="`tableRow ${(order + 1) % 2 ? 'odd' : 'even'}`" @click="collapsed = !collapsed">
     <td class="online_status">
       <div class="progress">
         <div style="width: 100%;" :class="`progress-bar progress-bar-${getStatus ? 'success' : 'danger'}`">
@@ -46,10 +46,38 @@
       </div>
     </td>
   </tr>
+  <tr class="expandRow">
+    <td colspan="12">
+      <div :class="{collapsed}" :style="{'max-height': getStatus ? '' : '0'}">
+        <div>内存信息: {{
+            getStatus
+                ? `${formatByte(server.status.memory_used * 1024)}
+                 / ${formatByte(server.status.memory_total * 1024)}`
+                : '–'
+          }}
+        </div>
+        <div>交换分区: {{
+            getStatus
+                ? `${formatByte(server.status.swap_used * 1024)}
+                 / ${formatByte(server.status.swap_total * 1024)}`
+                : '–'
+          }}
+        </div>
+        <div>硬盘信息: {{
+            getStatus
+                ? `${formatByte(server.status.hdd_used * 1024 * 1024)}
+                 / ${formatByte(server.status.hdd_total * 1024 * 1024)}`
+                : '–'
+          }}
+        </div>
+        <!--        <div id="expand_custom">{{server.custom}}</div>-->
+      </div>
+    </td>
+  </tr>
 </template>
 
 <script lang="ts" setup>
-import { PropType, computed } from 'vue';
+import { PropType, computed, ref } from 'vue';
 import useStatus from '@nodestatus/web-utils/vue/hooks/useStatus';
 import type { ServerItem } from '../types';
 // eslint-disable-next-line no-undef
@@ -57,8 +85,10 @@ const props = defineProps({
   server: {
     type: Object as PropType<ServerItem>,
     default: () => ({ status: {} })
-  }
+  },
+  order: Number
 });
+
 const {
   getStatus,
   getLoad,
@@ -81,6 +111,9 @@ const getProcessBarStatus = computed(
       : value;
   }
 );
+
+const collapsed = ref(true);
+
 </script>
 
 <style>
@@ -92,20 +125,40 @@ const getProcessBarStatus = computed(
   color: #000;
 }
 
-.table-hover > tbody > tr:hover > td {
-  background: #E6E6E6;
+tr.even + .expandRow {
+  background-color: #FFF !important;
 }
 
-tr.even.expandRow > :hover {
+tr.odd + .expandRow {
   background: #F9F9F9 !important;
-}
-
-tr.odd.expandRow > :hover {
-  background: #FFF !important;
 }
 
 .expandRow > td {
   padding: 0 !important;
-  border-top: 0px !important;
+  border-top: 0 !important;
 }
+
+.expandRow td > div {
+  overflow: hidden;
+  transition: max-height .5s ease;
+  max-height: 60px;
+}
+
+.expandRow td > .collapsed {
+  max-height: 0;
+}
+
+.network {
+  min-width: 115px;
+}
+
+.cpu, .memory, .hdd {
+  min-width: 45px;
+  max-width: 90px;
+}
+
+.ping {
+  max-width: 95px;
+}
+
 </style>

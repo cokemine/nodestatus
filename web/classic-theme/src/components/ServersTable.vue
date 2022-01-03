@@ -18,7 +18,7 @@
     </thead>
     <tbody id="servers">
     <!-- Servers here \o/ -->
-    <table-item v-for="server of servers" :key="server.id" :server="server" />
+    <table-item v-for="(server,index) of servers" :key="server.id" :server="server" :order="index" />
     </tbody>
   </table>
 </template>
@@ -49,11 +49,11 @@ defineProps({
   text-align: center;
 }
 
-.table-striped tbody > tr.even > td, .table-striped tbody > tr.even > th {
-  background-color: #F9F9F9;
+.table-striped tbody > tr.even {
+  background-color: #FFF;
 }
 
-.table-striped tbody > tr.odd > td, .table-striped tbody > tr.odd > th {
-  background-color: #FFF;
+.table-striped tbody > tr.odd {
+  background-color: #F9F9F9;
 }
 </style>
