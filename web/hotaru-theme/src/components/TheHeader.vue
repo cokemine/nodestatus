@@ -2,9 +2,9 @@
   <div class="ui vertical masthead center aligned" id="header">
     <div class="header__content">
       <h1 class="ui inverted header">
-        {{ header }}
+        Server Status
       </h1>
-      <p>{{ subHeader }}</p>
+      <p>Servers' Probes Set up with NodeStatus</p>
     </div>
   </div>
 </template>
@@ -12,13 +12,7 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'TheHeader',
-  setup() {
-    const { header, subHeader } = window.__PRE_CONFIG__;
-    return {
-      header, subHeader
-    };
-  }
+  name: 'TheHeader'
 });
 </script>
 <style>
