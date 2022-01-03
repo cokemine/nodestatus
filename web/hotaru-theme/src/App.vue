@@ -12,10 +12,10 @@
 <script lang="ts">
 import { defineComponent, ref, onBeforeUnmount } from 'vue';
 
+import TheError from '@nodestatus/web-utils/vue/components/TheError.vue';
+import UpdateTime from '@nodestatus/web-utils/vue/components/UpdateTime.vue';
 import TheHeader from './components/TheHeader.vue';
-import TheError from './components/TheError.vue';
 import ServersTable from './components/ServersTable.vue';
-import UpdateTime from './components/UpdateTime.vue';
 import ServersCard from './components/ServersCard.vue';
 import TheFooter from './components/TheFooter.vue';
 import type { ServerItem } from './types';

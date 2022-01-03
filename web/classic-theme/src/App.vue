@@ -10,11 +10,11 @@
 
 <script lang="ts" setup>
 import { onBeforeUnmount, ref } from 'vue';
+import TheError from '@nodestatus/web-utils/vue/components/TheError.vue';
+import UpdateTime from '@nodestatus/web-utils/vue/components/UpdateTime.vue';
 import TheHeader from './components/TheHeader.vue';
 import TheFooter from './components/TheFooter.vue';
-import TheError from './components/TheError.vue';
 import ServersTable from './components/ServersTable.vue';
-import UpdateTime from './components/UpdateTime.vue';
 import type { ServerItem } from './types';
 
 const servers = ref<Array<ServerItem>>();
