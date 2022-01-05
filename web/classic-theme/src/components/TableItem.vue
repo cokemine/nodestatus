@@ -86,7 +86,10 @@ const props = defineProps({
     type: Object as PropType<ServerItem>,
     default: () => ({ status: {} })
   },
-  order: Number
+  order: {
+    type: Number,
+    required: true
+  }
 });
 
 const {
