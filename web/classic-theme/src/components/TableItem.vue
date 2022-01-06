@@ -80,7 +80,7 @@
 import { PropType, computed, ref } from 'vue';
 import useStatus from '@nodestatus/web-utils/vue/hooks/useStatus';
 import type { ServerItem } from '../types';
-// eslint-disable-next-line no-undef
+
 const props = defineProps({
   server: {
     type: Object as PropType<ServerItem>,

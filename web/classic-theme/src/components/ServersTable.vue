@@ -28,7 +28,6 @@ import { PropType } from 'vue';
 import TableItem from './TableItem.vue';
 import type { ServerItem } from '../types';
 
-// eslint-disable-next-line no-undef
 defineProps({
   servers: {
     type: Array as PropType<Array<ServerItem>>,
