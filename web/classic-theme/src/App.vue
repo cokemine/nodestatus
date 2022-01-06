@@ -66,6 +66,10 @@ body {
   body {
     font-size: 12px;
   }
+
+  .main .expandRow td > div {
+    max-height: 5rem;
+  }
 }
 
 @media only screen and (max-width: 620px) {
@@ -83,10 +87,11 @@ body {
 @media only screen and (max-width: 450px) {
   .name, #name {
     min-width: 20px;
-    max-width: 60px;
+    max-width: 50px;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+    text-align: left;
   }
 
   .cpu, .ram, .hdd {
@@ -100,9 +105,9 @@ body {
     font-size: 10px;
   }
 
-  .load, #load {
-    display: none;
-  }
+  /*.load, #load {*/
+  /*  display: none;*/
+  /*}*/
 }
 
 </style>

@@ -128,6 +128,10 @@ const collapsed = ref(true);
   color: #000;
 }
 
+.tableRow td {
+  vertical-align: middle!important;
+}
+
 tr.even + .expandRow {
   background-color: #FFF !important;
 }
@@ -144,11 +148,11 @@ tr.odd + .expandRow {
 .expandRow td > div {
   overflow: hidden;
   transition: max-height .5s ease;
-  max-height: 60px;
+  max-height: 6rem;
 }
 
-.expandRow td > .collapsed {
-  max-height: 0;
+.expandRow td > div.collapsed {
+  max-height: 0!important;
 }
 
 .cpu, .memory, .hdd {
