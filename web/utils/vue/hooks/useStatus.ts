@@ -1,6 +1,6 @@
 import { computed, toRefs } from 'vue';
 
-import { ServerItem } from '../types';
+import { ServerItem } from '../../types';
 
 interface Props {
   server: ServerItem;
@@ -23,6 +23,16 @@ export default (props: Props) => {
         : Math.round(server.value.status.cpu)
     )
   );
+
+  const getNetworkProtocol = computed((): string => {
+    if (server.value.status.online4 && server.value.status.online6) {
+      return '双栈';
+    } if (server.value.status.online4) {
+      return 'IPv4';
+    } if (server.value.status.online6) {
+      return 'IPv6';
+    } return '维护中';
+  });
 
   const getRAMStatus = computed(
     (): number => (
@@ -83,6 +93,7 @@ export default (props: Props) => {
 
   return {
     getStatus,
+    getNetworkProtocol,
     getLoad,
     getCpuStatus,
     getRAMStatus,

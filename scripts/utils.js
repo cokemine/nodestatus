@@ -16,11 +16,7 @@ function findModPath() {
         continue;
       }
 
-      let cmd = exist('yarn.lock') ? 'yarn' : 'npm';
-
-      os.platform().startsWith('win') && (cmd += '.cmd');
-
-      list.push({ modPath, cmd });
+      list.push({ modPath, mod });
     }
 
     return list;

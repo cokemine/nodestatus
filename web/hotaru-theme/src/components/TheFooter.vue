@@ -1,17 +1,14 @@
 <template>
-  <div v-html="footer" class="footer"></div>
+  <div class="footer">
+    <p>Powered by <a href="https://github.com/cokemine/nodestatus">NodeStatus</a></p>
+  </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'TheFooter',
-  setup() {
-    return {
-      footer: window.__PRE_CONFIG__.footer
-    };
-  }
+  name: 'TheFooter'
 });
 </script>
 

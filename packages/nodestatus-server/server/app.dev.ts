@@ -8,7 +8,7 @@ import { logger } from './lib/utils';
 import config from './lib/config';
 
 const middlewares: Record<string, Middleware> = {};
-const webs = [{ name: 'hotaru-theme', publicPath: '/' }, { name: 'hotaru-admin', publicPath: '/admin' }];
+const webs = [{ name: config.theme, publicPath: '/' }, { name: 'hotaru-admin', publicPath: '/admin' }];
 
 let { port } = config;
 const createMiddleware = async (name: string, publicPath: string): Promise<Middleware> => {
@@ -41,7 +41,7 @@ const createMiddleware = async (name: string, publicPath: string): Promise<Middl
   }) => middlewares[name] = await createMiddleware(name, publicPath)));
 
   app.use(middlewares['hotaru-admin']);
-  app.use(middlewares['hotaru-theme']);
+  app.use(middlewares[config.theme]);
 
   app.use(historyApiFallback({
     whiteList: ['/admin/assets', '/telegraf'],

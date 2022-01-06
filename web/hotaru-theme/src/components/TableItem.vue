@@ -83,7 +83,7 @@
 <script lang="ts">
 import { defineComponent, ref, PropType } from 'vue';
 
-import useStatus from './useStatus';
+import useStatus from '@nodestatus/web-utils/vue/hooks/useStatus';
 import type { ServerItem } from '../types';
 
 export default defineComponent({

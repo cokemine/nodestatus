@@ -91,6 +91,9 @@ module.exports = {
         project: ['./tsconfig.json', './web/**/tsconfig.json'],
         extraFileExtensions: ['.vue']
       },
+      env: {
+        'vue/setup-compiler-macros': true,
+      },
       rules: {
         'react-hooks/rules-of-hooks': 'off'
       }

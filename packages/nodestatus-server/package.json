@@ -45,6 +45,7 @@
     "@types/koa__router": "^8.0.8",
     "@types/ws": "^7.4.7",
     "bcryptjs": "^2.4.3",
+    "classic-theme": "workspace:*",
     "commander": "^8.3.0",
     "cross-env": "^7.0.3",
     "encoding": "^0.1.13",

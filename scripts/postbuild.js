@@ -10,7 +10,8 @@ if (fs.pathExistsSync(outputDir)) {
   fs.removeSync(outputDir);
 }
 
-list.forEach(({ modPath }) => {
+list.forEach(({ modPath, mod }) => {
+  if (!mod.includes('theme') && !mod.includes('admin')) return;
   const buildDirName = fs.existsSync(`${modPath}/dist`) ? 'dist' : 'build';
   const buildPath = path.join(modPath, `./${buildDirName}`);
   fs.copySync(buildPath, `${outputDir}/${path.basename(modPath)}`);
