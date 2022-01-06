@@ -1,6 +1,6 @@
 <template>
   <the-header />
-  <div class="container content">
+  <div class="main container content">
     <the-error v-show="!servers" />
     <servers-table :servers="servers" />
     <UpdateTime :updated="updated" style="padding: 10px" />
@@ -35,11 +35,10 @@ onBeforeUnmount(ws.close);
 body {
   /* Replace your background image at this place! */
   padding-top: 70px;
-  padding-bottom: 30px;
   background: #ebebeb url('./assets/img/light.png');
 }
 
-.content {
+.main.content {
   background: #ffffff;
   padding: 20px;
   border-radius: 5px;
@@ -58,7 +57,7 @@ body {
 }
 
 @media only screen and (max-width: 768px) {
-  .container {
+  .main.container {
     margin: 0 5px 20px 5px;
   }
 }
@@ -83,8 +82,8 @@ body {
 
 @media only screen and (max-width: 450px) {
   .name, #name {
-    min-width: 55px;
-    max-width: 85px;
+    min-width: 20px;
+    max-width: 60px;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
@@ -99,6 +98,10 @@ body {
 @media only screen and (max-width: 400px) {
   body {
     font-size: 10px;
+  }
+
+  .load, #load {
+    display: none;
   }
 }
 
