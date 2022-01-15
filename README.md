@@ -2,7 +2,7 @@
 
 Yet another servers monitor written in TypeScript.
 
-Current Version: 1.2.2-beta.1
+Current Version: 1.2.3-beta
 
 ## How To Install
 
@@ -84,7 +84,7 @@ Node.js Version: https://github.com/cokemine/nodestatus-client
 
 **VERBOSE**: 是否启动 verbose 模式，启动后会输出更多信息，默认 `false`
 
-**THEME**： NodeStatus 前端使用的主题，默认 `hotaru-theme`
+**THEME**： NodeStatus 前端使用的主题，默认 `hotaru-theme`, 可选 `hotaru-theme` | `classic-theme`
 
 &nbsp;
 
