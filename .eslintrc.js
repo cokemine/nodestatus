@@ -92,7 +92,7 @@ module.exports = {
         extraFileExtensions: ['.vue']
       },
       env: {
-        'vue/setup-compiler-macros': true,
+        'vue/setup-compiler-macros': true
       },
       rules: {
         'react-hooks/rules-of-hooks': 'off'

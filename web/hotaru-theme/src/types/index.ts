@@ -1,1 +1,1 @@
-export { ServerItem } from '../../../../types';
+export { ServerItem } from '@nodestatus/web-utils/types';

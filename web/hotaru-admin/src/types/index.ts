@@ -1,6 +1,6 @@
 export type {
   IResp, IServer, ServerItem, Event
-} from '../../../../types';
+} from '@nodestatus/web-utils/types';
 
 export interface ITable {
   name: string;
