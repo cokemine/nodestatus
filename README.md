@@ -66,7 +66,7 @@ docker compose up -d
 
 ## Client
 
-Golang Version: https://github.com/cokemine/nodestatus-client-go
+Go Version: https://github.com/cokemine/nodestatus-client-go
 
 Node.js Version: https://github.com/cokemine/nodestatus-client
 
@@ -78,7 +78,7 @@ Node.js Version: https://github.com/cokemine/nodestatus-client
 
 **INTERVAL**: 服务端推送间隔时间, 默认 `1500` (1.5秒)
 
-**DATABASE**: 数据库位置文件存放位置, 默认使用 SQLite (Linux): `file:/usr/local/NodeStatus/server/db.sqlite`，支持的数据库有 `sqlite`、`MySQL`、`PostgreSQL`，请使用对应的正确数据源链接格式填写：`SQLite`应以`file:`开头, `MySQL`应以`mysql:`开头, `PostgreSQL`应以`postgresql:`开头。
+**DATABASE**: 数据库位置文件存放位置, 默认使用 SQLite (Linux): `file:/usr/local/NodeStatus/server/db.sqlite`，支持的数据库有 `SQLite`、`MySQL`、`PostgreSQL`，请使用对应的正确数据源链接格式填写：`SQLite`应以`file:`开头, `MySQL`应以`mysql:`开头, `PostgreSQL`应以`postgresql:`开头。
 
 **PORT**: NodeStatus 所用端口, 默认 `35601`
 
@@ -173,7 +173,7 @@ server {
   ssl_stapling on;
   ssl_stapling_verify on;
   server_name status.domain.com; # 需要绑定的域名
-  access_log /data/wwwlogs/status.domain.com_nginx.log combined; # 日志位置, 目录如果不存在需要提前创建好
+  access_log /var/log/nginx/status.domain.com_nginx.log combined; # 日志位置, 目录如果不存在需要提前创建好
 
   location / {
     proxy_set_header X-Real-IP $remote_addr;
@@ -188,14 +188,38 @@ server {
 }
 ```
 
+### Caddy V2
+
+```
+https://status.domain.com {
+  encode zstd gzip
+  # tls your_cert_file your_key_file
+  # tls your_email
+  reverse_proxy http://127.0.0.1:35601
+}
+```
+
+### Caddy V1
+
+```
+https://status.domain.com {
+  gzip
+  # tls your_cert_file your_key_file
+  # tls your_email
+  proxy / http://127.0.0.1:35601 {
+  	websocket
+  	transparent
+  }
+}
+```
+
 ## How To Debug
 
 ```shell
 npm i pnpm -g
-mkdir -p /usr/local/nodestatus && cd /usr/local/nodestatus
-git clone --recurse-submodules https://github.com/cokemine/nodestatus.git .
+git clone https://github.com/cokemine/nodestatus.git
+cd nodestatus
 pnpm install
-pnpm build
 pnpm dev
 ```
 
@@ -203,7 +227,7 @@ pnpm dev
 
 ```shell
 Options:
-  -db, --database <db>       the path of database (default: "/usr/local/nodestatus/db.sqlite")
+  -db, --database <db>       the path of database (default: "/usr/local/NodeStatus/server/db.sqlite")
   -p, --port <port>          the port of NodeStatus (default: "35601")
   -i, --interval <interval>  update interval (default: "1500")
   -h, --help                 display help for command
