@@ -1,5 +1,4 @@
 const fs = require('fs');
-const os = require('os');
 const { resolve } = require('path');
 
 const libDir = resolve(__dirname, '../web');
