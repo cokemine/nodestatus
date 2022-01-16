@@ -8,13 +8,12 @@
 const fs = require('fs');
 const { platform, homedir } = require('os');
 const { resolve } = require('path');
-const path = require('path');
 const cp = require('child_process');
 const replace = require('replace-in-file');
 const dotenv = require('dotenv');
 
 function backupDatabase(dbPath) {
-  if (!fs.existsSync(dbPath)) return;
+  if (!fs.existsSync(dbPath) || process.env.NODE_ENV === 'TEST') return;
   console.log('The database file is detected to already exist.');
   console.log('Trying to update database schema.....');
   const date = new Date();
@@ -54,7 +53,7 @@ function initDatabase() {
 
   /* Replace provider since prisma dropped provider array notation support */
   replace.replaceInFile({
-    files: path.resolve(__dirname, '../prisma/schema.prisma'),
+    files: resolve(__dirname, '../prisma/schema.prisma'),
     from: /provider = "\w+"/,
     to: `provider = "${databaseType}"`
   }).then(() => {
@@ -79,5 +78,11 @@ function initDatabase() {
   });
 }
 
-dotenv.config({ path: path.resolve(homedir(), '.nodestatus/.env.local') });
+if (process.env.NODE_ENV === 'TEST' && !process.env.DATABASE) {
+  const database = resolve(__dirname, '../db.test.sqlite');
+  fs.rmSync(database, { force: true });
+  process.env.DATABASE = database.replace(/\\/g, '/');
+}
+
+dotenv.config({ path: resolve(homedir(), '.nodestatus/.env.local') });
 initDatabase();

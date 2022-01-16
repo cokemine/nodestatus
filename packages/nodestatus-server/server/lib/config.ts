@@ -4,7 +4,9 @@ import dotenv from 'dotenv';
 import { program } from 'commander';
 import { logger } from './utils';
 
-dotenv.config({ path: resolve(homedir(), '.nodestatus/.env.local') });
+if (process.env.NODE_ENV !== 'TEST') {
+  dotenv.config({ path: resolve(homedir(), '.nodestatus/.env.local') });
+}
 
 program
   .option('-db, --database <db>', 'the path of database', platform() === 'win32' ? `file:${resolve(homedir(), '.nodestatus/db.sqlite')}` : 'file:/usr/local/NodeStatus/server/db.sqlite')
@@ -15,7 +17,7 @@ const options = program.opts();
 
 let database = process.env.DATABASE || (
   process.env.NODE_ENV === 'TEST'
-    ? resolve(__dirname, '../../db.base.sqlite')
+    ? resolve(__dirname, '../../db.test.sqlite')
     : options.database
 );
 

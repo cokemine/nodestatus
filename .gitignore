@@ -4,7 +4,7 @@ dist
 build
 app-minimal
 db.sqlite
-db.base.sqlite
+db.test.sqlite
 
 
 # local env files

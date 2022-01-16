@@ -22,6 +22,7 @@
   "scripts": {
     "postinstall": "node scripts/init.js",
     "prestart": "node scripts/init.js",
+    "pretest": "node scripts/init.js",
     "start": "node build/app.js",
     "dev": "cross-env NODE_ENV=development rollup -c --watch",
     "build": "rollup -c",
