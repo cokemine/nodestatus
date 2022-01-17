@@ -12,12 +12,11 @@ ARG USE_CHINA_MIRROR=0
 RUN if [ "$USE_CHINA_MIRROR" = 1 ]; then \
   sed -i 's/http:\/\/.*\.debian.org/http:\/\/mirrors.cloud.tencent.com/g' /etc/apt/sources.list \
   && npm config set registry https://mirrors.cloud.tencent.com/npm/ \
-  && yarn config set registry https://mirrors.cloud.tencent.com/npm/; \
+  && npm config set PRISMA_BINARIES_MIRROR https://r.cnpmjs.org/-/binary/prisma; \
   fi;\
   apt-get -y update \
   && apt-get install -y git python3 apt-transport-https ca-certificates build-essential \
   && ln -s /usr/bin/python3 /usr/bin/python \
-  && yarn config set network-timeout 600000 \
   && npm install pnpm -g \
   && pnpm install --unsafe-perm \
   && pnpm build
@@ -51,7 +50,7 @@ ARG USE_CHINA_MIRROR=0
 RUN if [ "$USE_CHINA_MIRROR" = 1 ]; then \
   sed -i 's/dl-cdn.alpinelinux.org/mirrors.cloud.tencent.com/g' /etc/apk/repositories \
   && npm config set registry https://mirrors.cloud.tencent.com/npm/ \
-  && yarn config set registry https://mirrors.cloud.tencent.com/npm/; \
+  && npm config set PRISMA_BINARIES_MIRROR https://r.cnpmjs.org/-/binary/prisma; \
   fi;\
   apk add --no-cache --virtual .build-deps git make gcc g++ python3 \
   && npm install pm2 pnpm prisma -g \
