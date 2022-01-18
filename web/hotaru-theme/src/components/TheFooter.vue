@@ -19,7 +19,6 @@ export default defineComponent({
 }
 
 .footer p a {
-  vertical-align: middle;
   transition: color .3s ease;
 }
 
