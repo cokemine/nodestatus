@@ -44,7 +44,7 @@
     "@types/koa-mount": "^4.0.1",
     "@types/koa-static": "^4.0.2",
     "@types/koa__router": "^8.0.8",
-    "@types/ws": "^7.4.7",
+    "@types/ws": "^8.2.2",
     "bcryptjs": "^2.4.3",
     "classic-theme": "workspace:*",
     "commander": "^8.3.0",
@@ -67,7 +67,7 @@
     "prisma": "3.4.2",
     "typescript": "^4.4.4",
     "vite": "^2.6.13",
-    "ws": "^8.2.3"
+    "ws": "^8.4.2"
   },
   "optionalDependencies": {
     "bufferutil": "^4.0.5",

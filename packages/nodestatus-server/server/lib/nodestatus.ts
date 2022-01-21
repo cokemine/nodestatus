@@ -74,7 +74,7 @@ export default class NodeStatus {
     this.server.on('upgrade', (request, socket, head) => {
       const pathname = request.url;
       if (pathname === '/connect') {
-        this.ioConn.handleUpgrade(request, socket as any, head, ws => {
+        this.ioConn.handleUpgrade(request, socket, head, ws => {
           this.ipMap.set(
             ws,
             (request.headers['x-forwarded-for'] as any)?.split(',')?.[0]?.trim() || request.socket.remoteAddress
@@ -82,7 +82,7 @@ export default class NodeStatus {
           this.ioConn.emit('connection', ws);
         });
       } else if (pathname === '/public') {
-        this.ioPub.handleUpgrade(request, socket as any, head, ws => {
+        this.ioPub.handleUpgrade(request, socket, head, ws => {
           this.ioPub.emit('connection', ws);
         });
       } else {
