@@ -96,7 +96,7 @@ importers:
       classic-theme: workspace:*
       commander: ^8.3.0
       cross-env: ^7.0.3
-      dotenv: ^10.0.0
+      dotenv: ^16.0.0
       encoding: ^0.1.13
       hotaru-admin: workspace:*
       hotaru-theme: workspace:*
@@ -122,7 +122,7 @@ importers:
       ws: ^8.4.2
     dependencies:
       '@prisma/client': 3.9.1_prisma@3.9.1
-      dotenv: 10.0.0
+      dotenv: 16.0.0
       readable-stream: 3.6.0
       replace-in-file: 6.3.2
       telegraf: 4.4.2
@@ -3457,9 +3457,9 @@ packages:
       domhandler: 4.2.2
     dev: true
 
-  /dotenv/10.0.0:
-    resolution: {integrity: sha512-rlBi9d8jpv9Sf1klPjNfFAuWDjKLwTIJJ/VxtoTwIR6hnZxcEOQCZg2oIL3MWBYw5GpUDKOEnND7LXTbIpQ03Q==}
-    engines: {node: '>=10'}
+  /dotenv/16.0.0:
+    resolution: {integrity: sha512-qD9WU0MPM4SWLPJy/r2Be+2WgQj8plChsyrCNQzW/0WjvcJQiKQJ9mH3ZgB3fxbUUxgc/11ZJ0Fi5KiimWGz2Q==}
+    engines: {node: '>=12'}
     dev: false
 
   /ecdsa-sig-formatter/1.0.11:
