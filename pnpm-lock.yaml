@@ -166,14 +166,14 @@ importers:
   web/classic-theme:
     specifiers:
       '@nodestatus/web-utils': workspace:*
-      '@vitejs/plugin-vue': ^1.9.4
+      '@vitejs/plugin-vue': ^2.0.0
       typescript: ^4.4.4
       vite: ^2.6.13
       vue: ^3.2.20
       vue-tsc: ^0.29.0
     devDependencies:
       '@nodestatus/web-utils': link:../utils
-      '@vitejs/plugin-vue': 1.9.4_vite@2.6.13
+      '@vitejs/plugin-vue': 2.1.0_vite@2.6.13+vue@3.2.20
       typescript: 4.4.4
       vite: 2.6.13
       vue: 3.2.20
@@ -240,7 +240,7 @@ importers:
   web/hotaru-theme:
     specifiers:
       '@nodestatus/web-utils': workspace:*
-      '@vitejs/plugin-vue': ^1.9.4
+      '@vitejs/plugin-vue': ^2.0.0
       typescript: ^4.4.4
       vite: ^2.6.13
       vite-plugin-svg-icons: ^1.0.5
@@ -248,7 +248,7 @@ importers:
       vue-tsc: ^0.29.0
     devDependencies:
       '@nodestatus/web-utils': link:../utils
-      '@vitejs/plugin-vue': 1.9.4_vite@2.6.13
+      '@vitejs/plugin-vue': 2.1.0_vite@2.6.13+vue@3.2.20
       typescript: 4.4.4
       vite: 2.6.13
       vite-plugin-svg-icons: 1.0.5_vite@2.6.13
@@ -1770,13 +1770,15 @@ packages:
       - supports-color
     dev: true
 
-  /@vitejs/plugin-vue/1.9.4_vite@2.6.13:
-    resolution: {integrity: sha512-0CZqaCoChriPTTtGkERy1LGPcYjGFpi2uYRhBPIkqJqUGV5JnJFhQAgh6oH9j5XZHfrRaisX8W0xSpO4T7S78A==}
+  /@vitejs/plugin-vue/2.1.0_vite@2.6.13+vue@3.2.20:
+    resolution: {integrity: sha512-AZ78WxvFMYd8JmM/GBV6a6SGGTU0GgN/0/4T+FnMMsLzFEzTeAUwuraapy50ifHZsC+G5SvWs86bvaCPTneFlA==}
     engines: {node: '>=12.0.0'}
     peerDependencies:
       vite: ^2.5.10
+      vue: ^3.2.25
     dependencies:
       vite: 2.6.13
+      vue: 3.2.20
     dev: true
 
   /@volar/code-gen/0.29.5:
