@@ -53,11 +53,12 @@ module.exports = {
     'react/destructuring-assignment': 'off',
     'react/jsx-fragments': 'off',
     'react/no-array-index-key': 'off',
-    'react/jsx-props-no-spreading': 'off'
+    'react/jsx-props-no-spreading': 'off',
+    'react/function-component-definition': 'off'
   },
   settings: {
     react: {
-      version: 'latest'
+      version: 'detect'
     }
   },
   overrides: [
