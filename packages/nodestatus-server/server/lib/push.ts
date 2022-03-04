@@ -1,6 +1,7 @@
 import { timingSafeEqual } from 'crypto';
 import { Telegraf } from 'telegraf';
 import HttpsProxyAgent from 'https-proxy-agent';
+import { IWebSocket } from '../../types/server';
 import { logger } from './utils';
 import type NodeStatus from './nodestatus';
 
@@ -115,8 +116,8 @@ export default function createPush(this: NodeStatus, options: PushOptions) {
     pushList.push(message => [...chatId].map(id => bot.telegram.sendMessage(id, `${message}`, { parse_mode: 'MarkdownV2' })));
   }
 
-  this.onServerConnected = (socket, username) => {
-    const ip = this.ipMap.get(socket);
+  this.onServerConnected = (socket: IWebSocket, username) => {
+    const ip = socket.ipAddress;
     if (ip) {
       const timer = timerMap.get(ip);
       if (timer) {
@@ -129,8 +130,8 @@ export default function createPush(this: NodeStatus, options: PushOptions) {
       }
     }
   };
-  this.onServerDisconnected = (socket, username) => {
-    const ip = this.ipMap.get(socket);
+  this.onServerDisconnected = (socket: IWebSocket, username) => {
+    const ip = socket.ipAddress;
     const timer = setTimeout(
       () => {
         Promise.all(pushList.map(

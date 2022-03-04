@@ -3,11 +3,14 @@ import { isIPv4 } from 'net';
 import ws from 'ws';
 import { decode } from '@msgpack/msgpack';
 import { IPv6 } from 'ipaddr.js';
-import { Box, ServerItem, BoxItem } from '../../types/server';
+import {
+  Box, ServerItem, BoxItem, IWebSocket
+} from '../../types/server';
 import {
   authServer, createNewEvent, getListServers, getServer, resolveEvent
 } from '../controller/status';
 import { logger, emitter } from './utils';
+import setupHeartbeat from './heartbeat';
 
 function callHook(instance: NodeStatus, hook: keyof NodeStatus, ...args: any[]) {
   try {
@@ -21,20 +24,18 @@ function callHook(instance: NodeStatus, hook: keyof NodeStatus, ...args: any[]) 
 
 type Options = {
   interval: number;
+  pingInterval: number;
   verbose: boolean;
 };
 
 export default class NodeStatus {
-  private options !: Options;
+  private readonly options !: Options;
 
   public server !: Server;
 
   private ioPub = new ws.Server({ noServer: true });
 
   private ioConn = new ws.Server({ noServer: true });
-
-  /* socket -> ip */
-  public ipMap = new WeakMap<ws, string>();
 
   /* username -> socket */
   private userMap = new Map<string, ws>();
@@ -46,13 +47,13 @@ export default class NodeStatus {
 
   public serversPub: ServerItem[] = [];
 
-  public onServerConnect?: (socket: ws) => unknown;
+  public onServerConnect?: (socket: IWebSocket) => unknown;
 
   public onServerBanned?: (address: string, reason: string) => unknown;
 
-  public onServerConnected ?: (socket: ws, username: string) => unknown;
+  public onServerConnected ?: (socket: IWebSocket, username: string) => unknown;
 
-  public onServerDisconnected ?: (socket: ws, username: string) => unknown;
+  public onServerDisconnected ?: (socket: IWebSocket, username: string) => unknown;
 
   constructor(server: Server, options: Options) {
     this.server = server;
@@ -70,15 +71,16 @@ export default class NodeStatus {
   }
 
   public launch(): Promise<void> {
-    const { verbose, interval } = this.options;
+    const { verbose, interval, pingInterval } = this.options;
+
+    setupHeartbeat(this.ioConn, pingInterval);
+    setupHeartbeat(this.ioPub, pingInterval);
+
     this.server.on('upgrade', (request, socket, head) => {
       const pathname = request.url;
       if (pathname === '/connect') {
-        this.ioConn.handleUpgrade(request, socket, head, ws => {
-          this.ipMap.set(
-            ws,
-            (request.headers['x-forwarded-for'] as any)?.split(',')?.[0]?.trim() || request.socket.remoteAddress
-          );
+        this.ioConn.handleUpgrade(request, socket, head, (ws: IWebSocket) => {
+          ws.ipAddress = (request.headers['x-forwarded-for'] as any)?.split(',')?.[0]?.trim() || request.socket.remoteAddress;
           this.ioConn.emit('connection', ws);
         });
       } else if (pathname === '/public') {
@@ -90,8 +92,8 @@ export default class NodeStatus {
       }
     });
 
-    this.ioConn.on('connection', socket => {
-      const address = this.ipMap.get(socket);
+    this.ioConn.on('connection', (socket: IWebSocket) => {
+      const address = socket.ipAddress;
       if (typeof address === 'undefined') {
         return socket.close();
       }
@@ -132,7 +134,7 @@ export default class NodeStatus {
         socket.send(`You are connecting via: ${ipType}`);
         logger.info(`${address} has connected to server`);
         resolveEvent(username).then();
-        socket.on('message', (buf: Buffer) => this.servers[username].status = decode(buf) as any);
+        socket.on('message', (buf: Buffer) => this.servers[username].status = decode(buf) as ServerItem['status']);
         this.userMap.set(username, socket);
         callHook(this, 'onServerConnected', socket, username);
         socket.once('close', () => {

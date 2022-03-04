@@ -1,3 +1,4 @@
+import type ws from 'ws';
 import type {
   Server, Prisma, PrismaClient, Event
 } from '@prisma/client';
@@ -40,3 +41,4 @@ export type IResp<T = any> = {
   data: T,
   msg: string
 };
+export type IWebSocket = ws & { isAlive?: boolean, ipAddress?: string };

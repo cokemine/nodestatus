@@ -45,6 +45,7 @@ const config = {
 
   pushTimeOut: Number(process.env.PUSH_TIMEOUT) || 30,
   pushDelay: Number(process.env.PUSH_DELAY) || 15,
+  pingInterval: Number(process.env.PING_INTERVAL || 30000),
 
   telegram: {
     proxy: process.env.TGBOT_PROXY,
