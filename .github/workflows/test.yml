@@ -14,7 +14,7 @@ jobs:
         node-version: [ 14 ]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Cache pnpm modules
         uses: actions/cache@v2
