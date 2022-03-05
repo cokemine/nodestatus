@@ -65,7 +65,7 @@ importers:
   packages/nodestatus-cli:
     specifiers:
       chalk: ^4.1.2
-      commander: ^8.3.0
+      commander: ^9.0.0
       figlet: ^1.5.2
       i18n-iso-countries: ^7.0.0
       inquirer: ^8.2.0
@@ -75,7 +75,7 @@ importers:
       readable-stream: 3.6.0
     devDependencies:
       chalk: 4.1.2
-      commander: 8.3.0
+      commander: 9.0.0
       i18n-iso-countries: 7.0.0
       inquirer: 8.2.0
 
@@ -94,7 +94,7 @@ importers:
       bcryptjs: ^2.4.3
       bufferutil: ^4.0.5
       classic-theme: workspace:*
-      commander: ^8.3.0
+      commander: ^9.0.0
       cross-env: ^7.0.3
       dotenv: ^16.0.0
       encoding: ^0.1.13
@@ -141,7 +141,7 @@ importers:
       '@types/ws': 8.2.2
       bcryptjs: 2.4.3
       classic-theme: link:../../web/classic-theme
-      commander: 8.3.0
+      commander: 9.0.0
       cross-env: 7.0.3
       encoding: 0.1.13
       hotaru-admin: link:../../web/hotaru-admin
@@ -2867,9 +2867,9 @@ packages:
     engines: {node: '>= 10'}
     dev: true
 
-  /commander/8.3.0:
-    resolution: {integrity: sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww==}
-    engines: {node: '>= 12'}
+  /commander/9.0.0:
+    resolution: {integrity: sha512-JJfP2saEKbQqvW+FI93OYUB4ByV5cizMpFMiiJI8xDbBvQvSkIk0VvQdn1CZ8mqAO8Loq2h0gYTYtDFUZUeERw==}
+    engines: {node: ^12.20.0 || >=14}
     dev: true
 
   /commondir/1.0.1:
