@@ -1,5 +1,6 @@
 import { Server } from 'http';
 import { isIPv4 } from 'net';
+import timers from 'timers/promises';
 import ws from 'ws';
 import { decode } from '@msgpack/msgpack';
 import { IPv6 } from 'ipaddr.js';
@@ -114,9 +115,25 @@ export default class NodeStatus {
             socket.send('Wrong username and/or password.');
             return this.setBan(socket, address, 120, 'Wrong username and/or password.');
           }
+          /*
+          * 当客户端与服务端断开连接时，客户端会自动重连。但是服务端可能需要等待下一个心跳检测周期才能断开与客户端的连接
+          * Temporary Fix
+          * Work in Progress
+          *   */
           if (Object.keys(this.servers[username]?.status || {}).length) {
-            socket.send('Only one connection per user allowed.');
-            return this.setBan(socket, address, 120, 'Only one connection per user allowed.');
+            const preSocket = this.userMap.get(username);
+            if (preSocket) {
+              const ac = new AbortController();
+              const promise = timers.setTimeout((pingInterval + 5) * 1000, null, { signal: ac.signal });
+              preSocket.on('close', () => ac.abort());
+              try {
+                await promise;
+                socket.send('Only one connection per user allowed.');
+                return this.setBan(socket, address, 120, 'Only one connection per user allowed.');
+                // eslint-disable-next-line no-empty
+              } catch (error: any) {
+              }
+            }
           }
         } catch (error: any) {
           socket.send('Please check your login details.');

@@ -6,6 +6,9 @@
   "license": "MIT",
   "author": "Kagurazaka Mizuki",
   "main": "index.js",
+  "engines": {
+    "node": ">=16"
+  },
   "scripts": {
     "app:cli": "pnpm --filter=nodestatus-cli",
     "app:main": "pnpm --filter=nodestatus-*",
