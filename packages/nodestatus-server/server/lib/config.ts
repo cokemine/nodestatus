@@ -32,6 +32,7 @@ const config = {
   interval: Number(process.env.INTERVAL || options.interval),
   verbose: process.env.VERBOSE === 'true',
   theme: process.env.THEME || 'hotaru-theme',
+  pingInterval: Number(process.env.PING_INTERVAL || 30),
 
   useIpc: process.env.USE_IPC !== 'false',
   useWeb: process.env.USE_WEB !== 'false',
@@ -45,7 +46,6 @@ const config = {
 
   pushTimeOut: Number(process.env.PUSH_TIMEOUT) || 30,
   pushDelay: Number(process.env.PUSH_DELAY) || 15,
-  pingInterval: Number(process.env.PING_INTERVAL || 30000),
 
   telegram: {
     proxy: process.env.TGBOT_PROXY,

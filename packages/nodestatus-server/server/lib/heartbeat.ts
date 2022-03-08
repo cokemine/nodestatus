@@ -19,5 +19,5 @@ export default function setupHeartbeat(io: Server, pingInterval: number) {
       socket.isAlive = false;
       socket.ping();
     });
-  }, pingInterval);
+  }, pingInterval * 1000);
 }

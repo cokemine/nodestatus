@@ -8,6 +8,7 @@ services:
       PORT: 35601
       VERBOSE: "false"
       THEME: "hotaru-theme"
+      PING_INTERVAL: 30
 
       USE_PUSH: "true"
       USE_IPC: "true"
@@ -17,9 +18,9 @@ services:
       WEB_PASSWORD: ""
       WEB_SECRET: ""
 
-
       PUSH_TIMEOUT: 30
       PUSH_DELAY: 15
+
       TGBOT_TOKEN: ""
       TGBOT_CHATID: ""
       TGBOT_PROXY: ""

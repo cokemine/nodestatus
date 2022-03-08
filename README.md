@@ -2,7 +2,7 @@
 
 Yet another servers monitor written in TypeScript.
 
-Current Version: 1.2.3-beta.1
+Current Version: 1.2.3-beta.2
 
 ## How To Install
 
@@ -86,6 +86,8 @@ Node.js Version: https://github.com/cokemine/nodestatus-client
 
 **THEME**： NodeStatus 前端使用的主题，默认 `hotaru-theme`, 可选 `hotaru-theme` | `classic-theme`
 
+**PING_INTERVAL**: 用于心跳检测是否与客户端异常断开连接,  默认`30` (30秒)
+
 &nbsp;
 
 **USE_PUSH**: 是否使用 Telegram 推送, 默认 `true`
@@ -107,6 +109,8 @@ Node.js Version: https://github.com/cokemine/nodestatus-client
 **PUSH_TIMEOUT**: 客户端报警推送超时时间 (在这个时间内无论客户端发生了什么只要重新恢复与客户端的连接就不会推送),  默认`30` (30秒)
 
 **PUSH_DELAY**: 报警推送服务启动延迟 (防止重启服务端后导致的集中推送),  默认`15` (15秒)
+
+&nbsp;
 
 **TGBOT_TOKEN**: Telegram Bot Token (从 BotFather 申请到)
 
