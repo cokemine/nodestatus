@@ -39,7 +39,7 @@ export default class NodeStatus {
   private ioConn = new ws.Server({ noServer: true });
 
   /* username -> socket */
-  private userMap = new Map<string, ws>();
+  private userMap = new Map<string, IWebSocket>();
 
   /* ip -> banned */
   private isBanned = new Map<string, boolean>();
@@ -123,15 +123,19 @@ export default class NodeStatus {
           if (Object.keys(this.servers[username]?.status || {}).length) {
             const preSocket = this.userMap.get(username);
             if (preSocket) {
-              const ac = new AbortController();
-              const promise = timers.setTimeout((pingInterval + 5) * 1000, null, { signal: ac.signal });
-              preSocket.on('close', () => ac.abort());
-              try {
-                await promise;
-                socket.send('Only one connection per user allowed.');
-                return this.setBan(socket, address, 120, 'Only one connection per user allowed.');
-                // eslint-disable-next-line no-empty
-              } catch (error: any) {
+              if (preSocket.ipAddress === address) {
+                preSocket.terminate();
+              } else {
+                const ac = new AbortController();
+                const promise = timers.setTimeout((pingInterval + 5) * 1000, null, { signal: ac.signal });
+                preSocket.on('close', () => ac.abort());
+                try {
+                  await promise;
+                  socket.send('Only one connection per user allowed.');
+                  return this.setBan(socket, address, 120, 'Only one connection per user allowed.');
+                  // eslint-disable-next-line no-empty
+                } catch (error: any) {
+                }
               }
             }
           }
