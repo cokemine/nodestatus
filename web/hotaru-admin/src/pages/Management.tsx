@@ -1,5 +1,6 @@
-import React, { FC, ReactElement, useState } from 'react';
-
+import React, {
+  FC, ReactElement, useCallback, useMemo, useState
+} from 'react';
 import {
   Typography, Table, Tag, Modal, Input, Form, Switch, Button, AutoComplete
 } from 'antd';
@@ -29,51 +30,51 @@ const Management: FC = () => {
   const [sortOrder, setSortOrder] = useState(false);
   const [shouldPagination, setShouldPagination] = useState<false | undefined>(undefined);
   const [regionResult, setRegionResult] = useState<string[]>([]);
-  const { data, mutate } = useSWR<IResp>('/api/server');
+  const { data, mutate } = useSWR<IResp<IServer[]>>('/api/server');
 
   const [form] = Form.useForm();
   const { confirm } = Modal;
-  const dataSource = data?.data as IServer[];
+  const dataSource = data?.data!;
 
-  const resetStatus = (fetch = true) => {
+  const resetStatus = useCallback((fetch = true) => {
     fetch && mutate();
     form.resetFields();
     setCurrentNode('');
     setMultiImport(false);
     setModifyVisible(false);
-  };
+  }, [form, mutate]);
 
-  const handleModify = () => {
+  const handleModify = useCallback(() => {
     const data = form.getFieldsValue();
     axios.put<IResp>('/api/server', { username: currentNode, data }).then(res => {
       notify('Success', res.data.msg, 'success');
       resetStatus();
     });
-  };
+  }, [currentNode, form, resetStatus]);
 
-  const handleCreate = () => {
+  const handleCreate = useCallback(() => {
     const data = form.getFieldsValue();
     axios.post<IResp>('/api/server', { ...data }).then(res => {
       notify('Success', res.data.msg, 'success');
       resetStatus();
     });
-  };
+  }, [form, resetStatus]);
 
-  const handleDelete = (username: string) => () => {
+  const handleDelete = useCallback((username: string) => {
     axios.delete<IResp>(`/api/server/${username}`).then(res => {
       notify('Success', res.data.msg, 'success');
       resetStatus();
     });
-  };
+  }, [resetStatus]);
 
-  const handleSortOrder = (order: number[]) => {
+  const handleSortOrder = useCallback((order: number[]) => {
     axios.put<IResp>('/api/server/order', { order }).then(res => {
       notify('Success', res.data.msg, 'success');
       resetStatus();
     });
-  };
+  }, [resetStatus]);
 
-  const columns: ColumnsType<IServer> = [
+  const columns = useMemo<ColumnsType<IServer>>(() => [
     {
       title: 'Sort',
       dataIndex: 'sort',
@@ -148,7 +149,7 @@ const Management: FC = () => {
             <DeleteOutlined onClick={() => confirm({
               title: 'Are you sure you want to delete this item?',
               icon: <ExclamationCircleOutlined />,
-              onOk: handleDelete(record.username)
+              onOk: () => handleDelete(record.username)
             })}
             />
           </div>
@@ -156,9 +157,40 @@ const Management: FC = () => {
       }
     }
 
-  ];
+  ], [confirm, form, handleDelete]);
 
-  const DraggableContainer: FC = props => (
+  const TableFooter = useCallback(() => (
+    <>
+      <Button type="primary" className="mr-6" onClick={() => setModifyVisible(true)}>New</Button>
+      <Button
+        type="primary"
+        className="mr-6"
+        onClick={() => {
+          setMultiImport(true);
+          setModifyVisible(true);
+        }}
+      >
+        Import
+      </Button>
+      <Button
+        type="primary"
+        danger={sortOrder}
+        onClick={() => {
+          if (sortOrder) {
+            const order = dataSource.map(item => item.id);
+            order.reverse();
+            handleSortOrder(order);
+          }
+          setSortOrder(val => !val);
+          setShouldPagination(val => (val === undefined ? false : undefined));
+        }}
+      >
+        {!sortOrder ? 'Sort' : 'Save'}
+      </Button>
+    </>
+  ), [dataSource, handleSortOrder, sortOrder]);
+
+  const DraggableContainer = useCallback<FC>(props => (
     <Droppable droppableId="table">
       {
         provided => (
@@ -169,9 +201,9 @@ const Management: FC = () => {
         )
       }
     </Droppable>
-  );
+  ), []);
 
-  const DraggableBodyRow: FC<any> = props => {
+  const DraggableBodyRow = useCallback<FC<any>>(props => {
     const index = dataSource.findIndex(x => x.id === props['data-row-key']);
     return (
       <Draggable draggableId={props['data-row-key']?.toString() || 'k'} index={index} isDragDisabled={!sortOrder}>
@@ -197,7 +229,7 @@ const Management: FC = () => {
         }}
       </Draggable>
     );
-  };
+  }, [dataSource, sortOrder]);
 
   return (
     <>
@@ -224,36 +256,7 @@ const Management: FC = () => {
                 }
               }}
               pagination={shouldPagination}
-              footer={() => (
-                <>
-                  <Button type="primary" className="mr-6" onClick={() => setModifyVisible(true)}>New</Button>
-                  <Button
-                    type="primary"
-                    className="mr-6"
-                    onClick={() => {
-                      setMultiImport(true);
-                      setModifyVisible(true);
-                    }}
-                  >
-                    Import
-                  </Button>
-                  <Button
-                    type="primary"
-                    danger={sortOrder}
-                    onClick={() => {
-                      if (sortOrder) {
-                        const order = dataSource.map(item => item.id);
-                        order.reverse();
-                        handleSortOrder(order);
-                      }
-                      setSortOrder(val => !val);
-                      setShouldPagination(val => (val === undefined ? false : undefined));
-                    }}
-                  >
-                    {!sortOrder ? 'Sort' : 'Save'}
-                  </Button>
-                </>
-              )}
+              footer={TableFooter}
             />
             <Modal
               title={currentNode ? 'Modify Configuration' : 'New'}

@@ -1,6 +1,8 @@
-import React, { FC } from 'react';
+import React, { FC, useMemo } from 'react';
 import {
-  Table, Tag, Typography
+  Table,
+  Tag,
+  Typography
 } from 'antd';
 import useSWR from 'swr';
 import { ColumnsType } from 'antd/es/table';
@@ -9,10 +11,10 @@ import Loading from '../components/Loading';
 import type { IResp, Event as IEvent } from '../types';
 
 const Incidents: FC = () => {
-  const { data } = useSWR<IResp>('/api/event');
+  const { data } = useSWR<IResp<IEvent[]>>('/api/event');
   const { Title } = Typography;
-  const dataList = (data?.data as IEvent[])?.sort((x, y) => y.id - x.id);
-  const columns: ColumnsType<IEvent> = [
+  const dataList = data?.data?.sort((x, y) => y.id - x.id);
+  const columns: ColumnsType<IEvent> = useMemo(() => [
     {
       title: 'SERVER',
       dataIndex: 'server',
@@ -50,20 +52,18 @@ const Incidents: FC = () => {
         return record.resolved ? dayjs(updatedAt).format('YYYY-MM-DD hh:mm') : '';
       }
     }
-  ];
+  ], []);
   return (
     <>
       <Title level={2} className="my-6 text-3xl">Incident History</Title>
       {
         dataList
           ? (
-            <>
-              <Table
-                className="rounded-lg max-w-full"
-                dataSource={dataList}
-                columns={columns}
-              />
-            </>
+            <Table
+              className="rounded-lg max-w-full"
+              dataSource={dataList}
+              columns={columns}
+            />
           )
           : <Loading />
       }

@@ -1,5 +1,10 @@
 import React, {
-  FC, useContext, useEffect, useState
+  FC,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+  useMemo
 } from 'react';
 import {
   Col, Row, Typography, Table, Tag
@@ -40,7 +45,7 @@ const Dashboard: FC = () => {
     });
   }, [servers]);
 
-  const columns: ColumnsType<ITable> = [
+  const columns: ColumnsType<ITable> = useMemo(() => [
     {
       title: 'SERVER',
       dataIndex: 'server',
@@ -94,7 +99,14 @@ const Dashboard: FC = () => {
       dataIndex: 'load',
       align: 'center'
     }
-  ];
+  ], []);
+
+  const TableFooter = useCallback(() => (
+    <span className="text-xs">
+      最后更新:
+      {timeSince}
+    </span>
+  ), [timeSince]);
 
   return (
     <>
@@ -151,12 +163,7 @@ const Dashboard: FC = () => {
         className="rounded-lg max-w-full"
         dataSource={servers}
         columns={columns}
-        footer={() => (
-          <span className="text-xs">
-            最后更新:
-            {timeSince}
-          </span>
-        )}
+        footer={TableFooter}
       />
     </>
   );

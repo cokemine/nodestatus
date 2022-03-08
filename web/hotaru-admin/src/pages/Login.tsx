@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Form, Input, Button } from 'antd';
 import axios from 'axios';
@@ -11,22 +11,22 @@ import cherry from '../assets/img/cherry.jpg';
 /* https://www.tbs.co.jp/anime/adashima/ */
 import loginBackground from '../assets/img/bg_howatama.png';
 
-import { IResp } from '../types';
+import type { IResp } from '../types';
 
 const Login: FC = () => {
   const history = useHistory();
   const { mutate } = useSWRConfig();
 
-  const onFinish = async (values: { username: string, password: string }) => {
+  const onFinish = useCallback(async (values: { username: string, password: string }) => {
     const { username, password } = values;
-    const res = await axios.post<IResp>('/api/session', { username, password });
+    const res = await axios.post<IResp<string>>('/api/session', { username, password });
     const { data } = res;
     if (!data.code) {
       notify('Success', undefined, 'success');
-      localStorage.setItem('token', data.data as string);
+      localStorage.setItem('token', data.data);
       mutate('/api/session', { code: 0, msg: 'OK', data: null }, false).then(() => history.push('/dashboard'));
     }
-  };
+  }, [history, mutate]);
 
   return (
     <div

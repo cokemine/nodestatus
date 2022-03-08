@@ -3,10 +3,10 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import axios from 'axios';
 import { SWRConfig } from 'swr';
 import routes from './routes/global';
-import './App.css';
 import { IResp } from './types';
 import Loading from './components/Loading';
 import { notify } from './utils';
+import './App.css';
 
 axios.interceptors.request.use(config => {
   const token = localStorage.getItem('token');
