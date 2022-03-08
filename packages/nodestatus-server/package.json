@@ -54,6 +54,7 @@
     "hotaru-theme": "workspace:*",
     "https-proxy-agent": "^5.0.0",
     "ipaddr.js": "^2.0.1",
+    "isomorphic-timers-promises": "^1.0.1",
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.13.4",
     "koa-body": "^4.2.0",

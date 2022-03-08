@@ -30,7 +30,8 @@ export default {
     esbuild(),
     alias({
       entries: [
-        { find: 'ws', replacement: resolve(__dirname, 'node_modules/ws/index.js') }
+        { find: 'ws', replacement: resolve(__dirname, 'node_modules/ws/index.js') },
+        { find: 'timers/promises', replacement: require.resolve('isomorphic-timers-promises') }
       ]
     }),
     nodeResolve({ preferBuiltins: true }),

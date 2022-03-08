@@ -102,6 +102,7 @@ importers:
       hotaru-theme: workspace:*
       https-proxy-agent: ^5.0.0
       ipaddr.js: ^2.0.1
+      isomorphic-timers-promises: ^1.0.1
       jsonwebtoken: ^8.5.1
       koa: ^2.13.4
       koa-body: ^4.2.0
@@ -148,6 +149,7 @@ importers:
       hotaru-theme: link:../../web/hotaru-theme
       https-proxy-agent: 5.0.0
       ipaddr.js: 2.0.1
+      isomorphic-timers-promises: 1.0.1
       jsonwebtoken: 8.5.1
       koa: 2.13.4
       koa-body: 4.2.0
@@ -5344,6 +5346,11 @@ packages:
   /isobject/3.0.1:
     resolution: {integrity: sha1-TkMekrEalzFjaqH5yNHMvP2reN8=}
     engines: {node: '>=0.10.0'}
+    dev: true
+
+  /isomorphic-timers-promises/1.0.1:
+    resolution: {integrity: sha512-u4sej9B1LPSxTGKB/HiuzvEQnXH0ECYkSVQU39koSwmFAxhlEAFl9RdTvLv4TOTQUgBS5O3O5fwUxk6byBZ+IQ==}
+    engines: {node: '>=10'}
     dev: true
 
   /istanbul-lib-coverage/3.2.0:
