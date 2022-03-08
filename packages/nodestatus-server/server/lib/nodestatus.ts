@@ -126,6 +126,8 @@ export default class NodeStatus {
               if (preSocket.ipAddress === address) {
                 preSocket.terminate();
               } else {
+                preSocket.isAlive = false;
+                preSocket.ping();
                 const ac = new AbortController();
                 const promise = timers.setTimeout((pingInterval + 5) * 1000, null, { signal: ac.signal });
                 preSocket.on('close', () => ac.abort());
