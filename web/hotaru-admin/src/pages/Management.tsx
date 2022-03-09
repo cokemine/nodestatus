@@ -76,7 +76,7 @@ const Management: FC = () => {
 
   const columns = useMemo<ColumnsType<IServer>>(() => [
     {
-      title: 'Sort',
+      title: 'SORT',
       dataIndex: 'sort',
       width: 30,
       align: 'center',
