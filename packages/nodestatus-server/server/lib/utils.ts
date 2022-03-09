@@ -1,13 +1,14 @@
 import EventEmitter from 'events';
 import { configure, getLogger } from 'log4js';
 import { IResp } from '../../types/server';
+import config from './config';
 
 configure({
   appenders: {
     out: { type: 'stdout' }
   },
   categories: {
-    default: { appenders: ['out'], level: 'info' }
+    default: { appenders: ['out'], level: config.verbose ? 'debug' : 'info' }
   }
 });
 export const logger = getLogger();

@@ -4,14 +4,22 @@ import timers from 'timers/promises';
 import ws from 'ws';
 import { decode } from '@msgpack/msgpack';
 import { IPv6 } from 'ipaddr.js';
+import { getLogger } from 'log4js';
 import {
   Box, ServerItem, BoxItem, IWebSocket
 } from '../../types/server';
 import {
   authServer, createNewEvent, getListServers, getServer, resolveEvent
 } from '../controller/status';
-import { logger, emitter } from './utils';
+import {
+  logger, emitter
+} from './utils';
 import setupHeartbeat from './heartbeat';
+
+const loggerConnected = getLogger('Connected');
+const loggerConnecting = getLogger('Connecting');
+const loggerDisconnected = getLogger('Disconnected');
+const loggerBanned = getLogger('Banned');
 
 function callHook(instance: NodeStatus, hook: keyof NodeStatus, ...args: any[]) {
   try {
@@ -26,7 +34,6 @@ function callHook(instance: NodeStatus, hook: keyof NodeStatus, ...args: any[]) 
 type Options = {
   interval: number;
   pingInterval: number;
-  verbose: boolean;
 };
 
 export default class NodeStatus {
@@ -66,13 +73,13 @@ export default class NodeStatus {
     socket.close();
     if (this.isBanned.get(address)) return;
     this.isBanned.set(address, true);
-    this.options.verbose && logger.warn(`${address} was banned ${t} seconds, reason: ${reason}`);
+    loggerBanned.debug('Address:', address, '|', 'Reason:', reason);
     callHook(this, 'onServerBanned', address, reason);
     setTimeout(() => this.isBanned.delete(address), t * 1000);
   }
 
   public launch(): Promise<void> {
-    const { verbose, interval, pingInterval } = this.options;
+    const { interval, pingInterval } = this.options;
 
     setupHeartbeat(this.ioConn, pingInterval);
     setupHeartbeat(this.ioPub, pingInterval);
@@ -100,7 +107,7 @@ export default class NodeStatus {
       }
       callHook(this, 'onServerConnect', socket);
       socket.send('Authentication required');
-      verbose && logger.info(`${address} is trying to connect to server`);
+      loggerConnecting.debug(`Address: ${address}`);
       socket.once('message', async (buf: Buffer) => {
         if (this.isBanned.get(address)) {
           socket.send('You are banned. Please try connecting after 60 / 120 seconds');
@@ -155,7 +162,7 @@ export default class NodeStatus {
           ipType = 'IPv4';
         }
         socket.send(`You are connecting via: ${ipType}`);
-        logger.info(`${address} has connected to server`);
+        loggerConnected.info(`Username: ${username} | Address: ${address}`);
         resolveEvent(username).then();
         socket.on('message', (buf: Buffer) => this.servers[username].status = decode(buf) as ServerItem['status']);
         this.userMap.set(username, socket);
@@ -164,7 +171,7 @@ export default class NodeStatus {
           this.userMap.delete(username);
           this.servers[username] && (this.servers[username].status = {});
           createNewEvent(username).then();
-          logger.warn(`${address} disconnected`);
+          loggerDisconnected.warn(`Username: ${username} | Address: ${address}`);
           callHook(this, 'onServerDisconnected', socket, username);
         });
       });

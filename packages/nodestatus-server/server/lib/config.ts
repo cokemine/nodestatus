@@ -2,7 +2,6 @@ import { platform, homedir } from 'os';
 import { resolve } from 'path';
 import dotenv from 'dotenv';
 import { program } from 'commander';
-import { logger } from './utils';
 
 if (process.env.NODE_ENV !== 'TEST') {
   dotenv.config({ path: resolve(homedir(), '.nodestatus/.env.local') });
@@ -54,15 +53,5 @@ const config = {
     web_hook: process.env.TGBOT_WEBHOOK
   }
 };
-
-if (Number.isNaN(config.port)) {
-  logger.fatal('Please enter the correct port number.');
-  process.exit(1);
-}
-
-if (Number.isNaN(config.interval)) {
-  logger.fatal('Please enter the correct interval.');
-  process.exit(1);
-}
 
 export default config;
