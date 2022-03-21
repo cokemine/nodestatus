@@ -19,6 +19,9 @@ export default function createPush(this: NodeStatus, options: PushOptions) {
   const pushList: Array<(message: string) => void> = [];
   /* ip -> timer */
   const timerMap = new Map<string, NodeJS.Timer>();
+  /* Username -> timer */
+  const timerUsernameMap = new Map<string, NodeJS.Timer>();
+
   const entities = new Set(['_', '*', '[', ']', '(', ')', '~', '`', '>', '#', '+', '-', '=', '|', '{', '}', '.', '!', '\\']);
 
   const parseEntities = (msg: any): string => {
@@ -119,10 +122,11 @@ export default function createPush(this: NodeStatus, options: PushOptions) {
   this.onServerConnected = (socket: IWebSocket, username) => {
     const ip = socket.ipAddress;
     if (ip) {
-      const timer = timerMap.get(ip);
+      const timer = timerMap.get(ip) || timerUsernameMap.get(username);
       if (timer) {
         clearTimeout(timer);
         timerMap.delete(ip);
+        timerUsernameMap.delete(username);
       } else {
         return Promise.all(pushList.map(
           fn => fn(`🍊*NodeStatus* \n😀 One new server has connected\\! \n\n *用户名*: ${parseEntities(username)} \n *节点名*: ${parseEntities(this.servers[username].name)} \n *时间*: ${parseEntities(new Date())}`)
@@ -138,9 +142,11 @@ export default function createPush(this: NodeStatus, options: PushOptions) {
           fn => fn(`🍊*NodeStatus* \n😰 One server has disconnected\\! \n\n *用户名*: ${parseEntities(username)} \n *节点名*: ${parseEntities(this.servers[username]?.name)} \n *时间*: ${parseEntities(new Date())}`)
         )).then();
         ip && timerMap.delete(ip);
+        timerUsernameMap.delete(username);
       },
       options.pushTimeOut * 1000
     );
     ip && timerMap.set(ip, timer);
+    timerUsernameMap.set(username, timer);
   };
 }
