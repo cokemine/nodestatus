@@ -1,0 +1,36 @@
+name: NPM Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2.2.1
+        with:
+          version: latest
+          run_install: true
+        env:
+          DATABASE: /home/runner/work/nodestatus/nodestatus/db.sqlite
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+          cache: 'pnpm'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Build and Publish
+        run: |
+          npm run build
+          npm run app:server publish -- --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

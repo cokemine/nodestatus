@@ -1,4 +1,4 @@
-name: 'Docker Release Staging'
+name: Docker Release Staging
 
 on:
   - push
