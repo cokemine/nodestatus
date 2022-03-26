@@ -1,8 +1,9 @@
 import React, {
-  FC, ReactElement, useCallback, useMemo, useState
+  FC, ReactElement, Reducer, useCallback, useMemo, useState, useReducer
 } from 'react';
 import {
-  Typography, Table, Tag, Modal, Input, Form, Switch, Button, AutoComplete
+  Typography, Table, Tag, Modal, Input, Form, Switch, Button, AutoComplete,
+  FormInstance
 } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import {
@@ -15,6 +16,7 @@ import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import countries from 'i18n-iso-countries';
 import i18nZh from 'i18n-iso-countries/langs/zh.json';
 import i18nEn from 'i18n-iso-countries/langs/en.json';
+import { KeyedMutator } from 'swr/dist/types';
 import { IResp, IServer } from '../types';
 import { notify } from '../utils';
 import Loading from '../components/Loading';
@@ -23,69 +25,114 @@ const { Title } = Typography;
 countries.registerLocale(i18nZh);
 countries.registerLocale(i18nEn);
 
-const parseInstallScript = (
+type ActionType = {
+  type: 'showModal' | 'showImportForm' | 'reverseSortEnabled' | 'resetState' | 'setInstallationScript' | 'setNode',
+  payload?: {
+    form?: FormInstance,
+    mutate?: KeyedMutator<any>,
+    installationScript?: string,
+    currentNode?: string;
+  }
+};
+
+const initialState = {
+  currentNode: '',
+  installationScript: '',
+  showModal: false,
+  sortEnabled: false,
+  isImport: false
+};
+
+const reducer: Reducer<typeof initialState, ActionType> = (state, action) => {
+  const {
+    mutate,
+    form,
+    installationScript = '',
+    currentNode = ''
+  } = action.payload ?? {};
+  switch (action.type) {
+    case 'showModal':
+      return {
+        ...state,
+        showModal: true
+      };
+    case 'reverseSortEnabled':
+      return { ...state, sortEnabled: !state.sortEnabled };
+    case 'setInstallationScript':
+      return { ...state, installationScript };
+    case 'showImportForm': {
+      return { ...state, showModal: true, isImport: true };
+    }
+    case 'setNode':
+      return {
+        ...state,
+        showModal: true,
+        currentNode,
+        installationScript
+      };
+    case 'resetState':
+      mutate?.();
+      form?.resetFields();
+      return {
+        ...state,
+        currentNode: '',
+        installationScript: '',
+        showModal: false,
+        isImport: false
+      };
+    default:
+      throw new Error();
+  }
+};
+
+const parseInstallationScript = (
   username: string,
   password: string
 ): string => {
   const protocol = document.location.protocol.replace('http', 'ws');
   const { host } = window.location;
   const dsn = `${protocol}//${username || 'USERNAME_YOU_SET'}:${password || 'PASSWORD_YOU_SET'}@${host}`;
-
   return `wget -N https://raw.githubusercontent.com/cokemine/nodestatus-client-go/master/install.sh && bash install.sh --dsn ${dsn}`;
 };
 
 const Management: FC = () => {
-  const [modifyVisible, setModifyVisible] = useState<boolean>(false);
-  const [currentNode, setCurrentNode] = useState<string>('');
-  const [multiImport, setMultiImport] = useState<boolean>(false);
-  const [sortOrder, setSortOrder] = useState(false);
-  const [shouldPagination, setShouldPagination] = useState<false | undefined>(undefined);
   const [regionResult, setRegionResult] = useState<string[]>([]);
-  const [installScript, setInstallScript] = useState<string>('');
+  const [state, dispatch] = useReducer(reducer, initialState);
   const { data, mutate } = useSWR<IResp<IServer[]>>('/api/server');
 
-  const [form] = Form.useForm();
+  const [form] = Form.useForm<IServer & { password: string }>();
   const { confirm } = Modal;
   const dataSource = data?.data!;
 
-  const resetStatus = useCallback((fetch = true) => {
-    fetch && mutate();
-    form.resetFields();
-    setCurrentNode('');
-    setInstallScript('');
-    setMultiImport(false);
-    setModifyVisible(false);
-  }, [form, mutate]);
-
   const handleModify = useCallback(() => {
     const data = form.getFieldsValue();
-    axios.put<IResp>('/api/server', { username: currentNode, data }).then(res => {
+    axios.put<IResp>('/api/server', { username: state.currentNode, data }).then(res => {
       notify('Success', res.data.msg, 'success');
-      resetStatus();
+      dispatch({ type: 'resetState', payload: { form, mutate } });
     });
-  }, [currentNode, form, resetStatus]);
+  }, [state.currentNode, form, mutate]);
 
   const handleCreate = useCallback(() => {
     const data = form.getFieldsValue();
     axios.post<IResp>('/api/server', { ...data }).then(res => {
       notify('Success', res.data.msg, 'success');
-      resetStatus();
+      dispatch({ type: 'resetState', payload: { form, mutate } });
     });
-  }, [form, resetStatus]);
+  }, [form, mutate]);
 
   const handleDelete = useCallback((username: string) => {
     axios.delete<IResp>(`/api/server/${username}`).then(res => {
       notify('Success', res.data.msg, 'success');
-      resetStatus();
+      dispatch({ type: 'resetState', payload: { form, mutate } });
     });
-  }, [resetStatus]);
+  }, [form, mutate]);
 
   const handleSortOrder = useCallback((order: number[]) => {
     axios.put<IResp>('/api/server/order', { order }).then(res => {
       notify('Success', res.data.msg, 'success');
-      resetStatus();
+      dispatch({ type: 'resetState', payload: { form, mutate } });
     });
-  }, [resetStatus]);
+  }, [form, mutate]);
 
   const columns = useMemo<ColumnsType<IServer>>(() => [
     {
@@ -99,7 +146,6 @@ const Management: FC = () => {
       title: 'SERVER',
       dataIndex: 'server',
       align: 'center',
-      // eslint-disable-next-line react/display-name
       render(_, record) {
         return (
           <div className="flex items-center text-sm">
@@ -138,7 +184,6 @@ const Management: FC = () => {
       title: 'STATUS',
       dataIndex: 'disabled',
       align: 'center',
-      // eslint-disable-next-line react/display-name
       render: disabled => (
         disabled
           ? <Tag color="error">Disabled</Tag>
@@ -149,15 +194,18 @@ const Management: FC = () => {
       title: 'ACTION',
       dataIndex: 'action',
       align: 'center',
-      // eslint-disable-next-line react/display-name
       render(_, record) {
         return (
           <div className="flex justify-evenly items-center">
             <EditOutlined onClick={() => {
               form.setFieldsValue(record);
-              setCurrentNode(record.username);
-              setInstallScript(parseInstallScript(record.username, ''));
-              setModifyVisible(true);
+              dispatch({
+                type: 'setNode',
+                payload: {
+                  currentNode: record.username,
+                  installationScript: parseInstallationScript(record.username, '')
+                }
+              });
             }}
             />
             <DeleteOutlined onClick={() => confirm({
@@ -175,34 +223,30 @@ const Management: FC = () => {
 
   const TableFooter = useCallback(() => (
     <>
-      <Button type="primary" className="mr-6" onClick={() => setModifyVisible(true)}>New</Button>
+      <Button type="primary" className="mr-6" onClick={() => dispatch({ type: 'showModal' })}>New</Button>
       <Button
         type="primary"
         className="mr-6"
-        onClick={() => {
-          setMultiImport(true);
-          setModifyVisible(true);
-        }}
+        onClick={() => dispatch({ type: 'showImportForm' })}
       >
         Import
       </Button>
       <Button
         type="primary"
-        danger={sortOrder}
+        danger={state.sortEnabled}
         onClick={() => {
-          if (sortOrder) {
+          if (state.sortEnabled) {
             const order = dataSource.map(item => item.id);
             order.reverse();
             handleSortOrder(order);
           }
-          setSortOrder(val => !val);
-          setShouldPagination(val => (val === undefined ? false : undefined));
+          dispatch({ type: 'reverseSortEnabled' });
         }}
       >
-        {!sortOrder ? 'Sort' : 'Save'}
+        {!state.sortEnabled ? 'Sort' : 'Save'}
       </Button>
     </>
-  ), [dataSource, handleSortOrder, sortOrder]);
+  ), [dataSource, handleSortOrder, state.sortEnabled]);
 
   const DraggableContainer = useCallback<FC>(props => (
     <Droppable droppableId="table">
@@ -220,7 +264,11 @@ const Management: FC = () => {
   const DraggableBodyRow = useCallback<FC<any>>(props => {
     const index = dataSource.findIndex(x => x.id === props['data-row-key']);
     return (
-      <Draggable draggableId={props['data-row-key']?.toString() || 'k'} index={index} isDragDisabled={!sortOrder}>
+      <Draggable
+        draggableId={props['data-row-key']?.toString()}
+        index={index}
+        isDragDisabled={!state.sortEnabled}
+      >
         {provided => {
           const children = props.children?.map?.((el: ReactElement) => {
             if (el.props.dataIndex === 'sort') {
@@ -243,7 +291,7 @@ const Management: FC = () => {
         }}
       </Draggable>
     );
-  }, [dataSource, sortOrder]);
+  }, [dataSource, state.sortEnabled]);
 
   return (
     <>
@@ -269,28 +317,34 @@ const Management: FC = () => {
                   row: DraggableBodyRow
                 }
               }}
-              pagination={shouldPagination}
+              pagination={state.sortEnabled ? false : undefined}
               footer={TableFooter}
             />
             <Modal
-              title={currentNode ? 'Modify Configuration' : 'New'}
-              visible={modifyVisible}
-              onOk={currentNode ? handleModify : handleCreate}
-              onCancel={() => resetStatus(false)}
+              title={state.currentNode ? 'Modify Configuration' : 'New'}
+              visible={state.showModal}
+              onOk={state.currentNode ? handleModify : handleCreate}
+              onCancel={() => dispatch({ type: 'resetState', payload: { form } })}
+              className="top-12"
             >
               <Form
                 layout="vertical"
                 form={form}
                 onValuesChange={(field, allFields) => {
                   if (field.username || field.password) {
-                    setInstallScript(parseInstallScript(
-                      field.username || allFields.username,
-                      field.password || allFields.password
-                    ));
+                    dispatch({
+                      type: 'setInstallationScript',
+                      payload: {
+                        installationScript: parseInstallationScript(
+                          field.username || allFields.username,
+                          field.password || allFields.password
+                        )
+                      }
+                    });
                   }
                 }}
               >
-                {multiImport ? (
+                {state.isImport ? (
                   <Form.Item label="Data" name="data">
                     <Input.TextArea rows={4} />
                   </Form.Item>
@@ -339,7 +393,11 @@ const Management: FC = () => {
                       <Switch />
                     </Form.Item>
                     <Form.Item label="Script">
-                      <code className="bg-gray-200 px-2 py-0.5 leading-6 rounded break-all">{installScript}</code>
+                      <code
+                        className="bg-gray-200 px-2 py-0.5 leading-6 rounded break-all"
+                      >
+                        {state.installationScript}
+                      </code>
                     </Form.Item>
                   </>
                 )}
