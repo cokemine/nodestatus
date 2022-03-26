@@ -23,6 +23,17 @@ const { Title } = Typography;
 countries.registerLocale(i18nZh);
 countries.registerLocale(i18nEn);
 
+const parseInstallScript = (
+  username: string,
+  password: string
+): string => {
+  const protocol = document.location.protocol.replace('http', 'ws');
+  const { host } = window.location;
+  const dsn = `${protocol}//${username || 'USERNAME_YOU_SET'}:${password || 'PASSWORD_YOU_SET'}@${host}`;
+
+  return `wget -N https://raw.githubusercontent.com/cokemine/nodestatus-client-go/master/install.sh && bash install.sh --dsn ${dsn}`;
+};
+
 const Management: FC = () => {
   const [modifyVisible, setModifyVisible] = useState<boolean>(false);
   const [currentNode, setCurrentNode] = useState<string>('');
@@ -30,6 +41,7 @@ const Management: FC = () => {
   const [sortOrder, setSortOrder] = useState(false);
   const [shouldPagination, setShouldPagination] = useState<false | undefined>(undefined);
   const [regionResult, setRegionResult] = useState<string[]>([]);
+  const [installScript, setInstallScript] = useState<string>('');
   const { data, mutate } = useSWR<IResp<IServer[]>>('/api/server');
 
   const [form] = Form.useForm();
@@ -40,6 +52,7 @@ const Management: FC = () => {
     fetch && mutate();
     form.resetFields();
     setCurrentNode('');
+    setInstallScript('');
     setMultiImport(false);
     setModifyVisible(false);
   }, [form, mutate]);
@@ -143,6 +156,7 @@ const Management: FC = () => {
             <EditOutlined onClick={() => {
               form.setFieldsValue(record);
               setCurrentNode(record.username);
+              setInstallScript(parseInstallScript(record.username, ''));
               setModifyVisible(true);
             }}
             />
@@ -264,7 +278,18 @@ const Management: FC = () => {
               onOk={currentNode ? handleModify : handleCreate}
               onCancel={() => resetStatus(false)}
             >
-              <Form layout="vertical" form={form}>
+              <Form
+                layout="vertical"
+                form={form}
+                onValuesChange={(field, allFields) => {
+                  if (field.username || field.password) {
+                    setInstallScript(parseInstallScript(
+                      field.username || allFields.username,
+                      field.password || allFields.password
+                    ));
+                  }
+                }}
+              >
                 {multiImport ? (
                   <Form.Item label="Data" name="data">
                     <Input.TextArea rows={4} />
@@ -312,6 +337,9 @@ const Management: FC = () => {
                     </Form.Item>
                     <Form.Item label="Disabled" name="disabled" valuePropName="checked">
                       <Switch />
+                    </Form.Item>
+                    <Form.Item label="Script">
+                      <code className="bg-gray-200 px-2 py-0.5 leading-6 rounded break-all">{installScript}</code>
                     </Form.Item>
                   </>
                 )}
