@@ -20,20 +20,19 @@
     "prisma"
   ],
   "scripts": {
-    "postinstall": "node scripts/init.js",
-    "prestart": "node scripts/init.js",
-    "pretest": "node scripts/init.js",
-    "start": "node build/app.js",
-    "dev": "cross-env NODE_ENV=development rollup -c --watch",
     "build": "rollup -c",
-    "lint": "eslint . --ext .js --ext .ts --ignore-pattern build --ignore-pattern dist --fix"
+    "dev": "cross-env NODE_ENV=development rollup -c --watch",
+    "postinstall": "node scripts/init.js",
+    "lint": "eslint . --ext .js --ext .ts --ignore-pattern build --ignore-pattern dist --fix",
+    "prestart": "node scripts/init.js",
+    "start": "node build/app.js",
+    "pretest": "node scripts/init.js"
   },
   "dependencies": {
     "@prisma/client": "3.11.1",
     "dotenv": "^16.0.0",
     "readable-stream": "^3.6.0",
-    "replace-in-file": "^6.3.2",
-    "telegraf": "^4.4.2"
+    "replace-in-file": "^6.3.2"
   },
   "devDependencies": {
     "@koa/router": "^10.1.1",
@@ -66,6 +65,7 @@
     "log4js": "^6.3.0",
     "pm2": "^5.1.2",
     "prisma": "3.11.1",
+    "telegraf": "^4.7.0",
     "typescript": "^4.4.4",
     "vite": "^2.6.13",
     "ws": "^8.4.2"
