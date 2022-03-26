@@ -205,7 +205,7 @@ importers:
       react-icons: ^4.3.1
       react-router-dom: ^5.3.0
       react-simple-maps: ^2.3.0
-      swr: ^1.0.1
+      swr: ^1.2.2
       tailwindcss: ^2.2.17
       typescript: ^4.4.4
       vite: ^2.6.13
@@ -233,7 +233,7 @@ importers:
       react-icons: 4.3.1_react@17.0.2
       react-router-dom: 5.3.0_react@17.0.2
       react-simple-maps: 2.3.0_react-dom@17.0.2+react@17.0.2
-      swr: 1.0.1_react@17.0.2
+      swr: 1.2.2_react@17.0.2
       tailwindcss: 2.2.17_fa866e6aa6eb85ed70431566fb699b34
       typescript: 4.4.4
       vite: 2.6.13
@@ -3295,11 +3295,6 @@ packages:
   /depd/2.0.0:
     resolution: {integrity: sha512-g7nH6P6dyDioJogAAGprGpCtVImJhpPk/roCzdb3fIh61/s/nPsfR6onyMwkCAR/OlC3yBC0lESvUoQEAssIrw==}
     engines: {node: '>= 0.8'}
-    dev: true
-
-  /dequal/2.0.2:
-    resolution: {integrity: sha512-q9K8BlJVxK7hQYqa6XISGmBZbtQQWVXSrRrWreHC94rMt1QL/Impruc+7p2CYSYuVIUr+YCt6hjrs1kkdJRTug==}
-    engines: {node: '>=6'}
     dev: true
 
   /destroy/1.0.4:
@@ -8755,12 +8750,11 @@ packages:
       stable: 0.1.8
     dev: true
 
-  /swr/1.0.1_react@17.0.2:
-    resolution: {integrity: sha512-EPQAxSjoD4IaM49rpRHK0q+/NzcwoT8c0/Ylu/u3/6mFj/CWnQVjNJ0MV2Iuw/U+EJSd2TX5czdAwKPYZIG0YA==}
+  /swr/1.2.2_react@17.0.2:
+    resolution: {integrity: sha512-ky0BskS/V47GpW8d6RU7CPsr6J8cr7mQD6+do5eky3bM0IyJaoi3vO8UhvrzJaObuTlGhPl2szodeB2dUd76Xw==}
     peerDependencies:
-      react: ^16.11.0 || ^17.0.0
+      react: ^16.11.0 || ^17.0.0 || ^18.0.0
     dependencies:
-      dequal: 2.0.2
       react: 17.0.2
     dev: true
 
