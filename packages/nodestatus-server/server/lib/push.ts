@@ -36,10 +36,15 @@ export default function createPush(this: NodeStatus, options: PushOptions) {
     return newStr;
   };
 
-  const getBotStatus = (): string => {
+  const getBotStatus = (targets: string[]): string => {
     let str = '';
     let online = 0;
     this.serversPub.forEach(obj => {
+      if (targets.length) {
+        if (!targets.some(target => obj.name.toLocaleLowerCase().includes(target))) {
+          return;
+        }
+      }
       const item = new Proxy(obj, {
         get(target, key) {
           const value = Reflect.get(target, key);
@@ -89,8 +94,14 @@ export default function createPush(this: NodeStatus, options: PushOptions) {
     });
 
     bot.command('status', ctx => {
+      const targets = ctx.message.text
+        .slice(7)
+        .trim()
+        .toLocaleLowerCase()
+        .split(' ')
+        .map(item => item.trim());
       if (chatId.has(ctx.message.chat.id.toString())) {
-        ctx.reply(getBotStatus(), { parse_mode: 'MarkdownV2' });
+        ctx.reply(getBotStatus(targets), { parse_mode: 'MarkdownV2' });
       } else {
         ctx.reply('🍊NodeStatus\n*No permission*', { parse_mode: 'MarkdownV2' });
       }
