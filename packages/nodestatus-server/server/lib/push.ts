@@ -140,10 +140,11 @@ export default function createPush(this: NodeStatus, options: PushOptions) {
     }
   };
   this.onServerDisconnected = (socket: IWebSocket, username) => {
+    const now = new Date();
     const timer = setTimeout(
       () => {
         Promise.all(pushList.map(
-          fn => fn(`🍊*NodeStatus* \n😰 One server has disconnected\\! \n\n *用户名*: ${parseEntities(username)} \n *节点名*: ${parseEntities(this.servers[username]?.name)} \n *时间*: ${parseEntities(new Date())}`)
+          fn => fn(`🍊*NodeStatus* \n😰 One server has disconnected\\! \n\n *用户名*: ${parseEntities(username)} \n *节点名*: ${parseEntities(this.servers[username]?.name)} \n *时间*: ${parseEntities(now)}`)
         )).then();
         timerMap.delete(username);
       },
