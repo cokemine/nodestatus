@@ -2,6 +2,7 @@ version: "3"
 services:
   nodestatus:
     image: cokemine/nodestatus
+    container_name: nodestatus
     restart: always
 
     environment:
@@ -18,7 +19,7 @@ services:
       WEB_PASSWORD: ""
       WEB_SECRET: ""
 
-      PUSH_TIMEOUT: 30
+      PUSH_TIMEOUT: 120
       PUSH_DELAY: 15
 
       TGBOT_TOKEN: ""

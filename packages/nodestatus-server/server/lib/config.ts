@@ -43,7 +43,7 @@ const config = {
 
   ipcAddress: process.env.IPC_ADDRESS || (platform() !== 'win32' ? '/tmp/status_unix.sock' : '\\\\.\\pipe\\status_ipc'),
 
-  pushTimeOut: Number(process.env.PUSH_TIMEOUT) || 30,
+  pushTimeOut: Number(process.env.PUSH_TIMEOUT) || 120,
   pushDelay: Number(process.env.PUSH_DELAY) || 15,
 
   telegram: {
