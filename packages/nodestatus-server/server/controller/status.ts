@@ -71,8 +71,8 @@ export function getRawListServers(): Promise<IResp<IServer[]>> {
   return handleRequest(readServersList());
 }
 
-export function createNewEvent(username: string): Promise<IResp> {
-  return handleRequest(createEvent(username));
+export function createNewEvent(username: string, created_at?: Date): Promise<IResp> {
+  return handleRequest(createEvent(username, created_at));
 }
 
 export function resolveEvent(username: string): Promise<IResp> {

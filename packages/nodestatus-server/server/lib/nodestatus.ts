@@ -63,6 +63,10 @@ export default class NodeStatus {
 
   public onServerDisconnected ?: (socket: IWebSocket, username: string) => unknown;
 
+  public _serverConnectedPush ?: (socket: IWebSocket, username: string) => unknown;
+
+  public _serverDisconnectedPush ?: (socket: IWebSocket, username: string, cb?: (now: Date) => void) => unknown;
+
   constructor(server: Server, options: Options) {
     this.server = server;
     this.options = options;
@@ -166,13 +170,17 @@ export default class NodeStatus {
         resolveEvent(username).then();
         socket.on('message', (buf: Buffer) => this.servers[username].status = decode(buf) as ServerItem['status']);
         this.userMap.set(username, socket);
+
         callHook(this, 'onServerConnected', socket, username);
+        callHook(this, '_serverConnectedPush', socket, username);
+
         socket.once('close', () => {
           this.userMap.delete(username);
           this.servers[username] && (this.servers[username].status = {});
-          createNewEvent(username).then();
           loggerDisconnected.warn(`Username: ${username} | Address: ${address}`);
+
           callHook(this, 'onServerDisconnected', socket, username);
+          callHook(this, '_serverDisconnectedPush', socket, username, (now: Date) => createNewEvent(username, now).then());
         });
       });
     });

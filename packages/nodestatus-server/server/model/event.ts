@@ -1,8 +1,9 @@
 import prisma from '../lib/prisma';
 
-export const createEvent = (username: string) => prisma.event.create({
+export const createEvent = (username: string, created_at?: Date) => prisma.event.create({
   data: {
-    username
+    username,
+    created_at
   }
 });
 

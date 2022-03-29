@@ -1,7 +1,6 @@
 import { timingSafeEqual } from 'crypto';
 import { Telegraf } from 'telegraf';
 import HttpsProxyAgent from 'https-proxy-agent';
-import { IWebSocket } from '../../types/server';
 import { logger } from './utils';
 import type NodeStatus from './nodestatus';
 
@@ -128,7 +127,7 @@ export default function createPush(this: NodeStatus, options: PushOptions) {
     pushList.push(message => [...chatId].map(id => bot.telegram.sendMessage(id, `${message}`, { parse_mode: 'MarkdownV2' })));
   }
 
-  this.onServerConnected = (socket: IWebSocket, username) => {
+  this._serverConnectedPush = (socket, username) => {
     const timer = timerMap.get(username);
     if (timer) {
       clearTimeout(timer);
@@ -139,13 +138,14 @@ export default function createPush(this: NodeStatus, options: PushOptions) {
       ));
     }
   };
-  this.onServerDisconnected = (socket: IWebSocket, username) => {
+  this._serverDisconnectedPush = (socket, username, cb) => {
     const now = new Date();
     const timer = setTimeout(
       () => {
         Promise.all(pushList.map(
           fn => fn(`🍊*NodeStatus* \n😰 One server has disconnected\\! \n\n *用户名*: ${parseEntities(username)} \n *节点名*: ${parseEntities(this.servers[username]?.name)} \n *时间*: ${parseEntities(now)}`)
         )).then();
+        cb?.(now);
         timerMap.delete(username);
       },
       options.pushTimeOut * 1000
