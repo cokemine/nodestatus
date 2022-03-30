@@ -164,6 +164,7 @@ const Dashboard: FC = () => {
         dataSource={servers}
         columns={columns}
         footer={TableFooter}
+        rowKey="id"
       />
     </>
   );

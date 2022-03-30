@@ -3,6 +3,7 @@ export type {
 } from '@nodestatus/web-utils/types';
 
 export interface ITable {
+  id: number;
   name: string;
   location: string;
   region: string;

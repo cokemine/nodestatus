@@ -50,6 +50,7 @@ export const StatusContextProvider: FC = ({ children }) => {
       for (const item of servers) {
         const isOnline = item.status.online4 || item.status.online6;
         value.servers.push({
+          id: item.id,
           name: item.name,
           location: item.location,
           region: item.region,

@@ -86,7 +86,27 @@ const Incidents: FC = () => {
         );
       }
     }
-  ], []);
+  ], [handleDeleteEvent]);
+
+  const Footer = useCallback(() => (
+    <div>
+      <Button
+        type="primary"
+        danger
+        onClick={() => Modal.confirm({
+          title: 'Are you sure you want to delete all items?',
+          icon: <ExclamationCircleOutlined />,
+          onOk: () => axios.delete('/api/event').then(res => {
+            notify('Success', res.data.msg, 'success');
+            return mutate();
+          })
+        })}
+      >
+        Delete All
+      </Button>
+    </div>
+  ), [mutate]);
+
   return (
     <>
       <Title level={2} className="my-6 text-3xl">Incident History</Title>
@@ -97,24 +117,8 @@ const Incidents: FC = () => {
               className="rounded-lg max-w-full"
               dataSource={dataList}
               columns={columns}
-              footer={() => (
-                <div>
-                  <Button
-                    type="primary"
-                    danger
-                    onClick={() => Modal.confirm({
-                      title: 'Are you sure you want to delete all items?',
-                      icon: <ExclamationCircleOutlined />,
-                      onOk: () => axios.delete('/api/event').then(res => {
-                        notify('Success', res.data.msg, 'success');
-                        return mutate();
-                      })
-                    })}
-                  >
-                    Delete All
-                  </Button>
-                </div>
-              )}
+              footer={Footer}
+              rowKey="id"
             />
           )
           : <Loading />
