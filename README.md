@@ -72,57 +72,57 @@ Node.js Version: https://github.com/cokemine/nodestatus-client
 
 ## Environment
 
-关于环境变量的相关配置，如果是使用 Docker 请直接在 `docker-compose.yml`配置文件中修改。
+关于环境变量的相关配置，如果是使用 Docker 请直接在 `docker-compose.yml` 配置文件中修改。
 
-若为手动安装，则需要在本地用户目录下新建一个`.nodestatus/.env.local`文件（注意路径），在这个文件填写相关环境变量配置。
+若为手动安装，则需要在本地用户目录下新建一个 `.nodestatus/.env.local` 文件（注意路径），在这个文件填写相关环境变量配置。
 
-**INTERVAL**: 服务端推送间隔时间, 默认 `1500` (1.5秒)
+**INTERVAL** : 服务端推送间隔时间, 默认 `1500` (1.5 秒)
 
-**DATABASE**: 数据库位置文件存放位置, 默认使用 SQLite (Linux): `file:/usr/local/NodeStatus/server/db.sqlite`，支持的数据库有 `SQLite`、`MySQL`、`PostgreSQL`，请使用对应的正确数据源链接格式填写：`SQLite`应以`file:`开头, `MySQL`应以`mysql:`开头, `PostgreSQL`应以`postgresql:`开头。
+**DATABASE** : 数据库位置文件存放位置, 默认使用 SQLite (Linux): `file:/usr/local/NodeStatus/server/db.sqlite`，支持的数据库有 `SQLite`、`MySQL`、`PostgreSQL`，请使用对应的正确数据源链接格式填写：`SQLite` 应以 `file:` 开头, `MySQL` 应以 `mysql:` 开头, `PostgreSQL` 应以 `postgresql:` 开头。
 
-**PORT**: NodeStatus 所用端口, 默认 `35601`
+**PORT** : NodeStatus 所用端口, 默认 `35601`
 
-**VERBOSE**: 是否启动 verbose 模式，启动后会输出更多信息，默认 `false`
+**VERBOSE** : 是否启动 verbose 模式，启动后会输出更多信息，默认 `false`
 
-**THEME**： NodeStatus 前端使用的主题，默认 `hotaru-theme`, 可选 `hotaru-theme` | `classic-theme`
+**THEME**：NodeStatus 前端使用的主题，默认 `hotaru-theme` , 可选 `hotaru-theme` | `classic-theme`
 
-**PING_INTERVAL**: 用于心跳检测是否与客户端异常断开连接,  默认`30` (30秒)
-
-&nbsp;
-
-**USE_PUSH**: 是否使用 Telegram 推送, 默认 `true`
-
-**USE_IPC**: 是否需要 IPC 修改服务端配置, 默认 `true`
-
-**USE_WEB**: 是否需要开启一个小型 web 面板修改服务端配置, 默认 `true`
+**PING_INTERVAL** : 用于心跳检测是否与客户端异常断开连接, 默认 `30` (30 秒)
 
 &nbsp;
 
-**WEB_USERNAME**: WEB 面板用户名，默认 `admin`
+**USE_PUSH** : 是否使用 Telegram 推送, 默认 `true`
 
-**WEB_PASSWORD**: WEB 面板密码
+**USE_IPC** : 是否需要 IPC 修改服务端配置, 默认 `true`
 
-**WEB_SECRET**: 用于 jsonwebtoken, 建议设为一个随机的字符串, 默认不填即和密码相同
-
-&nbsp;
-
-**PUSH_TIMEOUT**: 客户端报警推送超时时间 (在这个时间内无论客户端发生了什么只要重新恢复与客户端的连接就不会推送),  默认`30` (30秒)
-
-**PUSH_DELAY**: 报警推送服务启动延迟 (防止重启服务端后导致的集中推送),  默认`15` (15秒)
+**USE_WEB** : 是否需要开启一个小型 web 面板修改服务端配置, 默认 `true`
 
 &nbsp;
 
-**TGBOT_TOKEN**: Telegram Bot Token (从 BotFather 申请到)
+**WEB_USERNAME** : WEB 面板用户名，默认 `admin`
 
-**TGBOT_CHATID**: Telegram Bot 需要推送的 chat_id, 如不清楚可以先启动 NodeStatus, 对 Bot 发送 `/start` 获取这个 id, 多个请用`,`隔开
+**WEB_PASSWORD** : WEB 面板密码
 
-**TGBOT_PROXY**: Telegram 代理服务器配置，例`http://127.0.0.1:10808`，仅支持 http 代理
+**WEB_SECRET** : 用于 jsonwebtoken, 建议设为一个随机的字符串, 默认不填即和密码相同
 
-**TGBOT_WEBHOOK**: Telegram Webhook 配置，不填写默认 Polling,例: `https://tz.mydomain.com`，使用 Webhook 务必需要开启 https，若你使用了https，则建议填写你的域名以开启  Webhook, 而非 Polling
+&nbsp;
+
+**PUSH_TIMEOUT** : 客户端报警推送超时时间 (在这个时间内无论客户端发生了什么只要重新恢复与客户端的连接就不会推送), 默认 `120` (120 秒)
+
+**PUSH_DELAY** : 报警推送服务启动延迟 (防止重启服务端后导致的集中推送), 默认 `15` (15 秒)
+
+&nbsp;
+
+**TGBOT_TOKEN** : Telegram Bot Token (从 BotFather 申请到)
+
+**TGBOT_CHATID** : Telegram Bot 需要推送的 chat_id, 如不清楚可以先启动 NodeStatus, 对 Bot 发送 `/start` 获取这个 id, 多个请用 `,` 隔开
+
+**TGBOT_PROXY** : Telegram 代理服务器配置，例 `http://127.0.0.1:10808`，仅支持 http 代理
+
+**TGBOT_WEBHOOK** : Telegram Webhook 配置，不填写默认 Polling,例: `https://tz.mydomain.com`，使用 Webhook 务必需要开启 https，若你使用了 https，则建议填写你的域名以开启 Webhook, 而非 Polling
 
 ## 部署到容器服务
 
-如果你需要将 NodeStatus 部署到如 Railway 或 Okteto 等容器服务中。请注意数据持久化问题。你应该使用外部的`MySQL`或是 `PostgreSQL`而不是本项目默认的`SQLite`，因为如果使用`SQLite`在每次重置服务端都会导致原有的配置失效。使用时注意通过调整环境变量以使用可持续存储的数据库服务。
+如果你需要将 NodeStatus 部署到如 Railway 或 Okteto 等容器服务中。请注意数据持久化问题。你应该使用外部的 `MySQL` 或是 `PostgreSQL` 而不是本项目默认的 `SQLite`，因为如果使用 `SQLite` 在每次重置服务端都会导致原有的配置失效。使用时注意通过调整环境变量以使用可持续存储的数据库服务。
 
 目前本项目还无法部署到如 Vercel 等 Serverless 服务中，因为目前 Serverless 不支持 WebSocket。
 
@@ -132,7 +132,7 @@ NodeStatus 有两种方式修改（添加 / 删除）服务器配置。
 
 ### NodeStatus-cli
 
-若你启用了 IPC, 则可以通过`status-cli`修改服务器相关配置。
+若你启用了 IPC, 则可以通过 `status-cli` 修改服务器相关配置。
 
 ```shell
 npm i nodestatus-cli -g
@@ -141,17 +141,17 @@ status-cli help # check cli help
 
 ### Web
 
-若你启用了 Web, 则可以通过 Web 修改服务器相关配置。不需要手动安装，访问`http://tz.domain.com/admin`即可访问面板。
+若你启用了 Web, 则可以通过 Web 修改服务器相关配置。不需要手动安装，访问 `http://tz.domain.com/admin` 即可访问面板。
 
-同时通过 Web 面板你可以很简单的从 ServerStatus 迁移至 NodeStatus, 你可以在面板`Import`处将 ServerStatus 的 JSON文件粘贴过去一键添加服务器。（需要去除多余的 `host` 字段）
+同时通过 Web 面板你可以很简单的从 ServerStatus 迁移至 NodeStatus, 你可以在面板 `Import` 处将 ServerStatus 的 JSON 文件粘贴过去一键添加服务器。（需要去除多余的 `host` 字段）
 
 面板开源地址：https://github.com/cokemine/nodestatus/tree/master/web/hotaru-admin
 
 ## Telegram Commands
 
-`/start` 查询当前`chat_id`，当前 NodeStatus 版本号
+`/start` 查询当前 `chat_id`，当前 NodeStatus 版本号
 
-`/status` 查询当前所有服务器状态信息
+`/status [name...] ` 查询当前某个服务器状态信息，匹配规则为请求为服务器名称的子字符串，多个条件请用空格分隔，若有多个条件只需满足一个条件。
 
 ## Reverse Proxy
 
