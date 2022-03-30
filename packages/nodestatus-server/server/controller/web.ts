@@ -8,7 +8,7 @@ import {
   updateOrder
 } from '../model/server';
 import { createRes } from '../lib/utils';
-import { readEvents } from '../model/event';
+import { deleteAllEvents, deleteEvent, readEvents } from '../model/event';
 
 async function handleRequest<T>(ctx: Context, handler: Promise<T>): Promise<void> {
   try {
@@ -79,11 +79,20 @@ const queryEvents: Middleware = async ctx => {
   await handleRequest(ctx, readEvents());
 };
 
+const removeEvent: Middleware = async ctx => {
+  if (ctx.params.id) {
+    await handleRequest(ctx, deleteEvent(Number(ctx.params.id)));
+  } else {
+    await handleRequest(ctx, deleteAllEvents());
+  }
+};
+
 export {
   getListServers,
   setServer,
   addServer,
   removeServer,
   modifyOrder,
-  queryEvents
+  queryEvents,
+  removeEvent
 };

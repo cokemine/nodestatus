@@ -20,3 +20,11 @@ export const updateEvent = (username: string, resolved = true) => prisma.event.u
 });
 
 export const readEvents = () => prisma.event.findMany({});
+
+export const deleteEvent = (id: number) => prisma.event.delete({
+  where: {
+    id
+  }
+});
+
+export const deleteAllEvents = () => prisma.event.deleteMany({});
