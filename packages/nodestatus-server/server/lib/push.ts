@@ -23,7 +23,7 @@ export default function createPush(this: NodeStatus, options: PushOptions) {
 
   const parseEntities = (msg: any): string => {
     let str: string;
-    if (typeof msg !== 'string') str = msg.toString();
+    if (typeof msg !== 'string') str = msg?.toString() || '';
     else str = msg;
     let newStr = '';
     for (const char of str) {
