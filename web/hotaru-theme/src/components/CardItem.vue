@@ -73,6 +73,7 @@ export default defineComponent({
 
 .card .progress {
   margin: 1.2em 0;
+  overflow: hidden;
 }
 
 .flag-icon {
