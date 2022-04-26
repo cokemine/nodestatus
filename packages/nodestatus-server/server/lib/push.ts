@@ -37,13 +37,14 @@ export default function createPush(this: NodeStatus, options: PushOptions) {
 
   const getBotStatus = (targets: string[]): string => {
     let str = '';
-    let online = 0;
+    let total = 0, online = 0;
     this.serversPub.forEach(obj => {
       if (targets.length) {
         if (!targets.some(target => obj.name.toLocaleLowerCase().includes(target))) {
           return;
         }
       }
+      total++;
       const item = new Proxy(obj, {
         get(target, key) {
           const value = Reflect.get(target, key);
@@ -67,7 +68,7 @@ export default function createPush(this: NodeStatus, options: PushOptions) {
       str += `硬盘: ${Math.round((item.status.hdd_used / item.status.hdd_total) * 100)}% \n`;
       str += '\n';
     });
-    return `🍊*NodeStatus* \n🤖 当前有 ${this.serversPub.length} 台服务器, 其中在线 ${online} 台\n\n${str}`;
+    return `🍊*NodeStatus* \n🤖 当前有 ${total} 台服务器, 其中在线 ${online} 台\n\n${str}`;
   };
 
   const tgConfig = options.telegram;
@@ -93,12 +94,20 @@ export default function createPush(this: NodeStatus, options: PushOptions) {
     });
 
     bot.command('status', ctx => {
-      const targets = ctx.message.text
-        .slice(7)
-        .trim()
-        .toLocaleLowerCase()
+      const { entities } = ctx.message;
+      const msg = ctx.message.text.toLocaleLowerCase().split('');
+      if (entities) {
+        let len = 0;
+        entities.forEach(entity => {
+          msg.splice(entity.offset - len, entity.length);
+          len += entity.length;
+        });
+      }
+      const targets = msg
+        .join('')
         .split(' ')
-        .map(item => item.trim());
+        .map(item => item.trim())
+        .filter(item => item);
       if (chatId.has(ctx.message.chat.id.toString())) {
         ctx.reply(getBotStatus(targets), { parse_mode: 'MarkdownV2' });
       } else {
