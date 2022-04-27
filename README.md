@@ -88,6 +88,8 @@ Node.js Version: https://github.com/cokemine/nodestatus-client
 
 **PING_INTERVAL** : 用于心跳检测是否与客户端异常断开连接, 默认 `30` (30 秒)
 
+**TZ** : 用于设置timezone
+
 &nbsp;
 
 **USE_PUSH** : 是否使用 Telegram 推送, 默认 `true`
