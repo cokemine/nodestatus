@@ -10,6 +10,7 @@ services:
       VERBOSE: "false"
       THEME: "hotaru-theme"
       PING_INTERVAL: 30
+      TZ: Asia/Shanghai
 
       USE_PUSH: "true"
       USE_IPC: "true"
@@ -33,4 +34,3 @@ services:
 
     ports:
       - "35601:35601"
-

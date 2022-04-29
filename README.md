@@ -84,9 +84,11 @@ Node.js Version: https://github.com/cokemine/nodestatus-client
 
 **VERBOSE** : 是否启动 verbose 模式，启动后会输出更多信息，默认 `false`
 
-**THEME**：NodeStatus 前端使用的主题，默认 `hotaru-theme` , 可选 `hotaru-theme` | `classic-theme`
+**THEME** : NodeStatus 前端使用的主题，默认 `hotaru-theme` , 可选 `hotaru-theme` | `classic-theme`
 
 **PING_INTERVAL** : 用于心跳检测是否与客户端异常断开连接, 默认 `30` (30 秒)
+
+**TZ** : 用于设置时区，默认 `Asia/Shanghai`
 
 &nbsp;
 
