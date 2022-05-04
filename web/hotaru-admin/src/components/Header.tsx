@@ -17,16 +17,22 @@ const Header: FC<Props> = props => {
   const { isCollapsed, toggleCollapsed } = props.collapsed;
 
   const menu = (
-    <Menu>
-      <Menu.Item onClick={() => {
-        localStorage.removeItem('token');
-        history.push('/login');
+    <Menu
+      items={[
+        {
+          key: 'logout',
+          label: 'Logout',
+          icon: <LogoutOutlined className="mr-2 align-middle" />,
+          className: 'align-middle'
+        }
+      ]}
+      onClick={({ key }) => {
+        if (key === 'logout') {
+          localStorage.removeItem('token');
+          history.push('/login');
+        }
       }}
-      >
-        <LogoutOutlined className="mr-2 align-middle" />
-        <span className="align-middle">Logout</span>
-      </Menu.Item>
-    </Menu>
+    />
   );
 
   return (
@@ -35,7 +41,7 @@ const Header: FC<Props> = props => {
         className: 'text-2xl',
         onClick: toggleCollapsed
       })}
-      <Dropdown overlay={menu} placement="bottomCenter">
+      <Dropdown overlay={menu} placement="bottom">
         <Avatar size={40} icon={<UserOutlined />} />
       </Dropdown>
     </div>

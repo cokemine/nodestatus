@@ -17,7 +17,7 @@
     "@types/react-router-dom": "^5.3.2",
     "@types/react-simple-maps": "^1.0.6",
     "@vitejs/plugin-react": "^1.0.6",
-    "antd": "^4.16.13",
+    "antd": "^4.20.2",
     "array-move": "^4.0.0",
     "autoprefixer": "^10.3.7",
     "axios": "^0.21.4",

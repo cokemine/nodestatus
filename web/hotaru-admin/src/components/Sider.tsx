@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { NavLink } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Menu } from 'antd';
 import {
   DashboardOutlined, ProfileFilled, AlertFilled
@@ -9,45 +9,49 @@ import smallLogo from '../assets/img/logo.svg';
 
 const menus = [
   {
-    title: 'Dashboard',
+    label: 'Dashboard',
     icon: <DashboardOutlined />,
-    link: '/dashboard'
+    key: '/dashboard'
   },
   {
-    title: 'Management',
+    label: 'Management',
     icon: <ProfileFilled />,
-    link: '/management'
+    key: '/management'
   },
   {
-    title: 'Incidents',
+    label: 'Incidents',
     icon: <AlertFilled />,
-    link: '/incidents'
+    key: '/incidents'
   }
-];
+].map(menu => ({
+  ...menu,
+  className: 'h-12',
+  style: { lineHeight: '3rem' }
+}));
 
 interface Props {
   isCollapsed: boolean;
 }
 
-const Sider: FC<Props> = ({ isCollapsed }) => (
-  <>
-    <img src={logo} alt="" className="m-auto p-4 lg:hidden" draggable="false" />
-    <img
-      src={isCollapsed ? smallLogo : logo}
-      alt=""
-      className="hidden lg:inline-block  m-auto p-4"
-      draggable="false"
-    />
-    <Menu theme="dark" mode="inline">
-      {
-          menus.map((item, i) => (
-            <Menu.Item key={i} icon={item.icon} className="h-12" style={{ lineHeight: '3rem' }}>
-              <NavLink to={item.link}>{item.title}</NavLink>
-            </Menu.Item>
-          ))
-        }
-    </Menu>
-  </>
-);
+const Sider: FC<Props> = ({ isCollapsed }) => {
+  const history = useHistory();
+  return (
+    <>
+      <img src={logo} alt="" className="m-auto p-4 lg:hidden" draggable="false" />
+      <img
+        src={isCollapsed ? smallLogo : logo}
+        alt=""
+        className="hidden lg:inline-block  m-auto p-4"
+        draggable="false"
+      />
+      <Menu
+        theme="dark"
+        mode="inline"
+        items={menus}
+        onClick={({ key }) => history.push(key)}
+      />
+    </>
+  );
+};
 
 export default Sider;

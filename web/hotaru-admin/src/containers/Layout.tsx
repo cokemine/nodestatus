@@ -32,6 +32,8 @@ const Layout: FC = () => {
         onClose={() => setCollapsed(false)}
         width={208}
         bodyStyle={{ padding: 0 }}
+        headerStyle={{ display: 'none' }}
+        closeIcon={null}
       >
         <Sider isCollapsed={collapsed} />
       </Drawer>
