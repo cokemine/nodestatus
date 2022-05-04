@@ -1,5 +1,5 @@
 import React, { FC, useCallback } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Form, Input, Button } from 'antd';
 import axios from 'axios';
 import { useSWRConfig } from 'swr';
@@ -14,7 +14,7 @@ import loginBackground from '../assets/img/bg_howatama.png';
 import type { IResp } from '../types';
 
 const Login: FC = () => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { mutate } = useSWRConfig();
 
   const onFinish = useCallback(async (values: { username: string, password: string }) => {
@@ -24,9 +24,9 @@ const Login: FC = () => {
     if (!data.code) {
       notify('Success', undefined, 'success');
       localStorage.setItem('token', data.data);
-      mutate('/api/session', { code: 0, msg: 'OK', data: null }, false).then(() => history.push('/dashboard'));
+      mutate('/api/session', { code: 0, msg: 'OK', data: null }, false).then(() => navigate('/dashboard'));
     }
-  }, [history, mutate]);
+  }, [navigate, mutate]);
 
   return (
     <div

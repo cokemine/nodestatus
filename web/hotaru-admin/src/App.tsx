@@ -1,8 +1,10 @@
 import React, { FC, Suspense } from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import {
+  BrowserRouter as Router
+} from 'react-router-dom';
 import axios from 'axios';
 import { SWRConfig } from 'swr';
-import routes from './routes/global';
+import GlobalRoutes from './routes/GlobalRoutes';
 import { IResp } from './types';
 import Loading from './components/Loading';
 import { notify } from './utils';
@@ -28,20 +30,7 @@ const App: FC = () => (
   >
     <Router basename="/admin">
       <Suspense fallback={<Loading />}>
-        <Switch>
-          {
-              routes.map(
-                route => (
-                  <Route
-                    exact={route.exact !== false}
-                    key={route.path}
-                    path={route.path}
-                    component={route.component}
-                  />
-                )
-              )
-            }
-        </Switch>
+        <GlobalRoutes />
       </Suspense>
     </Router>
   </SWRConfig>

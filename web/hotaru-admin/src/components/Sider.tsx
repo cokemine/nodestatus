@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Menu } from 'antd';
 import {
   DashboardOutlined, ProfileFilled, AlertFilled
@@ -34,7 +34,7 @@ interface Props {
 }
 
 const Sider: FC<Props> = ({ isCollapsed }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   return (
     <>
       <img src={logo} alt="" className="m-auto p-4 lg:hidden" draggable="false" />
@@ -48,7 +48,7 @@ const Sider: FC<Props> = ({ isCollapsed }) => {
         theme="dark"
         mode="inline"
         items={menus}
-        onClick={({ key }) => history.push(key)}
+        onClick={({ key }) => navigate(key)}
       />
     </>
   );

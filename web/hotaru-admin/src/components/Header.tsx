@@ -3,7 +3,7 @@ import { Avatar, Dropdown, Menu } from 'antd';
 import {
   UserOutlined, MenuFoldOutlined, MenuUnfoldOutlined, LogoutOutlined
 } from '@ant-design/icons';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 interface Props {
   collapsed: {
@@ -13,7 +13,7 @@ interface Props {
 }
 
 const Header: FC<Props> = props => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const { isCollapsed, toggleCollapsed } = props.collapsed;
 
   const menu = (
@@ -29,7 +29,7 @@ const Header: FC<Props> = props => {
       onClick={({ key }) => {
         if (key === 'logout') {
           localStorage.removeItem('token');
-          history.push('/login');
+          navigate('/login');
         }
       }}
     />
