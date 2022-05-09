@@ -4,6 +4,6 @@
   "private": true,
   "devDependencies": {
     "nodestatus": "workspace:*",
-    "vue": "^3.2.31"
+    "vue": "^3.2.33"
   }
 }

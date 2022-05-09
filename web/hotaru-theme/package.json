@@ -9,11 +9,11 @@
   },
   "devDependencies": {
     "@nodestatus/web-utils": "workspace:*",
-    "@vitejs/plugin-vue": "^2.0.0",
+    "@vitejs/plugin-vue": "^2.3.2",
     "typescript": "^4.4.4",
-    "vite": "^2.6.13",
+    "vite": "^2.9.8",
     "vite-plugin-svg-icons": "^1.0.5",
-    "vue": "^3.2.31",
+    "vue": "^3.2.33",
     "vue-tsc": "^0.33.0"
   }
 }
