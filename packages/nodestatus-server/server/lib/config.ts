@@ -39,12 +39,12 @@ const config = {
 
   webUsername: process.env.WEB_USERNAME || 'admin',
   webPassword: process.env.WEB_PASSWORD || '',
-  webSecret: process.env.WEB_SECRET || process.env.WEB_PASSWORD || 'secret',
+  webSecret: process.env.WEB_SECRET || 'secret',
 
   ipcAddress: process.env.IPC_ADDRESS || (platform() !== 'win32' ? '/tmp/status_unix.sock' : '\\\\.\\pipe\\status_ipc'),
 
-  pushTimeOut: Number(process.env.PUSH_TIMEOUT) || 120,
-  pushDelay: Number(process.env.PUSH_DELAY) || 15,
+  pushTimeOut: Number(process.env.PUSH_TIMEOUT ?? 120),
+  pushDelay: Number(process.env.PUSH_DELAY ?? 15),
 
   telegram: {
     proxy: process.env.TGBOT_PROXY,

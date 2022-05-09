@@ -7,6 +7,15 @@ import { logger } from './lib/utils';
 import { createStatus } from './lib/status';
 import config from './lib/config';
 
+if (!config.port) {
+  logger.fatal('No port specified');
+  process.exit(1);
+}
+if (config.useWeb && !config.webPassword) {
+  logger.fatal('No web password specified');
+  process.exit(1);
+}
+
 (async () => {
   const app = new Koa();
 

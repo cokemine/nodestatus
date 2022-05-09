@@ -27,7 +27,9 @@ export default {
   external,
   plugins: [
     del({ targets: 'build/*' }),
-    esbuild(),
+    esbuild({
+      target: 'es2019'
+    }),
     alias({
       entries: [
         { find: 'ws', replacement: resolve(__dirname, 'node_modules/ws/index.js') },
