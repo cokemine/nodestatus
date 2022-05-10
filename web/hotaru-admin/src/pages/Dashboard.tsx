@@ -103,7 +103,7 @@ const Dashboard: FC = () => {
 
   const TableFooter = useCallback(() => (
     <span className="text-xs">
-      最后更新:
+      最后更新：
       {timeSince}
     </span>
   ), [timeSince]);

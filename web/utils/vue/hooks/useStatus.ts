@@ -1,20 +1,17 @@
 import { computed, toRefs } from 'vue';
 
 import { ServerItem } from '../../types';
+import { parseLoad } from '../../shared';
 
 interface Props {
   server: ServerItem;
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-export default (props: Props) => {
+const useStatus = (props: Props) => {
   const { server } = toRefs(props);
   const getStatus = computed((): boolean => server.value.status.online4 || server.value.status.online6);
 
-  const getLoad = computed((): string | number => {
-    const load = Number(server.value.status.load.toFixed(2));
-    return load % 1 ? load : Math.round(load);
-  });
+  const getLoad = computed((): number => parseLoad(server.value.status.load));
 
   const getCpuStatus = computed(
     (): number => (
@@ -27,11 +24,14 @@ export default (props: Props) => {
   const getNetworkProtocol = computed((): string => {
     if (server.value.status.online4 && server.value.status.online6) {
       return '双栈';
-    } if (server.value.status.online4) {
+    }
+    if (server.value.status.online4) {
       return 'IPv4';
-    } if (server.value.status.online6) {
+    }
+    if (server.value.status.online6) {
       return 'IPv6';
-    } return '维护中';
+    }
+    return '维护中';
   });
 
   const getRAMStatus = computed(
@@ -104,3 +104,4 @@ export default (props: Props) => {
     formatByte
   };
 };
+export default useStatus;

@@ -1,4 +1,5 @@
 import React, { useState, FC, useEffect } from 'react';
+import { parseLoad, parseUpdateTime } from '@nodestatus/web-utils/shared';
 import { ITable, ServerItem } from '../types';
 
 interface IData {
@@ -15,23 +16,6 @@ export const StatusContext = React.createContext<IContext>({
   servers: [], timeSince: '从未.'
 });
 
-const getTimeSince = (updated: number): string => {
-  const nowTime: number = Date.now() / 1000;
-  if (!updated) return '从未.';
-  const seconds: number = Math.floor(nowTime - updated);
-  let interval = Math.floor(seconds / 31536000);
-  if (interval > 1) return `${interval} 年前.`;
-  interval = Math.floor(seconds / 2592000);
-  if (interval > 1) return `${interval} 月前.`;
-  interval = Math.floor(seconds / 86400);
-  if (interval > 1) return `${interval} 日前.`;
-  interval = Math.floor(seconds / 3600);
-  if (interval > 1) return `${interval} 小时前.`;
-  interval = Math.floor(seconds / 60);
-  if (interval > 1) return `${interval} 分钟前.`;
-  return '几秒前.';
-};
-
 export const StatusContextProvider: FC = ({ children }) => {
   const [status, setStatus] = useState<IContext>({ servers: [], timeSince: '从未.' });
 
@@ -45,7 +29,7 @@ export const StatusContextProvider: FC = ({ children }) => {
       const { servers, updated } = data;
       const value: IContext = {
         servers: [],
-        timeSince: getTimeSince(updated)
+        timeSince: parseUpdateTime(updated)
       };
       for (const item of servers) {
         const isOnline = item.status.online4 || item.status.online6;
@@ -54,7 +38,7 @@ export const StatusContextProvider: FC = ({ children }) => {
           name: item.name,
           location: item.location,
           region: item.region,
-          load: isOnline ? item.status.load : '-',
+          load: isOnline ? parseLoad(item.status.load) : '-',
           uptime: isOnline ? item.status.uptime : '-',
           status: isOnline
         });
