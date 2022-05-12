@@ -1,7 +1,7 @@
 import { computed, toRefs } from 'vue';
 
 import { ServerItem } from '../../types';
-import { parseLoad } from '../../shared';
+import { parseLoad, parseUptime } from '../../shared';
 
 interface Props {
   server: ServerItem;
@@ -58,21 +58,11 @@ const useStatus = (props: Props) => {
   );
 
   const getUpTime = computed((): string => {
-    let str = '-';
     if (getStatus.value) {
       const { uptime } = server.value.status;
-      if (uptime >= 86400) str = `${Math.floor(uptime / 86400)} 天`;
-      else {
-        let h: string | number = Math.floor(uptime / 3600);
-        let m: string | number = Math.floor((uptime / 60) % 60);
-        let s: string | number = Math.floor(uptime % 60);
-        h < 10 && (h = `0${h}`);
-        m < 10 && (m = `0${m}`);
-        s < 10 && (s = `0${s}`);
-        str = `${h}:${m}:${s}`;
-      }
+      return parseUptime(uptime);
     }
-    return str;
+    return '-';
   });
 
   const formatNetwork = computed(() => (data: number): string => {

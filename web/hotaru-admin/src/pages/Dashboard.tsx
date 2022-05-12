@@ -14,6 +14,7 @@ import { ColumnsType } from 'antd/es/table';
 import { BiServer } from 'react-icons/bi';
 import { AiFillWarning } from 'react-icons/ai';
 import { HiOutlineStatusOnline } from 'react-icons/hi';
+import { parseUptime } from '@nodestatus/web-utils/shared';
 import StateCard from '../components/StateCard';
 import RoundIcon from '../components/RoundIcon';
 import { StatusContext } from '../context/StatusContext';
@@ -78,20 +79,7 @@ const Dashboard: FC = () => {
       dataIndex: 'uptime',
       align: 'center',
       render(uptime) {
-        let str = '-';
-        if (uptime !== '-') {
-          if (uptime >= 86400) str = `${Math.floor(uptime / 86400)} 天`;
-          else {
-            let h: string | number = Math.floor(uptime / 3600);
-            let m: string | number = Math.floor((uptime / 60) % 60);
-            let s: string | number = Math.floor(uptime % 60);
-            h < 10 && (h = `0${h}`);
-            m < 10 && (m = `0${m}`);
-            s < 10 && (s = `0${s}`);
-            str = `${h}:${m}:${s}`;
-          }
-        }
-        return str;
+        return uptime === '-' ? '-' : parseUptime(uptime);
       }
     },
     {
