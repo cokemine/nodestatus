@@ -27,7 +27,7 @@ jobs:
           version: latest
           run_install: true
         env:
-          DATABASE: /home/runner/work/nodestatus/nodestatus/db.sqlite
+          DATABASE: ${{ secrets.DATABASE }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v2

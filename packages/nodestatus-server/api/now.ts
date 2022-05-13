@@ -33,7 +33,6 @@ app.use(async (ctx, next) => {
   } else if ((themeQuery as string).startsWith('classic')) {
     theme = 'classic';
   }
-  console.log(theme, themeQuery);
   switch (theme) {
     case 'hotaru':
       return serve(resolve(frontendPath, './hotaru-theme'))(ctx, next);
