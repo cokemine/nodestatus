@@ -40,7 +40,7 @@ body {
 
 .main.content {
   background: #ffffff;
-  padding: 20px;
+  padding: 1.4rem;
   border-radius: 5px;
   border: 1px #cecece solid;
   box-shadow: 0 1px 10px rgba(0, 0, 0, .1);
@@ -57,16 +57,20 @@ body {
 }
 
 @media only screen and (max-width: 768px) {
-  .main.container {
-    margin: 0 5px 20px 5px;
-  }
-}
-
-@media only screen and (max-width: 720px) {
   body {
     font-size: 12px;
   }
 
+  .main.container {
+    margin: 0 .35rem 1.3rem .35rem;
+  }
+
+  .progress {
+    width: 40px;
+  }
+}
+
+@media only screen and (max-width: 720px) {
   .main .expandRow td > div {
     max-height: 5rem;
   }
@@ -93,11 +97,6 @@ body {
     overflow: hidden;
     text-align: left;
   }
-
-  .cpu, .ram, .hdd {
-    min-width: 25px;
-    max-width: 50px;
-  }
 }
 
 @media only screen and (max-width: 400px) {
@@ -105,9 +104,9 @@ body {
     font-size: 10px;
   }
 
-  /*.load, #load {*/
-  /*  display: none;*/
-  /*}*/
+  small {
+    font-size: 80%;
+  }
 }
 
 </style>

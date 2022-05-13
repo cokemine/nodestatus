@@ -77,7 +77,7 @@
 </template>
 
 <script lang="ts" setup>
-import { PropType, computed, ref } from 'vue';
+import { computed, PropType, ref } from 'vue';
 import useStatus from '@nodestatus/web-utils/vue/hooks/useStatus';
 import type { ServerItem } from '../types';
 
@@ -121,7 +121,10 @@ const collapsed = ref(true);
 
 <style>
 .progress {
+  display: inline-block;
+  text-align: center;
   margin-bottom: 0;
+  width: 50px;
 }
 
 .progress-bar {
@@ -129,7 +132,7 @@ const collapsed = ref(true);
 }
 
 .tableRow td {
-  vertical-align: middle!important;
+  vertical-align: middle !important;
 }
 
 tr.even + .expandRow {
@@ -148,16 +151,11 @@ tr.odd + .expandRow {
 .expandRow td > div {
   overflow: hidden;
   transition: max-height .5s ease;
-  max-height: 6rem;
+  max-height: 4.3em;
 }
 
 .expandRow td > div.collapsed {
-  max-height: 0!important;
-}
-
-.cpu, .memory, .hdd {
-  min-width: 45px;
-  max-width: 90px;
+  max-height: 0 !important;
 }
 
 </style>
