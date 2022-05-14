@@ -44,11 +44,11 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           github-comment: |
-            Preview
-            hotaru-theme: {{deploymentUrl}}
-            classic-theme: {{deploymentUrl}}/index.html?theme=classic
+            ✅ Preview
+            hotaru-theme: \{\{deploymentUrl\}\}
+            classic-theme: \{\{deploymentUrl\}\}/index.html?theme=classic
 
-            Built with commit {{deploymentCommit}}.
+            Built with commit \{\{deploymentCommit\}\}.
             This pull request is being automatically deployed with vercel-action
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.ORG_ID}}
