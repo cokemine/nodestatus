@@ -1,10 +1,11 @@
 {
   "version": 2,
+  "functions": {
+    "api/now.ts": {
+      "includeFiles": "build/**"
+    }
+  },
   "routes": [
-    {
-      "src": "/api/.*",
-      "dest": "/api/now.ts"
-    },
     {
       "src": "/.*",
       "dest": "/api/now.ts"
