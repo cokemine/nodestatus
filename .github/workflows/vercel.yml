@@ -44,8 +44,7 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           github-comment: |
-            |
-            ✅ Preview
+            Preview
             hotaru-theme: {{deploymentUrl}}
             classic-theme: {{deploymentUrl}}/index.html?theme=classic
 
