@@ -1,8 +1,10 @@
 name: test
 
 on:
-  - push
-  - pull_request
+  push:
+    branches-ignore:
+      - "renovate/**"
+  pull_request:
 
 jobs:
   build:
@@ -11,7 +13,6 @@ jobs:
     strategy:
       matrix:
         os: [ windows-latest, ubuntu-latest ]
-        node-version: [ 14 ]
 
     steps:
       - uses: actions/checkout@v3
@@ -33,7 +34,7 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 14
       - run: pnpm test
         env:
           DATABASE: /home/runner/work/nodestatus/nodestatus/db.${{ runner.os }}.sqlite
