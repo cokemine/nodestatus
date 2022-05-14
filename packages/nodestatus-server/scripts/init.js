@@ -61,7 +61,8 @@ function initDatabase() {
     platform() === 'win32' && (cmd += '.cmd');
 
     /* Regenerate correct prisma client */
-    const prisma = cp.spawn(cmd, ['db', 'push'], {
+    const args = process.env.IS_VERCEL === 'true' ? ['generate'] : ['db', 'push'];
+    const prisma = cp.spawn(cmd, args, {
       env: envOption,
       cwd: resolve(__dirname, '../'),
       stdio: 'inherit'

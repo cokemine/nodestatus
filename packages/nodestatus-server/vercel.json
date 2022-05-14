@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "public": false,
+  "github": {
+    "enabled": false
+  },
+  "functions": {
+    "api/now.ts": {
+      "includeFiles": "build/**"
+    }
+  },
+  "routes": [
+    {
+      "src": "/.*",
+      "dest": "/api/now.ts"
+    }
+  ]
+}
