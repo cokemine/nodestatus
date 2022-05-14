@@ -48,6 +48,7 @@ app.use(serve(resolve(frontendPath, './hotaru-theme')));
 app.use(serve(resolve(frontendPath, './classic-theme')));
 
 app.use(koaBody());
+
 app.use(
   koaJwt({
     secret: config.webSecret
