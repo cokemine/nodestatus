@@ -57,7 +57,7 @@
     "isomorphic-timers-promises": "^1.0.1",
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.13.4",
-    "koa-body": "^4.2.0",
+    "koa-body": "^5.0.0",
     "koa-connect": "^2.1.0",
     "koa-jwt": "^4.0.3",
     "koa-mount": "^4.0.0",
