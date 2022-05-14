@@ -56,6 +56,7 @@ app.use(
     path: /^\/api\/session/
   })
 );
+
 app.use(router.routes());
 app.use(router.allowedMethods());
 
