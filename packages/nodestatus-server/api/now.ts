@@ -1,5 +1,4 @@
 import { resolve } from 'path';
-import fs from 'fs';
 import historyApiFallback from 'koa2-connect-history-api-fallback';
 import mount from 'koa-mount';
 import serve from 'koa-static';

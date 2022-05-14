@@ -16,9 +16,9 @@ if (config.useWeb && !config.webPassword) {
   process.exit(1);
 }
 
-const app = new Koa();
-
 (async () => {
+  const app = new Koa();
+
   app.use(historyApiFallback({
     whiteList: ['/admin/assets', '/telegraf'],
     rewrites: [
@@ -35,5 +35,3 @@ const app = new Koa();
 
   ipc && ipc.listen(config.ipcAddress, () => logger.info(`🎉  NodeStatus Ipc is listening on ${config.ipcAddress}`));
 })();
-
-export default app;

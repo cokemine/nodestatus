@@ -29,5 +29,3 @@ pnpm-debug.log*
 *.sw?
 
 .vercel
-
-.vercel
