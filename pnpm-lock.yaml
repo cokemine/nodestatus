@@ -188,7 +188,7 @@ importers:
       '@ant-design/icons': ^4.7.0
       '@nodestatus/web-utils': workspace:*
       '@tailwindcss/postcss7-compat': ^2.2.17
-      '@types/react': ^17.0.33
+      '@types/react': ^18.0.0
       '@types/react-beautiful-dnd': ^13.1.2
       '@types/react-dom': ^17.0.10
       '@types/react-simple-maps': ^1.0.6
@@ -216,7 +216,7 @@ importers:
       '@ant-design/icons': 4.7.0_sfoxds7t5ydpegc3knd667wn6m
       '@nodestatus/web-utils': link:../utils
       '@tailwindcss/postcss7-compat': 2.2.17
-      '@types/react': 17.0.33
+      '@types/react': 18.0.9
       '@types/react-beautiful-dnd': 13.1.2
       '@types/react-dom': 17.0.10
       '@types/react-simple-maps': 1.0.6
@@ -1654,7 +1654,7 @@ packages:
   /@types/hoist-non-react-statics/3.3.1:
     resolution: {integrity: sha512-iMIqiko6ooLrTh1joXodJK5X9xeEALT1kM5G3ZLhD3hszxBdIEd5C75U834D9mLcINgD4OyZf5uQXjkuYydWvA==}
     dependencies:
-      '@types/react': 17.0.33
+      '@types/react': 18.0.9
       hoist-non-react-statics: 3.3.2
     dev: true
 
@@ -1790,20 +1790,20 @@ packages:
   /@types/react-beautiful-dnd/13.1.2:
     resolution: {integrity: sha512-+OvPkB8CdE/bGdXKyIhc/Lm2U7UAYCCJgsqmopFmh9gbAudmslkI8eOrPDjg4JhwSE6wytz4a3/wRjKtovHVJg==}
     dependencies:
-      '@types/react': 17.0.33
+      '@types/react': 18.0.9
     dev: true
 
   /@types/react-dom/17.0.10:
     resolution: {integrity: sha512-8oz3NAUId2z/zQdFI09IMhQPNgIbiP8Lslhv39DIDamr846/0spjZK0vnrMak0iB8EKb9QFTTIdg2Wj2zH5a3g==}
     dependencies:
-      '@types/react': 17.0.33
+      '@types/react': 18.0.9
     dev: true
 
   /@types/react-redux/7.1.20:
     resolution: {integrity: sha512-q42es4c8iIeTgcnB+yJgRTTzftv3eYYvCZOh1Ckn2eX/3o5TdsQYKUWpLoLuGlcY/p+VAhV9IOEZJcWk/vfkXw==}
     dependencies:
       '@types/hoist-non-react-statics': 3.3.1
-      '@types/react': 17.0.33
+      '@types/react': 18.0.9
       hoist-non-react-statics: 3.3.2
       redux: 4.1.1
     dev: true
@@ -1813,11 +1813,11 @@ packages:
     dependencies:
       '@types/d3-geo': 1.12.3
       '@types/geojson': 7946.0.8
-      '@types/react': 17.0.33
+      '@types/react': 18.0.9
     dev: true
 
-  /@types/react/17.0.33:
-    resolution: {integrity: sha512-pLWntxXpDPaU+RTAuSGWGSEL2FRTNyRQOjSWDke/rxRg14ncsZvx8AKWMWZqvc1UOaJIAoObdZhAWvRaHFi5rw==}
+  /@types/react/18.0.9:
+    resolution: {integrity: sha512-9bjbg1hJHUm4De19L1cHiW0Jvx3geel6Qczhjd0qY5VKVE2X5+x77YxAepuCwVh4vrgZJdgEJw48zrhRIeF4Nw==}
     dependencies:
       '@types/prop-types': 15.7.4
       '@types/scheduler': 0.16.2

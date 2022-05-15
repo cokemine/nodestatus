@@ -11,7 +11,7 @@
     "@ant-design/icons": "^4.7.0",
     "@nodestatus/web-utils": "workspace:*",
     "@tailwindcss/postcss7-compat": "^2.2.17",
-    "@types/react": "^17.0.33",
+    "@types/react": "^18.0.0",
     "@types/react-beautiful-dnd": "^13.1.2",
     "@types/react-dom": "^17.0.10",
     "@types/react-simple-maps": "^1.0.6",
