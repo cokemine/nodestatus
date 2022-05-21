@@ -20,6 +20,9 @@ import ServersCard from './components/ServersCard.vue';
 import TheFooter from './components/TheFooter.vue';
 import type { ServerItem } from './types';
 
+/* Semantic UI Style */
+import 'semantic-ui-css/semantic.min.css';
+
 export default defineComponent({
   name: 'App',
   components: {

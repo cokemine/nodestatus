@@ -1,5 +1,5 @@
 <template>
-  <div role="navigation" class="navbar navbar-inverse navbar-fixed-top">
+  <div role="navigation" class="navbar navbar-inverse navbar-fixed-top" id="header">
     <div class="navbar-inner">
       <div class="container">
         <div class="navbar-header">
@@ -11,11 +11,11 @@
 </template>
 
 <style>
-.navbar {
+#header {
   min-height: 40px;
 }
 
-.navbar-inverse .navbar-brand {
+#header .navbar-brand {
   color: #fff;
   font-size: 20px;
 }

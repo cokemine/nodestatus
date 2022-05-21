@@ -120,41 +120,41 @@ const collapsed = ref(true);
 </script>
 
 <style>
-.progress {
+#table .progress {
   display: inline-block;
   text-align: center;
   margin-bottom: 0;
   width: 50px;
 }
 
-.progress-bar {
+#table .progress-bar {
   color: #000;
 }
 
-.tableRow td {
+#table .tableRow td {
   vertical-align: middle !important;
 }
 
-tr.even + .expandRow {
+#table tr.even + .expandRow {
   background-color: #FFF !important;
 }
 
-tr.odd + .expandRow {
+#table tr.odd + .expandRow {
   background: #F9F9F9 !important;
 }
 
-.expandRow > td {
+#table .expandRow > td {
   padding: 0 !important;
   border-top: 0 !important;
 }
 
-.expandRow td > div {
+#table .expandRow td > div {
   overflow: hidden;
   transition: max-height .5s ease;
   max-height: 4.3em;
 }
 
-.expandRow td > div.collapsed {
+#table .expandRow td > div.collapsed {
   max-height: 0 !important;
 }
 

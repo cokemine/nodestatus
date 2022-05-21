@@ -171,6 +171,7 @@ importers:
     specifiers:
       '@nodestatus/web-utils': workspace:*
       '@vitejs/plugin-vue': ^2.3.3
+      bootstrap: 3.4.1
       typescript: ^4.6.4
       vite: ^2.9.9
       vue: ^3.2.33
@@ -178,6 +179,7 @@ importers:
     devDependencies:
       '@nodestatus/web-utils': link:../utils
       '@vitejs/plugin-vue': 2.3.3_vite@2.9.9+vue@3.2.33
+      bootstrap: 3.4.1
       typescript: 4.6.4
       vite: 2.9.9
       vue: 3.2.33
@@ -245,6 +247,7 @@ importers:
     specifiers:
       '@nodestatus/web-utils': workspace:*
       '@vitejs/plugin-vue': ^2.3.3
+      semantic-ui-css: ^2.4.1
       typescript: ^4.6.4
       vite: ^2.9.9
       vite-plugin-svg-icons: ^1.0.5
@@ -253,6 +256,7 @@ importers:
     devDependencies:
       '@nodestatus/web-utils': link:../utils
       '@vitejs/plugin-vue': 2.3.3_vite@2.9.9+vue@3.2.33
+      semantic-ui-css: 2.4.1
       typescript: 4.6.4
       vite: 2.9.9
       vite-plugin-svg-icons: 1.0.5_vite@2.9.9
@@ -2725,6 +2729,11 @@ packages:
 
   /boolbase/1.0.0:
     resolution: {integrity: sha1-aN/1++YMUes3cl6p4+0xDcwed24=}
+    dev: true
+
+  /bootstrap/3.4.1:
+    resolution: {integrity: sha512-yN5oZVmRCwe5aKwzRj6736nSmKDX7pLYwsXiCj/EYmo16hODaBiT4En5btW/jhBF/seV+XMx3aYwukYC3A49DA==}
+    engines: {node: '>=6'}
     dev: true
 
   /brace-expansion/1.1.11:
@@ -6083,6 +6092,10 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
+  /jquery/3.6.0:
+    resolution: {integrity: sha512-JVzAR/AjBvVt2BmYhxRCSYysDsPcssdmTFnzyLEts9qNwmjmu4JTAMYubEfwVOSwpQ1I1sKKFcxhZCI2buerfw==}
+    dev: true
+
   /js-base64/2.6.4:
     resolution: {integrity: sha512-pZe//GGmwJndub7ZghVHz7vjb2LgC1m8B07Au3eYqeqv9emhESByMXxaEgkUkEqJe87oBbSniGYoQNIBklc7IQ==}
     dev: true
@@ -8622,6 +8635,12 @@ packages:
     resolution: {integrity: sha512-8LuxJSuFVc92+0AdNv4QOxRL4Abeo1DgLnGNkn1XlaujPH/3cCFz3QI60r2VNu4obJJROzgnIUw5TKQkZvZI1w==}
     dependencies:
       compute-scroll-into-view: 1.0.17
+    dev: true
+
+  /semantic-ui-css/2.4.1:
+    resolution: {integrity: sha512-Pkp0p9oWOxlH0kODx7qFpIRYpK1T4WJOO4lNnpNPOoWKCrYsfHqYSKgk5fHfQtnWnsAKy7nLJMW02bgDWWFZFg==}
+    dependencies:
+      jquery: 3.6.0
     dev: true
 
   /semver/5.7.1:

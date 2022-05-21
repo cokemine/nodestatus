@@ -1,6 +1,6 @@
 <template>
   <the-header />
-  <div class="main container content">
+  <div class="main container content" id="main">
     <the-error v-show="!servers" />
     <servers-table :servers="servers" />
     <UpdateTime :updated="updated" style="padding: 10px" />
@@ -16,6 +16,10 @@ import TheHeader from './components/TheHeader.vue';
 import TheFooter from './components/TheFooter.vue';
 import ServersTable from './components/ServersTable.vue';
 import type { ServerItem } from './types';
+
+/* Bootstrap Style */
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap-theme.min.css';
 
 const servers = ref<Array<ServerItem>>();
 const updated = ref<number>();
@@ -38,7 +42,7 @@ body {
   background: #ebebeb url('./assets/img/light.png');
 }
 
-.main.content {
+#main {
   background: #ffffff;
   padding: 1.4rem;
   border-radius: 5px;
@@ -61,17 +65,17 @@ body {
     font-size: 12px;
   }
 
-  .main.container {
+  #main {
     margin: 0 .35rem 1.3rem .35rem;
   }
 
-  .progress {
+  #table .progress {
     width: 40px;
   }
 }
 
 @media only screen and (max-width: 720px) {
-  .main .expandRow td > div {
+  #table .expandRow td > div {
     max-height: 5rem;
   }
 }

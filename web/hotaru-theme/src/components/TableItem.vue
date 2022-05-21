@@ -122,7 +122,7 @@ export default defineComponent({
   max-height: 0;
 }
 
-.progress {
+.tableRow .progress {
   display: inline-block;
   overflow: hidden;
   height: 25px;
@@ -131,7 +131,7 @@ export default defineComponent({
   margin-bottom: 0 !important;
 }
 
-.progress .bar {
+.tableRow .progress .bar {
   height: 25px;
   border-radius: 6px;
   font-size: .9rem;

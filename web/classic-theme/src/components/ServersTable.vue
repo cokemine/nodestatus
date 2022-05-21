@@ -1,5 +1,5 @@
 <template>
-  <table class="table table-striped table-condensed table-hover">
+  <table class="table table-striped table-condensed table-hover" id="table">
     <thead>
     <tr>
       <th id="online_status" style="text-align: center;">协议</th>
@@ -37,22 +37,22 @@ defineProps({
 </script>
 
 <style>
-.table {
+#table {
   background: #ffffff;
   margin-bottom: 0;
   border-collapse: collapse;
   border-radius: 3px;
 }
 
-.table th, .table td {
+#table th, #table td {
   text-align: center;
 }
 
-.table-striped tbody > tr.even {
+#table tbody > tr.even {
   background-color: #FFF;
 }
 
-.table-striped tbody > tr.odd {
+#table tbody > tr.odd {
   background-color: #F9F9F9;
 }
 </style>
