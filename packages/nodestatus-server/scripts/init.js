@@ -12,17 +12,6 @@ const cp = require('child_process');
 const replace = require('replace-in-file');
 const dotenv = require('dotenv');
 
-function backupDatabase(dbPath) {
-  if (!fs.existsSync(dbPath) || process.env.NODE_ENV === 'TEST') return;
-  console.log('The database file is detected to already exist.');
-  console.log('Trying to update database schema.....');
-  const date = new Date();
-  fs.copyFileSync(
-    dbPath,
-    `${dbPath}_${date.getFullYear()}_${date.getMonth() + 1}_${date.getDate()}_${date.getHours()}_${date.getMinutes()}_${date.getSeconds()}.bak`
-  );
-}
-
 function checkDatabaseType() {
   const dbPath = process.env.DATABASE || '';
   if (dbPath.includes('mysql:')) {
@@ -43,10 +32,8 @@ function initDatabase() {
   );
   const envOption = { BINARY_TARGETS: '["native"]', ...process.env };
 
-  /* backup database if is sqlite */
   if (databaseType === 'sqlite') {
     envOption.DATABASE_URL = dbPath.includes('file:') ? dbPath : `file:${dbPath}`;
-    backupDatabase(dbPath.replace('file:', ''));
   } else {
     envOption.DATABASE_URL = dbPath;
   }
