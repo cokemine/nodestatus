@@ -2,7 +2,7 @@
 
 Yet another servers monitor written in TypeScript.
 
-Current Version: 1.2.5-beta.3
+Current Version: 1.2.5-beta.4
 
 ## How To Install
 
