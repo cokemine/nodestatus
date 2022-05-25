@@ -76,7 +76,9 @@ const modifyOrder: Middleware = async ctx => {
 };
 
 const queryEvents: Middleware = async ctx => {
-  await handleRequest(ctx, readEvents());
+  const size = Number(ctx.query.size) || 10;
+  const offset = Number(ctx.query.offset) || 0;
+  await handleRequest(ctx, readEvents(size, offset).then(([count, list]) => ({ count, list })));
 };
 
 const removeEvent: Middleware = async ctx => {

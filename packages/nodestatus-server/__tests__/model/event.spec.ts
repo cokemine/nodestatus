@@ -16,15 +16,18 @@ test('Create Event', async () => {
 });
 
 test('Read Events', async () => {
-  await expect(readEvents()).resolves.toStrictEqual([]);
+  await expect(readEvents()).resolves.toStrictEqual([0, []]);
   await createEvent('username01');
-  await expect(readEvents()).resolves.toHaveLength(1);
+  const events = await readEvents();
+  expect(events[0]).toBe(1);
+  expect(events[1]).toHaveLength(1);
 });
 
 test('Resolve Event', async () => {
   await createEvent('server01');
   await updateEvent('server01');
   const events = await readEvents();
-  expect(events).toHaveLength(1);
-  expect(events[0]).toHaveProperty('resolved', true);
+  expect(events[0]).toBe(1);
+  expect(events[1]).toHaveLength(1);
+  expect(events[1][0]).toHaveProperty('resolved', true);
 });

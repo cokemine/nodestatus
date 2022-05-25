@@ -19,7 +19,16 @@ export const updateEvent = (username: string, resolved = true) => prisma.event.u
   }
 });
 
-export const readEvents = () => prisma.event.findMany({});
+export const readEvents = (size?: number, offset?: number) => prisma.$transaction([
+  prisma.event.count(),
+  prisma.event.findMany({
+    take: size,
+    skip: offset,
+    orderBy: {
+      id: 'desc'
+    }
+  })
+]);
 
 export const deleteEvent = (id: number) => prisma.event.delete({
   where: {
