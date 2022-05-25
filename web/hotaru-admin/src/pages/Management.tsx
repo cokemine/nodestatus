@@ -98,7 +98,7 @@ const parseInstallationScript = (
 const Management: FC = () => {
   const [regionResult, setRegionResult] = useState<string[]>([]);
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { data, mutate } = useSWR<IResp<IServer[]>>('/api/server');
+  const { data, mutate } = useSWR<IResp<IServer[]>>('/api/servers');
 
   const [form] = Form.useForm<IServer & { password: string }>();
   const { confirm } = Modal;
@@ -106,7 +106,7 @@ const Management: FC = () => {
 
   const handleModify = useCallback(() => {
     const data = form.getFieldsValue();
-    axios.put<IResp>('/api/server', { username: state.currentNode, data }).then(res => {
+    axios.put<IResp>('/api/servers', { username: state.currentNode, data }).then(res => {
       notify('Success', res.data.msg, 'success');
       dispatch({ type: 'resetState', payload: { form, mutate } });
     });
@@ -114,21 +114,21 @@ const Management: FC = () => {
 
   const handleCreate = useCallback(() => {
     const data = form.getFieldsValue();
-    axios.post<IResp>('/api/server', { ...data }).then(res => {
+    axios.post<IResp>('/api/servers', { ...data }).then(res => {
       notify('Success', res.data.msg, 'success');
       dispatch({ type: 'resetState', payload: { form, mutate } });
     });
   }, [form, mutate]);
 
   const handleDelete = useCallback((username: string) => {
-    axios.delete<IResp>(`/api/server/${username}`).then(res => {
+    axios.delete<IResp>(`/api/servers/${username}`).then(res => {
       notify('Success', res.data.msg, 'success');
       dispatch({ type: 'resetState', payload: { form, mutate } });
     });
   }, [form, mutate]);
 
   const handleSortOrder = useCallback((order: number[]) => {
-    axios.put<IResp>('/api/server/order', { order }).then(res => {
+    axios.put<IResp>('/api/servers/order', { order }).then(res => {
       notify('Success', res.data.msg, 'success');
       dispatch({ type: 'resetState', payload: { form, mutate } });
     });

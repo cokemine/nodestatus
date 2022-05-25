@@ -10,13 +10,13 @@ const router = new Router({ prefix: '/api' });
 router.get('/session', verifySession);
 router.post('/session', createSession);
 
-router.get('/server', getListServers);
-router.post('/server', addServer);
-router.put('/server', setServer);
-router.put('/server/order', modifyOrder);
-router.delete('/server/:username', removeServer);
+router.get('/servers', getListServers);
+router.post('/servers', addServer);
+router.put('/servers', setServer);
+router.put('/servers/order', modifyOrder);
+router.delete('/servers/:username', removeServer);
 
-router.get('/event', queryEvents);
-router.delete('/event/:id?', removeEvent);
+router.get('/events', queryEvents);
+router.delete('/events/:id?', removeEvent);
 
 export default router;

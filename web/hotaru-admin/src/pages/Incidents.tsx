@@ -27,11 +27,11 @@ const Incidents: FC = () => {
   const {
     data: resp,
     mutate
-  } = useSWR<IResp<{ count: number, list: IEvent[] }>>(`/api/event?size=10&offset=${(currentPage - 1) * 10}`);
+  } = useSWR<IResp<{ count: number, list: IEvent[] }>>(`/api/events?size=10&offset=${(currentPage - 1) * 10}`);
   const { count, list: dataList } = resp?.data || {};
 
   const handleDeleteEvent = useCallback((id: number) => {
-    axios.delete<IResp>(`/api/event/${id}`).then(res => {
+    axios.delete<IResp>(`/api/events/${id}`).then(res => {
       notify('Success', res.data.msg, 'success');
       return mutate();
     });
@@ -104,7 +104,7 @@ const Incidents: FC = () => {
         onClick={() => Modal.confirm({
           title: 'Are you sure you want to delete all items?',
           icon: <ExclamationCircleOutlined />,
-          onOk: () => axios.delete('/api/event').then(res => {
+          onOk: () => axios.delete('/api/events').then(res => {
             notify('Success', res.data.msg, 'success');
             return mutate();
           })
