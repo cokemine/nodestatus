@@ -42,7 +42,7 @@ jobs:
         run: |
           pnpm build
 
-      - uses: amondnet/vercel-action@v20.0.1
+      - uses: amondnet/vercel-action@v25.0.0
         if: github.event_name != 'push' || github.ref != 'refs/heads/master'
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -58,7 +58,7 @@ jobs:
           vercel-org-id: ${{ secrets.ORG_ID}}
           vercel-project-id: ${{ secrets.PROJECT_ID}}
 
-      - uses: amondnet/vercel-action@v20.0.1
+      - uses: amondnet/vercel-action@v25.0.0
         if: github.event_name == 'push' && github.ref == 'refs/heads/master'
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
