@@ -91,7 +91,7 @@ importers:
       '@types/koa-mount': ^4.0.1
       '@types/koa-static': ^4.0.2
       '@types/ws': ^8.5.3
-      '@vercel/node': ^1.15.2
+      '@vercel/node': ^2.0.0
       bcryptjs: ^2.4.3
       bufferutil: ^4.0.5
       classic-theme: workspace:*
@@ -140,7 +140,7 @@ importers:
       '@types/koa-mount': 4.0.1
       '@types/koa-static': 4.0.2
       '@types/ws': 8.5.3
-      '@vercel/node': 1.15.2
+      '@vercel/node': 2.0.0
       bcryptjs: 2.4.3
       classic-theme: link:../../web/classic-theme
       commander: 9.2.0
@@ -1374,7 +1374,6 @@ packages:
   /@prisma/engines/3.13.0-17.efdf9b1183dddfd4258cd181a72125755215ab7b:
     resolution: {integrity: sha512-Ip9CcCeUocH61eXu4BUGpvl5KleQyhcUVLpWCv+0ZmDv44bFaDpREqjGHHdRupvPN/ugB6gTlD9b9ewdj02yVA==}
     requiresBuild: true
-    dev: true
 
   /@rollup/plugin-alias/3.1.9_rollup@2.73.0:
     resolution: {integrity: sha512-QI5fsEvm9bDzt32k39wpOwZhVzRcL5ydcffUHMyLVaVaLeC70I8TJZ17F1z1eMoLu4E/UOcH9BWVkKpIKdrfiw==}
@@ -2019,15 +2018,15 @@ packages:
       eslint-visitor-keys: 3.3.0
     dev: true
 
-  /@vercel/node-bridge/2.2.1:
-    resolution: {integrity: sha512-GJdBio0nKyxvFwfLcj6CMp2s22d5V6K9tmhmHkQcaiFwdKWK/Pa7jngiO84a09fvX+DFaOtpalJuxQa5LAJ9xQ==}
+  /@vercel/node-bridge/3.0.0:
+    resolution: {integrity: sha512-TNQK6cufwrhd8ASDk5YHHenH8Xhp9sY8xUjOTKnQQI37KLk+Sw2HlHhT5rzUFN23ahosUlkY8InwtYUmSNb9kw==}
     dev: true
 
-  /@vercel/node/1.15.2:
-    resolution: {integrity: sha512-paHKi2u75/G5g6My/BTXc9uQlMnUxEHSedQepWEzb6d0VNclGAMbIb8KMjBP8/eZ//5qKPuVM3hgHjC3+pShkw==}
+  /@vercel/node/2.0.0:
+    resolution: {integrity: sha512-wGEZ/Ge2GrmcBQmuJHFq2h0gTy4XOn2oYJyceVnOsMPwSZXMdZet2E3xSff5VfmrK2yGxO4mUIBeYjsPH+ZwWg==}
     dependencies:
       '@types/node': 16.11.6
-      '@vercel/node-bridge': 2.2.1
+      '@vercel/node-bridge': 3.0.0
       ts-node: 8.9.1_typescript@4.3.4
       typescript: 4.3.4
     dev: true
@@ -2815,8 +2814,6 @@ packages:
     requiresBuild: true
     dependencies:
       node-gyp-build: 4.3.0
-    dev: false
-    optional: true
 
   /builtin-modules/3.2.0:
     resolution: {integrity: sha512-lGzLKcioL90C7wMczpkY0n/oART3MbBa8R9OFGE1rJxoVI86u4WAGfEk8Wjv10eKSyTHVGkSo3bvBylCEtk7LA==}
@@ -6801,8 +6798,6 @@ packages:
   /node-gyp-build/4.3.0:
     resolution: {integrity: sha512-iWjXZvmboq0ja1pUGULQBexmxq8CV4xBhX7VDOTbL7ZR4FOowwY/VOtRxBN/yKxmdGoIp4j5ysNT4u3S2pDQ3Q==}
     hasBin: true
-    dev: false
-    optional: true
 
   /node-int64/0.4.0:
     resolution: {integrity: sha1-h6kGXNs1XTGC2PlM4RGIuCXGijs=}
@@ -7514,7 +7509,6 @@ packages:
     dependencies:
       '@prisma/engines': 3.13.0-17.efdf9b1183dddfd4258cd181a72125755215ab7b
       ts-pattern: 4.0.2
-    dev: true
 
   /promptly/2.2.0:
     resolution: {integrity: sha1-KhP6BjaIoqWYOxYf/wEIoH0m/HQ=}
@@ -9288,7 +9282,6 @@ packages:
 
   /ts-pattern/4.0.2:
     resolution: {integrity: sha512-eHqR/7A6fcw05vCOfnL6RwgGJbVi9G/YHTdYdjYmElhDdJ1SMn7pWs+6+YuxygaFwQS/g+cIDlu+UD8IVpur1A==}
-    dev: true
 
   /tsconfig-paths/3.14.1:
     resolution: {integrity: sha512-fxDhWnFSLt3VuTwtvJt5fpwxBHg5AdKWMsgcPOOIilyjymcYVZoCQF8fvFRezCNfblEXmi+PcM1eYHeOAgXCOQ==}
@@ -9478,8 +9471,6 @@ packages:
     requiresBuild: true
     dependencies:
       node-gyp-build: 4.3.0
-    dev: false
-    optional: true
 
   /util-deprecate/1.0.2:
     resolution: {integrity: sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8=}
