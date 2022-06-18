@@ -27,6 +27,6 @@
     "chalk": "^4.1.2",
     "commander": "^9.2.0",
     "i18n-iso-countries": "^7.0.0",
-    "inquirer": "^8.2.0"
+    "inquirer": "^9.0.0"
   }
 }
