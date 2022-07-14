@@ -35,7 +35,7 @@
     "replace-in-file": "^6.3.2"
   },
   "devDependencies": {
-    "@koa/router": "^10.1.1",
+    "@koa/router": "^11.0.0",
     "@msgpack/msgpack": "^2.7.2",
     "@types/bcryptjs": "^2.4.2",
     "@types/jsonwebtoken": "^8.5.8",
