@@ -213,7 +213,7 @@ importers:
       tailwindcss: ^2.2.17
       typescript: ^4.6.4
       vite: ^2.9.9
-      vite-plugin-svg-icons: 2.0.1
+      vite-plugin-svg-icons: ^2.0.1
     devDependencies:
       '@ant-design/icons': 4.7.0_sfoxds7t5ydpegc3knd667wn6m
       '@nodestatus/web-utils': link:../utils
