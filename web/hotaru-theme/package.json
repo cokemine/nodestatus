@@ -9,7 +9,7 @@
   },
   "devDependencies": {
     "@nodestatus/web-utils": "workspace:*",
-    "@vitejs/plugin-vue": "^2.3.3",
+    "@vitejs/plugin-vue": "^3.0.0",
     "semantic-ui-css": "^2.4.1",
     "typescript": "^4.6.4",
     "vite": "^2.9.9",
