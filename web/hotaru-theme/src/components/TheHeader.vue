@@ -15,7 +15,7 @@ import useConfig from '@nodestatus/web-utils/vue/hooks/useConfig';
 export default defineComponent({
   name: 'TheHeader',
   setup() {
-    const config = useConfig();
+    const config = useConfig()!;
     return {
       config
     };

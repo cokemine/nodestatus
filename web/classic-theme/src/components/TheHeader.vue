@@ -13,7 +13,7 @@
 <script lang="ts" setup>
 import useConfig from '@nodestatus/web-utils/vue/hooks/useConfig';
 
-const config = useConfig();
+const config = useConfig()!;
 </script>
 
 <style>
