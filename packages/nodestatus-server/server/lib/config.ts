@@ -37,6 +37,10 @@ const config = {
   useWeb: process.env.USE_WEB !== 'false',
   usePush: process.env.USE_PUSH !== 'false',
 
+  webTitle: process.env.WEB_TITLE ?? 'Server Status',
+  webSubTitle: process.env.WEB_SUBTITLE ?? 'Servers\' Probes Set up with NodeStatus',
+  webHeadTitle: process.env.WEB_HEADTITLE ?? 'NodeStatus',
+
   webUsername: process.env.WEB_USERNAME || 'admin',
   webPassword: process.env.WEB_PASSWORD || '',
   webSecret: process.env.WEB_SECRET || 'secret',

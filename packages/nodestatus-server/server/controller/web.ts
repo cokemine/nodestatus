@@ -9,6 +9,7 @@ import {
 } from '../model/server';
 import { createRes } from '../lib/utils';
 import { deleteAllEvents, deleteEvent, readEvents } from '../model/event';
+import config from '../lib/config';
 
 async function handleRequest<T>(ctx: Context, handler: Promise<T>): Promise<void> {
   try {
@@ -89,6 +90,12 @@ const removeEvent: Middleware = async ctx => {
   }
 };
 
+const queryConfig: Middleware = async ctx => ctx.body = {
+  title: config.webTitle,
+  subTitle: config.webSubTitle,
+  headTitle: config.webHeadTitle
+};
+
 export {
   getListServers,
   setServer,
@@ -96,5 +103,6 @@ export {
   removeServer,
   modifyOrder,
   queryEvents,
-  removeEvent
+  removeEvent,
+  queryConfig
 };

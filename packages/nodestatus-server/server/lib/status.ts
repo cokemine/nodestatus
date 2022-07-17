@@ -44,7 +44,7 @@ export async function createStatus(app: Koa): Promise<[Server, NetServer | null]
       koaJwt({
         secret: config.webSecret
       }).unless({
-        path: [/^\/api\/session/, /^\/telegraf/]
+        path: [/^\/api\/session/, /^\/telegraf/, /^\/api\/config/]
       })
     );
     app.use(router.routes());

@@ -16,6 +16,10 @@ services:
       USE_IPC: "true"
       USE_WEB: "true"
 
+      WEB_TITLE: "Server Status"
+      WEB_SUBTITLE: "Servers' Probes Set up with NodeStatus"
+      WEB_HEADTITLE: "NodeStatus"
+
       WEB_USERNAME: "admin"
       WEB_PASSWORD: ""
       WEB_SECRET: ""

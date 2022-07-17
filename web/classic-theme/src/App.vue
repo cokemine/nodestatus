@@ -1,4 +1,5 @@
 <template>
+  <global-context>
   <the-header />
   <div class="main container content" id="main">
     <the-error v-show="!servers" />
@@ -6,12 +7,14 @@
     <UpdateTime :updated="updated" style="padding: 10px" />
   </div>
   <the-footer />
+  </global-context>
 </template>
 
 <script lang="ts" setup>
 import { onBeforeUnmount, ref } from 'vue';
 import TheError from '@nodestatus/web-utils/vue/components/TheError.vue';
 import UpdateTime from '@nodestatus/web-utils/vue/components/UpdateTime.vue';
+import GlobalContext from '@nodestatus/web-utils/vue/components/GlobalContext.vue';
 import TheHeader from './components/TheHeader.vue';
 import TheFooter from './components/TheFooter.vue';
 import ServersTable from './components/ServersTable.vue';

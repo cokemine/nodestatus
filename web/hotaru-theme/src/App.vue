@@ -1,12 +1,14 @@
 <template>
-  <the-header />
-  <the-error v-show="!servers" />
-  <div class="container">
-    <servers-table :servers="servers" />
-    <update-time :updated="updated" />
-    <servers-card :servers="servers" />
-  </div>
-  <the-footer />
+  <global-context>
+    <the-header />
+    <the-error v-show="!servers" />
+    <div class="container">
+      <servers-table :servers="servers" />
+      <update-time :updated="updated" />
+      <servers-card :servers="servers" />
+    </div>
+    <the-footer />
+  </global-context>
 </template>
 
 <script lang="ts">
@@ -14,6 +16,7 @@ import { defineComponent, ref, onBeforeUnmount } from 'vue';
 
 import TheError from '@nodestatus/web-utils/vue/components/TheError.vue';
 import UpdateTime from '@nodestatus/web-utils/vue/components/UpdateTime.vue';
+import GlobalContext from '@nodestatus/web-utils/vue/components/GlobalContext.vue';
 import TheHeader from './components/TheHeader.vue';
 import ServersTable from './components/ServersTable.vue';
 import ServersCard from './components/ServersCard.vue';
@@ -31,7 +34,8 @@ export default defineComponent({
     ServersTable,
     ServersCard,
     TheFooter,
-    UpdateTime
+    UpdateTime,
+    GlobalContext
   },
   setup() {
     const servers = ref<Array<ServerItem>>();
