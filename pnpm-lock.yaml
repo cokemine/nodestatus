@@ -115,17 +115,15 @@ importers:
       log4js: ^6.4.7
       pm2: ^5.2.0
       prisma: ^3.13.0
-      readable-stream: ^3.6.0
       replace-in-file: ^6.3.2
       telegraf: ^4.8.2
       typescript: ^4.6.4
       utf-8-validate: ^5.0.7
       vite: ^2.9.9
-      ws: ^8.6.0
+      ws: ^8.8.1
     dependencies:
       '@prisma/client': 3.13.0_prisma@3.13.0
       dotenv: 16.0.1
-      readable-stream: 3.6.0
       replace-in-file: 6.3.2
     optionalDependencies:
       bufferutil: 4.0.5
@@ -165,7 +163,7 @@ importers:
       telegraf: 4.8.2_encoding@0.1.13
       typescript: 4.6.4
       vite: 2.9.9
-      ws: 8.6.0_lfy3lj2jvemch5kgpjwtdixywm
+      ws: 8.8.1_lfy3lj2jvemch5kgpjwtdixywm
 
   web/classic-theme:
     specifiers:
@@ -9860,8 +9858,8 @@ packages:
       utf-8-validate: 5.0.7
     dev: true
 
-  /ws/8.6.0_lfy3lj2jvemch5kgpjwtdixywm:
-    resolution: {integrity: sha512-AzmM3aH3gk0aX7/rZLYvjdvZooofDu3fFOzGqcSnQ1tOcTWwhM/o+q++E8mAyVVIyUdajrkzWUGftaVSDLn1bw==}
+  /ws/8.8.1_lfy3lj2jvemch5kgpjwtdixywm:
+    resolution: {integrity: sha512-bGy2JzvzkPowEJV++hF07hAD6niYSr0JzBNo/J29WsB57A2r7Wlc1UFcTR9IzrPvuNVO4B8LGqF8qcpsVOhJCA==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       bufferutil: ^4.0.1

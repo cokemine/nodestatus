@@ -31,7 +31,6 @@
   "dependencies": {
     "@prisma/client": "^3.13.0",
     "dotenv": "^16.0.1",
-    "readable-stream": "^3.6.0",
     "replace-in-file": "^6.3.2"
   },
   "devDependencies": {
@@ -69,7 +68,7 @@
     "telegraf": "^4.8.2",
     "typescript": "^4.6.4",
     "vite": "^2.9.9",
-    "ws": "^8.6.0"
+    "ws": "^8.8.1"
   },
   "optionalDependencies": {
     "bufferutil": "^4.0.5",
