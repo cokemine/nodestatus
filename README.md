@@ -100,6 +100,14 @@ Node.js Version: https://github.com/cokemine/nodestatus-client
 
 &nbsp;
 
+**WEB_TITLE** : 自定义站点显示标题，默认 `Server Status`
+
+**WEB_SUBTITLE** : 自定义站点显示副标题，默认 `Servers' Probes Set up with NodeStatus`
+
+**WEB_HEADTITLE** : 用于定义 head 标签中的 title 元素，默认 `NodeStatus`
+
+&nbsp;
+
 **WEB_USERNAME** : WEB 面板用户名，默认 `admin`
 
 **WEB_PASSWORD** : WEB 面板密码

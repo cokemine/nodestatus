@@ -2,17 +2,24 @@
   <div class="ui vertical masthead center aligned" id="header">
     <div class="header__content">
       <h1 class="ui inverted header">
-        Server Status
+        {{ config.title }}
       </h1>
-      <p>Servers' Probes Set up with NodeStatus</p>
+      <p>{{ config.subTitle }}</p>
     </div>
   </div>
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue';
+import useConfig from '@nodestatus/web-utils/vue/hooks/useConfig';
 
 export default defineComponent({
-  name: 'TheHeader'
+  name: 'TheHeader',
+  setup() {
+    const config = useConfig()!;
+    return {
+      config
+    };
+  }
 });
 </script>
 <style>

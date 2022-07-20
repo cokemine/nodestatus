@@ -3,12 +3,18 @@
     <div class="navbar-inner">
       <div class="container">
         <div class="navbar-header">
-          <a href="#" class="navbar-brand">NodeStatus</a>
+          <a href="#" class="navbar-brand">{{ config.title }}</a>
         </div>
       </div>
     </div>
   </div>
 </template>
+
+<script lang="ts" setup>
+import useConfig from '@nodestatus/web-utils/vue/hooks/useConfig';
+
+const config = useConfig()!;
+</script>
 
 <style>
 #header {

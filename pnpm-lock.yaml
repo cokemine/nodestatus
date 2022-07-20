@@ -265,9 +265,13 @@ importers:
 
   web/utils:
     specifiers:
+      '@vueuse/head': ^0.7.6
+      axios: ^0.27.2
       nodestatus: workspace:*
       vue: ^3.2.33
     devDependencies:
+      '@vueuse/head': 0.7.6_vue@3.2.33
+      axios: 0.27.2
       nodestatus: link:../..
       vue: 3.2.33
 
@@ -2224,6 +2228,14 @@ packages:
 
   /@vue/shared/3.2.37:
     resolution: {integrity: sha512-4rSJemR2NQIo9Klm1vabqWjD8rs/ZaJSzMxkMNeJS6lHiUjjUeYFbooN19NgFjztubEKh3WlZUeOLVdbbUWHsw==}
+    dev: true
+
+  /@vueuse/head/0.7.6_vue@3.2.33:
+    resolution: {integrity: sha512-cOWqCkT3WiF5oEpw+VVEWUJd9RLD5rc7DmnFp3cePsejp+t7686uKD9Z9ZU7Twb7R/BI8iexKTmXo9D/F3v6UA==}
+    peerDependencies:
+      vue: '>=3'
+    dependencies:
+      vue: 3.2.33
     dev: true
 
   /abab/2.0.5:
