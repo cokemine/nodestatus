@@ -27,7 +27,7 @@ if (config.useWeb && !config.webPassword) {
   }));
 
   app.use(mount('/admin', serve(resolve(__dirname, './dist/hotaru-admin'), { maxage: 2592000 })));
-  app.use(serve(resolve(__dirname, `./dist/${config.theme}`), { maxage: 2592000 }));
+  app.use(serve(resolve(__dirname, `./dist/${config.webTheme}`), { maxage: 2592000 }));
 
   const [server, ipc] = await createStatus(app);
 
