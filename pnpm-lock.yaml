@@ -81,7 +81,7 @@ importers:
 
   packages/nodestatus-server:
     specifiers:
-      '@koa/router': ^11.0.0
+      '@koa/router': ^12.0.0
       '@msgpack/msgpack': ^2.7.2
       '@prisma/client': ^3.13.0
       '@types/bcryptjs': ^2.4.2
@@ -129,7 +129,7 @@ importers:
       bufferutil: 4.0.5
       utf-8-validate: 5.0.7
     devDependencies:
-      '@koa/router': 11.0.1
+      '@koa/router': 12.0.0
       '@msgpack/msgpack': 2.7.2
       '@types/bcryptjs': 2.4.2
       '@types/jsonwebtoken': 8.5.8
@@ -1223,8 +1223,8 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.13
     dev: true
 
-  /@koa/router/11.0.1:
-    resolution: {integrity: sha512-jZ5ISytdHJWUPiXmxIpT/rk7rCRD/gnwYP3WKlQ0kOLWAtCeFbURTlP2zG0VyALKq4NtVMf0uEMFreQJWFOhaw==}
+  /@koa/router/12.0.0:
+    resolution: {integrity: sha512-cnnxeKHXlt7XARJptflGURdJaO+ITpNkOHmQu7NHmCoRinPbyvFzce/EG/E8Zy81yQ1W9MoSdtklc3nyaDReUw==}
     engines: {node: '>= 12'}
     dependencies:
       http-errors: 2.0.0
