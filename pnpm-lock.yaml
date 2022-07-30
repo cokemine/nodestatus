@@ -206,7 +206,7 @@ importers:
       react-dom: ^17.0.2
       react-icons: ^4.3.1
       react-router-dom: ^6.3.0
-      react-simple-maps: ^2.3.0
+      react-simple-maps: ^3.0.0
       swr: ^1.3.0
       tailwindcss: ^2.2.17
       typescript: ^4.6.4
@@ -234,7 +234,7 @@ importers:
       react-dom: 17.0.2_react@17.0.2
       react-icons: 4.3.1_react@17.0.2
       react-router-dom: 6.3.0_sfoxds7t5ydpegc3knd667wn6m
-      react-simple-maps: 2.3.0_oxfzelaz5ynxsop2v2nu2h2m64
+      react-simple-maps: 3.0.0_oxfzelaz5ynxsop2v2nu2h2m64
       swr: 1.3.0_react@17.0.2
       tailwindcss: 2.2.17_7kdg42vg5oc624cdcvtpw2m3gq
       typescript: 4.6.4
@@ -8317,12 +8317,12 @@ packages:
       react: 17.0.2
     dev: true
 
-  /react-simple-maps/2.3.0_oxfzelaz5ynxsop2v2nu2h2m64:
-    resolution: {integrity: sha512-IZVeiPSRZKwD6I/2NvXpQ2uENYGDGZp8DvZjkapcxuJ/LQHTfl+Byb+KNgY7s+iatRA2ad8LnZ3AgqcjziCCsw==}
+  /react-simple-maps/3.0.0_oxfzelaz5ynxsop2v2nu2h2m64:
+    resolution: {integrity: sha512-vKNFrvpPG8Vyfdjnz5Ne1N56rZlDfHXv5THNXOVZMqbX1rWZA48zQuYT03mx6PAKanqarJu/PDLgshIZAfHHqw==}
     peerDependencies:
       prop-types: ^15.7.2
-      react: ^16.8.0 || 17.x
-      react-dom: ^16.8.0 || 17.x
+      react: ^16.8.0 || 17.x || 18.x
+      react-dom: ^16.8.0 || 17.x || 18.x
     dependencies:
       d3-geo: 2.0.2
       d3-selection: 2.0.0
