@@ -18,7 +18,7 @@ const createMiddleware = async (name: string, publicPath: string): Promise<Middl
       hmr: {
         port: ++port
       },
-      middlewareMode: 'html'
+      middlewareMode: true
     }
   });
 
