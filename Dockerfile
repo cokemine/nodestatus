@@ -17,7 +17,7 @@ RUN if [ "$USE_CHINA_MIRROR" = 1 ]; then \
   apt-get -y update \
   && apt-get install -y git python3 apt-transport-https ca-certificates build-essential \
   && ln -s /usr/bin/python3 /usr/bin/python \
-  && npm install pnpm -g \
+  && npm install pnpm@6 -g \
   && pnpm install --unsafe-perm \
   && pnpm build
 
@@ -40,9 +40,10 @@ COPY --from=0 /app/packages/nodestatus-server/build ./packages/nodestatus-server
 COPY --from=0 /app/packages/nodestatus-server/scripts ./packages/nodestatus-server/scripts
 COPY --from=0 /app/packages/nodestatus-server/prisma ./packages/nodestatus-server/prisma
 
+COPY --from=0 /app/web/classic-theme/package.json ./web/classic-theme/
 COPY --from=0 /app/web/hotaru-theme/package.json ./web/hotaru-theme/
 COPY --from=0 /app/web/hotaru-admin/package.json ./web/hotaru-admin/
-
+COPY --from=0 /app/web/utils/package.json ./web/utils/
 
 ENV IS_DOCKER=true
 ENV NODE_ENV=production
@@ -53,7 +54,7 @@ RUN if [ "$USE_CHINA_MIRROR" = 1 ]; then \
   && npm config set PRISMA_BINARIES_MIRROR https://r.cnpmjs.org/-/binary/prisma; \
   fi;\
   apk add --no-cache --virtual .build-deps git make gcc g++ python3 \
-  && npm install pm2 pnpm prisma -g \
+  && npm install pm2 pnpm@6 prisma -g \
   && pnpm install --prod --frozen-lockfile \
   && npm cache clean --force \
   && apk del .build-deps
