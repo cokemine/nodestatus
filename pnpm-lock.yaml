@@ -87,9 +87,9 @@ importers:
       '@types/bcryptjs': ^2.4.2
       '@types/jsonwebtoken': ^8.5.8
       '@types/koa': ^2.13.4
-      '@types/koa__router': ^8.0.11
       '@types/koa-mount': ^4.0.1
       '@types/koa-static': ^4.0.2
+      '@types/koa__router': ^8.0.11
       '@types/ws': ^8.5.3
       '@vercel/node': ^2.0.0
       bcryptjs: ^2.4.3
@@ -134,9 +134,9 @@ importers:
       '@types/bcryptjs': 2.4.2
       '@types/jsonwebtoken': 8.5.8
       '@types/koa': 2.13.4
-      '@types/koa__router': 8.0.11
       '@types/koa-mount': 4.0.1
       '@types/koa-static': 4.0.2
+      '@types/koa__router': 8.0.11
       '@types/ws': 8.5.3
       '@vercel/node': 2.0.0
       bcryptjs: 2.4.3
@@ -196,7 +196,7 @@ importers:
       antd: ^4.20.2
       array-move: ^4.0.0
       autoprefixer: ^10.3.7
-      axios: ^0.27.2
+      axios: ^1.0.0
       fast-deep-equal: ^3.1.3
       i18n-iso-countries: ^7.0.0
       postcss: ^8.3.11
@@ -224,7 +224,7 @@ importers:
       antd: 4.20.2_sfoxds7t5ydpegc3knd667wn6m
       array-move: 4.0.0
       autoprefixer: 10.3.7_postcss@8.3.11
-      axios: 0.27.2
+      axios: 1.1.2
       fast-deep-equal: 3.1.3
       i18n-iso-countries: 7.0.0
       postcss: 8.3.11
@@ -264,12 +264,12 @@ importers:
   web/utils:
     specifiers:
       '@vueuse/head': ^0.7.6
-      axios: ^0.27.2
+      axios: ^1.0.0
       nodestatus: workspace:*
       vue: ^3.2.33
     devDependencies:
       '@vueuse/head': 0.7.6_vue@3.2.33
-      axios: 0.27.2
+      axios: 1.1.2
       nodestatus: link:../..
       vue: 3.2.33
 
@@ -2663,16 +2663,17 @@ packages:
   /axios/0.21.4_debug@4.3.4:
     resolution: {integrity: sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==}
     dependencies:
-      follow-redirects: 1.14.4_debug@4.3.4
+      follow-redirects: 1.15.1_debug@4.3.4
     transitivePeerDependencies:
       - debug
     dev: true
 
-  /axios/0.27.2:
-    resolution: {integrity: sha512-t+yRIyySRTp/wua5xEr+z1q60QmLq8ABsS5O9Me1AsE5dfKqgnCFzwiCZZ/cGNd1lq4/7akDWMxdhVlucjmnOQ==}
+  /axios/1.1.2:
+    resolution: {integrity: sha512-bznQyETwElsXl2RK7HLLwb5GPpOLlycxHCtrpDR/4RqqBzjARaOTo3jz4IgtntWUYee7Ne4S8UHd92VCuzPaWA==}
     dependencies:
-      follow-redirects: 1.15.1
+      follow-redirects: 1.15.1_debug@4.3.4
       form-data: 4.0.0
+      proxy-from-env: 1.1.0
     transitivePeerDependencies:
       - debug
     dev: true
@@ -4703,8 +4704,8 @@ packages:
     resolution: {integrity: sha512-WIWGi2L3DyTUvUrwRKgGi9TwxQMUEqPOPQBVi71R96jZXJdFskXEmf54BoZaS1kknGODoIGASGEzBUYdyMCBJg==}
     dev: true
 
-  /follow-redirects/1.14.4_debug@4.3.4:
-    resolution: {integrity: sha512-zwGkiSXC1MUJG/qmeIFH2HBJx9u0V46QGUe3YR1fXG8bXQxq7fLj0RjLZQ5nubr9qNJUZrH+xUcwXEoXNpfS+g==}
+  /follow-redirects/1.15.1_debug@4.3.4:
+    resolution: {integrity: sha512-yLAMQs+k0b2m7cVxpS1VKJVvoz7SS9Td1zss3XRwXj+ZDH00RJgnuLx7E44wx02kQLrdM3aOOy+FpzS7+8OizA==}
     engines: {node: '>=4.0'}
     peerDependencies:
       debug: '*'
@@ -4713,16 +4714,6 @@ packages:
         optional: true
     dependencies:
       debug: 4.3.4
-    dev: true
-
-  /follow-redirects/1.15.1:
-    resolution: {integrity: sha512-yLAMQs+k0b2m7cVxpS1VKJVvoz7SS9Td1zss3XRwXj+ZDH00RJgnuLx7E44wx02kQLrdM3aOOy+FpzS7+8OizA==}
-    engines: {node: '>=4.0'}
-    peerDependencies:
-      debug: '*'
-    peerDependenciesMeta:
-      debug:
-        optional: true
     dev: true
 
   /for-in/1.0.2:
@@ -5156,7 +5147,7 @@ packages:
     engines: {node: '>= 6'}
     dependencies:
       agent-base: 6.0.2
-      debug: 4.3.2
+      debug: 4.3.4
     transitivePeerDependencies:
       - supports-color
     dev: true
