@@ -2,7 +2,7 @@ import { Server } from 'http';
 import fs from 'fs';
 import Koa from 'koa';
 import koaJwt from 'koa-jwt';
-import koaBody from 'koa-body';
+import { koaBody } from 'koa-body';
 import router from '../router';
 import NodeStatus from './nodestatus';
 import createIpc from './ipc';

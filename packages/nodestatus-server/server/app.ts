@@ -2,7 +2,7 @@ import { resolve } from 'path';
 import Koa from 'koa';
 import serve from 'koa-static';
 import mount from 'koa-mount';
-import historyApiFallback from 'koa2-connect-history-api-fallback';
+import { historyApiFallback } from 'koa2-connect-history-api-fallback';
 import { logger } from './lib/utils';
 import { createStatus } from './lib/status';
 import config from './lib/config';
