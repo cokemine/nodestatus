@@ -1,4 +1,5 @@
 import React, { useState, FC, useEffect } from 'react';
+import WebSocket from 'reconnecting-websocket';
 import { parseLoad, parseUpdateTime } from '@nodestatus/web-utils/shared';
 import { ITable, ServerItem } from '../types';
 

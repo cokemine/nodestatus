@@ -13,6 +13,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, onBeforeUnmount } from 'vue';
+import WebSocket from 'reconnecting-websocket';
 
 import TheError from '@nodestatus/web-utils/vue/components/TheError.vue';
 import UpdateTime from '@nodestatus/web-utils/vue/components/UpdateTime.vue';

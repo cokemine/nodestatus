@@ -170,6 +170,7 @@ importers:
       '@nodestatus/web-utils': workspace:*
       '@vitejs/plugin-vue': ^3.1.0
       bootstrap: 3.4.1
+      reconnecting-websocket: ^4.4.0
       typescript: ^4.6.4
       vite: ^3.1.3
       vue: ^3.2.33
@@ -178,6 +179,7 @@ importers:
       '@nodestatus/web-utils': link:../utils
       '@vitejs/plugin-vue': 3.1.0_vite@3.1.3+vue@3.2.33
       bootstrap: 3.4.1
+      reconnecting-websocket: 4.4.0
       typescript: 4.6.4
       vite: 3.1.3
       vue: 3.2.33
@@ -207,6 +209,7 @@ importers:
       react-icons: ^4.3.1
       react-router-dom: ^6.3.0
       react-simple-maps: ^3.0.0
+      reconnecting-websocket: ^4.4.0
       swr: ^1.3.0
       tailwindcss: ^2.2.17
       typescript: ^4.6.4
@@ -235,6 +238,7 @@ importers:
       react-icons: 4.3.1_react@17.0.2
       react-router-dom: 6.3.0_sfoxds7t5ydpegc3knd667wn6m
       react-simple-maps: 3.0.0_oxfzelaz5ynxsop2v2nu2h2m64
+      reconnecting-websocket: 4.4.0
       swr: 1.3.0_react@17.0.2
       tailwindcss: 2.2.17_7kdg42vg5oc624cdcvtpw2m3gq
       typescript: 4.6.4
@@ -245,6 +249,7 @@ importers:
     specifiers:
       '@nodestatus/web-utils': workspace:*
       '@vitejs/plugin-vue': ^3.1.0
+      reconnecting-websocket: ^4.4.0
       semantic-ui-css: ^2.4.1
       typescript: ^4.6.4
       vite: ^3.1.3
@@ -254,6 +259,7 @@ importers:
     devDependencies:
       '@nodestatus/web-utils': link:../utils
       '@vitejs/plugin-vue': 3.1.0_vite@3.1.3+vue@3.2.33
+      reconnecting-websocket: 4.4.0
       semantic-ui-css: 2.4.1
       typescript: 4.6.4
       vite: 3.1.3
@@ -8754,6 +8760,10 @@ packages:
     engines: {node: '>=8.10.0'}
     dependencies:
       picomatch: 2.3.0
+    dev: true
+
+  /reconnecting-websocket/4.4.0:
+    resolution: {integrity: sha512-D2E33ceRPga0NvTDhJmphEgJ7FUYF0v4lr1ki0csq06OdlxKfugGzN0dSkxM/NfqCxYELK4KcaTOUOjTV6Dcng==}
     dev: true
 
   /reduce-css-calc/2.1.8:
