@@ -22,10 +22,7 @@ jobs:
 
       - name: Check Version
         id: checkver
-        run: |
-          cd "packages/nodestatus-server"
-          version="v$(npm -s run env echo '$npm_package_version')"
-          echo "::set-output name=version::${version}"
+        uses: battila7/get-version-action@v2
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
