@@ -2,7 +2,7 @@ import nodeResolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import del from 'rollup-plugin-delete';
-import pkg from './package.json';
+import pkg from './package.json' assert { type: 'json' };
 
 export default {
   input: 'index.js',

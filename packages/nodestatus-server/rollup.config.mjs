@@ -1,4 +1,6 @@
-import { resolve } from 'path';
+import { resolve, dirname } from 'path';
+import { fileURLToPath } from 'url';
+import { createRequire } from 'module';
 import esbuild from 'rollup-plugin-esbuild';
 import del from 'rollup-plugin-delete';
 import alias from '@rollup/plugin-alias';
@@ -6,7 +8,10 @@ import commonjs from '@rollup/plugin-commonjs';
 import nodeResolve from '@rollup/plugin-node-resolve';
 import json from '@rollup/plugin-json';
 import run from '@rollup/plugin-run';
-import pkg from './package.json';
+import pkg from './package.json' assert { type: 'json' };
+
+const require = createRequire(import.meta.url);
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const isProd = process.env.ROLLUP_WATCH !== 'true';
 

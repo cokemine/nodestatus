@@ -1,7 +1,7 @@
 import path from 'path';
 import { createServer as createViteServer } from 'vite';
 import Koa, { Middleware } from 'koa';
-import historyApiFallback from 'koa2-connect-history-api-fallback';
+import { historyApiFallback } from 'koa2-connect-history-api-fallback';
 import c2k from 'koa-connect';
 import { createStatus } from './lib/status';
 import { logger } from './lib/utils';
