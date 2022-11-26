@@ -87,9 +87,9 @@ importers:
       '@types/bcryptjs': ^2.4.2
       '@types/jsonwebtoken': ^8.5.8
       '@types/koa': ^2.13.4
-      '@types/koa__router': ^8.0.11
       '@types/koa-mount': ^4.0.1
       '@types/koa-static': ^4.0.2
+      '@types/koa__router': ^8.0.11
       '@types/ws': ^8.5.3
       '@vercel/node': ^2.0.0
       bcryptjs: ^2.4.3
@@ -134,9 +134,9 @@ importers:
       '@types/bcryptjs': 2.4.2
       '@types/jsonwebtoken': 8.5.8
       '@types/koa': 2.13.4
-      '@types/koa__router': 8.0.11
       '@types/koa-mount': 4.0.1
       '@types/koa-static': 4.0.2
+      '@types/koa__router': 8.0.11
       '@types/ws': 8.5.3
       '@vercel/node': 2.0.0
       bcryptjs: 2.4.3
@@ -193,7 +193,7 @@ importers:
       '@types/react': ^17.0.33
       '@types/react-beautiful-dnd': ^13.1.2
       '@types/react-dom': ^17.0.10
-      '@types/react-simple-maps': ^1.0.8
+      '@types/react-simple-maps': ^3.0.0
       '@vitejs/plugin-react': ^2.1.0
       antd: ^4.20.2
       array-move: ^4.0.0
@@ -222,7 +222,7 @@ importers:
       '@types/react': 17.0.33
       '@types/react-beautiful-dnd': 13.1.2
       '@types/react-dom': 17.0.10
-      '@types/react-simple-maps': 1.0.8
+      '@types/react-simple-maps': 3.0.0
       '@vitejs/plugin-react': 2.1.0_vite@3.1.3
       antd: 4.20.2_sfoxds7t5ydpegc3knd667wn6m
       array-move: 4.0.0
@@ -1670,31 +1670,31 @@ packages:
       '@types/node': 16.11.6
     dev: true
 
-  /@types/d3-color/1.4.2:
-    resolution: {integrity: sha512-fYtiVLBYy7VQX+Kx7wU/uOIkGQn8aAEY8oWMoyja3N4dLd8Yf6XgSIR/4yWvMuveNOH5VShnqCgRqqh/UNanBA==}
+  /@types/d3-color/2.0.3:
+    resolution: {integrity: sha512-+0EtEjBfKEDtH9Rk3u3kLOUXM5F+iZK+WvASPb0MhIZl8J8NUvGeZRwKCXl+P3HkYx5TdU4YtcibpqHkSR9n7w==}
     dev: true
 
-  /@types/d3-geo/1.12.3:
-    resolution: {integrity: sha512-yZbPb7/5DyL/pXkeOmZ7L5ySpuGr4H48t1cuALjnJy5sXQqmSSAYBiwa6Ya/XpWKX2rJqGDDubmh3nOaopOpeA==}
+  /@types/d3-geo/2.0.3:
+    resolution: {integrity: sha512-kFwLEMXq1mGJ2Eho7KrOUYvLcc2YTDeKj+kTFt87JlEbRQ0rgo8ZENNb5vTYmZrJ2xL/vVM5M7yqVZGOPH2JFg==}
     dependencies:
       '@types/geojson': 7946.0.8
     dev: true
 
-  /@types/d3-interpolate/1.4.2:
-    resolution: {integrity: sha512-ylycts6llFf8yAEs1tXzx2loxxzDZHseuhPokrqKprTQSTcD3JbJI1omZP1rphsELZO3Q+of3ff0ZS7+O6yVzg==}
+  /@types/d3-interpolate/2.0.2:
+    resolution: {integrity: sha512-lElyqlUfIPyWG/cD475vl6msPL4aMU7eJvx1//Q177L8mdXoVPFl1djIESF2FKnc0NyaHvQlJpWwKJYwAhUoCw==}
     dependencies:
-      '@types/d3-color': 1.4.2
+      '@types/d3-color': 2.0.3
     dev: true
 
-  /@types/d3-selection/1.4.3:
-    resolution: {integrity: sha512-GjKQWVZO6Sa96HiKO6R93VBE8DUW+DDkFpIMf9vpY5S78qZTlRRSNUsHr/afDpF7TvLDV7VxrUFOWW7vdIlYkA==}
+  /@types/d3-selection/2.0.1:
+    resolution: {integrity: sha512-3mhtPnGE+c71rl/T5HMy+ykg7migAZ4T6gzU0HxpgBFKcasBrSnwRbYV1/UZR6o5fkpySxhWxAhd7yhjj8jL7g==}
     dev: true
 
-  /@types/d3-zoom/1.8.3:
-    resolution: {integrity: sha512-3kHkL6sPiDdbfGhzlp5gIHyu3kULhtnHTTAl3UBZVtWB1PzcLL8vdmz5mTx7plLiUqOA2Y+yT2GKjt/TdA2p7Q==}
+  /@types/d3-zoom/2.0.3:
+    resolution: {integrity: sha512-9X9uDYKk2U8w775OHj36s9Q7GkNAnJKGw6+sbkP5DpHSjELwKvTGzEK6+IISYfLpJRL/V3mRXMhgDnnJ5LkwJg==}
     dependencies:
-      '@types/d3-interpolate': 1.4.2
-      '@types/d3-selection': 1.4.3
+      '@types/d3-interpolate': 2.0.2
+      '@types/d3-selection': 2.0.1
     dev: true
 
   /@types/estree/1.0.0:
@@ -1917,11 +1917,11 @@ packages:
       redux: 4.1.1
     dev: true
 
-  /@types/react-simple-maps/1.0.8:
-    resolution: {integrity: sha512-gNXpQor+H0CCjp8GVNUeeTV+iDPdqFuCDIlYHH17KZ/tVHK1WaRIZl+s2ZnPCVQo27nEnRgU3GQxYbOYxXxgNQ==}
+  /@types/react-simple-maps/3.0.0:
+    resolution: {integrity: sha512-yj1gBs7R+yq0OaHzQgwcRvzaHQxNBny1myl7NaICeBjToTG2sQK2Tq18lflojtLTm8vOLeFuA3EaYW+L8SkrAQ==}
     dependencies:
-      '@types/d3-geo': 1.12.3
-      '@types/d3-zoom': 1.8.3
+      '@types/d3-geo': 2.0.3
+      '@types/d3-zoom': 2.0.3
       '@types/geojson': 7946.0.8
       '@types/react': 17.0.33
     dev: true
