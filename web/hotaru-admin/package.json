@@ -14,7 +14,7 @@
     "@types/react": "^17.0.33",
     "@types/react-beautiful-dnd": "^13.1.2",
     "@types/react-dom": "^17.0.10",
-    "@types/react-simple-maps": "^1.0.8",
+    "@types/react-simple-maps": "^3.0.0",
     "@vitejs/plugin-react": "^2.1.0",
     "antd": "^4.20.2",
     "array-move": "^4.0.0",
