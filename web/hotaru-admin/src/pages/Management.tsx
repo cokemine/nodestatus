@@ -10,13 +10,12 @@ import {
   DeleteOutlined, EditOutlined, ExclamationCircleOutlined, MenuOutlined
 } from '@ant-design/icons';
 import axios from 'axios';
-import useSWR from 'swr';
+import useSWR, { KeyedMutator } from 'swr';
 import { arrayMoveImmutable } from 'array-move';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import countries from 'i18n-iso-countries';
 import i18nZh from 'i18n-iso-countries/langs/zh.json';
 import i18nEn from 'i18n-iso-countries/langs/en.json';
-import { KeyedMutator } from 'swr/dist/types';
 import { IResp, IServer } from '../types';
 import { notify } from '../utils';
 import Loading from '../components/Loading';
