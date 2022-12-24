@@ -9,7 +9,7 @@
   },
   "devDependencies": {
     "@nodestatus/web-utils": "workspace:*",
-    "@vitejs/plugin-vue": "^3.1.0",
+    "@vitejs/plugin-vue": "^4.0.0",
     "@vueuse/head": "^1.0.22",
     "reconnecting-websocket": "^4.4.0",
     "semantic-ui-css": "^2.4.1",
