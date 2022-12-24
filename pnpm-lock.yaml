@@ -6,7 +6,7 @@ importers:
     specifiers:
       '@rollup/plugin-alias': ^4.0.2
       '@rollup/plugin-commonjs': ^23.0.2
-      '@rollup/plugin-json': ^5.0.1
+      '@rollup/plugin-json': ^6.0.0
       '@rollup/plugin-node-resolve': v15.0.1
       '@rollup/plugin-run': ^3.0.1
       '@types/fs-extra': ^9.0.13
@@ -35,7 +35,7 @@ importers:
     devDependencies:
       '@rollup/plugin-alias': 4.0.2_rollup@3.3.0
       '@rollup/plugin-commonjs': 23.0.2_rollup@3.3.0
-      '@rollup/plugin-json': 5.0.1_rollup@3.3.0
+      '@rollup/plugin-json': 6.0.0_rollup@3.3.0
       '@rollup/plugin-node-resolve': 15.0.1_rollup@3.3.0
       '@rollup/plugin-run': 3.0.1_rollup@3.3.0
       '@types/fs-extra': 9.0.13
@@ -1477,8 +1477,8 @@ packages:
       rollup: 3.3.0
     dev: true
 
-  /@rollup/plugin-json/5.0.1_rollup@3.3.0:
-    resolution: {integrity: sha512-QCwhZZLvM8nRcTHyR1vOgyTMiAnjiNj1ebD/BMRvbO1oc/z14lZH6PfxXeegee2B6mky/u9fia4fxRM4TqrUaw==}
+  /@rollup/plugin-json/6.0.0_rollup@3.3.0:
+    resolution: {integrity: sha512-i/4C5Jrdr1XUarRhVu27EEwjt4GObltD7c+MkCIpO2QIbojw8MUs+CCTqOphQi3Qtg1FLmYt+l+6YeoIf51J7w==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
       rollup: ^1.20.0||^2.0.0||^3.0.0
@@ -7686,11 +7686,6 @@ packages:
     resolution: {integrity: sha512-1fygroTLlHu66zi26VoTDv8yRgm0Fccecssto+MhsZ0D/DGW2sm8E8AjW7NU5VVTRt5GxbeZ5qBuJr+HyLYkjQ==}
     dev: true
 
-  /picomatch/2.3.0:
-    resolution: {integrity: sha512-lY1Q/PiJGC2zOv/z391WOTD+Z02bCgsFfvxoXXf6h7kv9o+WmsmzYqrAwY63sNgOxE4xEdq0WyUnXfKeBrSvYw==}
-    engines: {node: '>=8.6'}
-    dev: true
-
   /picomatch/2.3.1:
     resolution: {integrity: sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==}
     engines: {node: '>=8.6'}
@@ -8813,7 +8808,7 @@ packages:
     resolution: {integrity: sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA==}
     engines: {node: '>=8.10.0'}
     dependencies:
-      picomatch: 2.3.0
+      picomatch: 2.3.1
     dev: true
 
   /reconnecting-websocket/4.4.0:
