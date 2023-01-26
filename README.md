@@ -29,7 +29,7 @@ curl -fsSL https://rpm.nodesource.com/setup_16.x | bash -
 
 
 #Install From NPM, NodeStatus needs prisma-cli to generate db
-npm i pm2 prisma -g
+npm i pm2 -g
 npm i nodestatus-server@latest --unsafe-perm -g # will install status-server status-server-run in your computer
 status-server # start nodestatus-server
 status-server-run # start nodestatus-server with pm2

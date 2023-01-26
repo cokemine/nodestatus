@@ -17,7 +17,7 @@ RUN if [ "$USE_CHINA_MIRROR" = 1 ]; then \
   apt-get -y update \
   && apt-get install -y git python3 apt-transport-https ca-certificates build-essential \
   && ln -s /usr/bin/python3 /usr/bin/python \
-  && npm install pnpm@6 -g \
+  && npm install pnpm -g \
   && pnpm install --unsafe-perm \
   && pnpm build
 
@@ -54,7 +54,7 @@ RUN if [ "$USE_CHINA_MIRROR" = 1 ]; then \
   && npm config set PRISMA_BINARIES_MIRROR https://r.cnpmjs.org/-/binary/prisma; \
   fi;\
   apk add --no-cache --virtual .build-deps git make gcc g++ python3 \
-  && npm install pm2 pnpm@6 prisma -g \
+  && npm install pm2 pnpm -g \
   && pnpm install --prod --frozen-lockfile \
   && npm cache clean --force \
   && apk del .build-deps

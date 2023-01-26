@@ -83,7 +83,7 @@ importers:
     specifiers:
       '@koa/router': ^12.0.0
       '@msgpack/msgpack': ^2.7.2
-      '@prisma/client': ^4.8.0
+      '@prisma/client': ^4.9.0
       '@types/bcryptjs': ^2.4.2
       '@types/jsonwebtoken': ^9.0.0
       '@types/koa': ^2.13.4
@@ -114,7 +114,7 @@ importers:
       koa2-connect-history-api-fallback: ^0.1.3
       log4js: ^6.4.7
       pm2: ^5.2.0
-      prisma: ^4.8.0
+      prisma: ^4.9.0
       replace-in-file: ^6.3.2
       telegraf: ^4.8.2
       typescript: ^4.6.4
@@ -122,8 +122,9 @@ importers:
       vite: ^4.0.4
       ws: ^8.8.1
     dependencies:
-      '@prisma/client': 4.8.0_prisma@4.8.0
+      '@prisma/client': 4.9.0_prisma@4.9.0
       dotenv: 16.0.1
+      prisma: 4.9.0
       replace-in-file: 6.3.2
     optionalDependencies:
       bufferutil: 4.0.5
@@ -159,7 +160,6 @@ importers:
       koa2-connect-history-api-fallback: 0.1.3
       log4js: 6.4.7
       pm2: 5.2.0_lfy3lj2jvemch5kgpjwtdixywm
-      prisma: 4.8.0
       telegraf: 4.8.2_encoding@0.1.13
       typescript: 4.6.4
       vite: 4.0.4
@@ -1362,8 +1362,8 @@ packages:
       - supports-color
     dev: true
 
-  /@prisma/client/4.8.0_prisma@4.8.0:
-    resolution: {integrity: sha512-Y1riB0p2W52kh3zgssP/YAhln3RjBFcJy3uwEiyjmU+TQYh6QTZDRFBo3JtBWuq2FyMOl1Rye8jxzUP+n0l5Cg==}
+  /@prisma/client/4.9.0_prisma@4.9.0:
+    resolution: {integrity: sha512-bz6QARw54sWcbyR1lLnF2QHvRW5R/Jxnbbmwh3u+969vUKXtBkXgSgjDA85nji31ZBlf7+FrHDy5x+5ydGyQDg==}
     engines: {node: '>=14.17'}
     requiresBuild: true
     peerDependencies:
@@ -1372,17 +1372,18 @@ packages:
       prisma:
         optional: true
     dependencies:
-      '@prisma/engines-version': 4.8.0-61.d6e67a83f971b175a593ccc12e15c4a757f93ffe
-      prisma: 4.8.0
+      '@prisma/engines-version': 4.9.0-42.ceb5c99003b99c9ee2c1d2e618e359c14aef2ea5
+      prisma: 4.9.0
     dev: false
 
-  /@prisma/engines-version/4.8.0-61.d6e67a83f971b175a593ccc12e15c4a757f93ffe:
-    resolution: {integrity: sha512-MHSOSexomRMom8QN4t7bu87wPPD+pa+hW9+71JnVcF3DqyyO/ycCLhRL1we3EojRpZxKvuyGho2REQsMCvxcJw==}
+  /@prisma/engines-version/4.9.0-42.ceb5c99003b99c9ee2c1d2e618e359c14aef2ea5:
+    resolution: {integrity: sha512-M16aibbxi/FhW7z1sJCX8u+0DriyQYY5AyeTH7plQm9MLnURoiyn3CZBqAyIoQ+Z1pS77usCIibYJWSgleBMBA==}
     dev: false
 
-  /@prisma/engines/4.8.0:
-    resolution: {integrity: sha512-A1Asn2rxZMlLAj1HTyfaCv0VQrLUv034jVay05QlqZg1qiHPeA3/pGTfNMijbsMYCsGVxfWEJuaZZuNxXGMCrA==}
+  /@prisma/engines/4.9.0:
+    resolution: {integrity: sha512-t1pt0Gsp+HcgPJrHFc+d/ZSAaKKWar2G/iakrE07yeKPNavDP3iVKPpfXP22OTCHZUWf7OelwKJxQgKAm5hkgw==}
     requiresBuild: true
+    dev: false
 
   /@rollup/plugin-alias/4.0.2_rollup@3.3.0:
     resolution: {integrity: sha512-1hv7dBOZZwo3SEupxn4UA2N0EDThqSSS+wI1St1TNTBtOZvUchyIClyHcnDcjjrReTPZ47Faedrhblv4n+T5UQ==}
@@ -7784,13 +7785,14 @@ packages:
     engines: {node: '>= 0.8'}
     dev: true
 
-  /prisma/4.8.0:
-    resolution: {integrity: sha512-DWIhxvxt8f4h6MDd35mz7BJff+fu7HItW3WPDIEpCR3RzcOWyiHBbLQW5/DOgmf+pRLTjwXQob7kuTZVYUAw5w==}
+  /prisma/4.9.0:
+    resolution: {integrity: sha512-bS96oZ5oDFXYgoF2l7PJ3Mp1wWWfLOo8B/jAfbA2Pn0Wm5Z/owBHzaMQKS3i1CzVBDWWPVnOohmbJmjvkcHS5w==}
     engines: {node: '>=14.17'}
     hasBin: true
     requiresBuild: true
     dependencies:
-      '@prisma/engines': 4.8.0
+      '@prisma/engines': 4.9.0
+    dev: false
 
   /promptly/2.2.0:
     resolution: {integrity: sha1-KhP6BjaIoqWYOxYf/wEIoH0m/HQ=}

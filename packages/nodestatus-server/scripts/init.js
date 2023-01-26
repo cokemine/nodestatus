@@ -51,7 +51,7 @@ function initDatabase() {
     const args = process.env.IS_VERCEL === 'true' ? ['generate'] : ['db', 'push'];
     const prisma = cp.spawn(cmd, args, {
       env: envOption,
-      cwd: resolve(__dirname, '../'),
+      cwd: resolve(__dirname, '../../../'),
       stdio: 'inherit'
     });
 
