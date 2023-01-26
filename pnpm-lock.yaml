@@ -212,7 +212,7 @@ importers:
       react-router-dom: ^6.3.0
       react-simple-maps: ^3.0.0
       reconnecting-websocket: ^4.4.0
-      swr: ^2.0.0
+      swr: ^2.0.1
       tailwindcss: ^2.2.17
       typescript: ^4.6.4
       vite: ^4.0.4
@@ -241,7 +241,7 @@ importers:
       react-router-dom: 6.3.0_sfoxds7t5ydpegc3knd667wn6m
       react-simple-maps: 3.0.0_oxfzelaz5ynxsop2v2nu2h2m64
       reconnecting-websocket: 4.4.0
-      swr: 2.0.0_react@17.0.2
+      swr: 2.0.1_react@17.0.2
       tailwindcss: 2.2.17_7kdg42vg5oc624cdcvtpw2m3gq
       typescript: 4.6.4
       vite: 4.0.4
@@ -9342,8 +9342,8 @@ packages:
       stable: 0.1.8
     dev: true
 
-  /swr/2.0.0_react@17.0.2:
-    resolution: {integrity: sha512-IhUx5yPkX+Fut3h0SqZycnaNLXLXsb2ECFq0Y29cxnK7d8r7auY2JWNbCW3IX+EqXUg3rwNJFlhrw5Ye/b6k7w==}
+  /swr/2.0.1_react@17.0.2:
+    resolution: {integrity: sha512-6z4FpS9dKAay7axedlStsPahEw25nuMlVh4GHkuPpGptbmEEP8v/+kr0GkAE/7ErUs25U2VFOnZQz3AWfkmXdw==}
     engines: {pnpm: '7'}
     peerDependencies:
       react: ^16.11.0 || ^17.0.0 || ^18.0.0
