@@ -17,20 +17,22 @@ mv /usr/local/NodeStatus/db.sqlite /usr/local/NodeStatus/db.sqlite.bak
 ```bash
 # Install Node.js
 # Using Ubuntu
-curl -fsSL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
 sudo apt-get install -y nodejs
 
 # Using Debian, as root
-curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
+curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
 apt-get install -y nodejs
 
 # RHEL, CentOS, CloudLinux, Amazon Linux or Fedora as root
-curl -fsSL https://rpm.nodesource.com/setup_16.x | bash -
+curl -fsSL https://rpm.nodesource.com/setup_18.x | bash -
 
 
-#Install From NPM, NodeStatus needs prisma-cli to generate db
+#Install From NPM
 npm i pm2 -g
-npm i nodestatus-server@latest --unsafe-perm -g # will install status-server status-server-run in your computer
+# Two cli tools `status-server and status-server-run` will be installed. Default database is located at `file:/usr/local/NodeStatus/server/db.sqlite` so it's needed to add `--unsafe-perm` flag.
+# You can set environment variable `DATABASE` to the location in your user's home directory in advance if you don't want to add `--unsafe-perm` flag.
+npm i nodestatus-server@latest --unsafe-perm -g 
 status-server # start nodestatus-server
 status-server-run # start nodestatus-server with pm2
 pm2 status # check running status
@@ -68,7 +70,7 @@ docker compose up -d
 
 Go Version: https://github.com/cokemine/nodestatus-client-go
 
-Node.js Version: https://github.com/cokemine/nodestatus-client
+Node.js Version(**Deprecated, Not Recommended**): https://github.com/cokemine/nodestatus-client
 
 ## Environment
 
@@ -76,13 +78,13 @@ Node.js Version: https://github.com/cokemine/nodestatus-client
 
 若为手动安装，则需要在本地用户目录下新建一个 `.nodestatus/.env.local` 文件（注意路径），在这个文件填写相关环境变量配置。
 
-**INTERVAL** : 服务端推送间隔时间, 默认 `1500` (1.5 秒)
+**INTERVAL** : 服务端向前端（浏览器）推送的间隔时间, 默认 `1500` (1.5 秒)
 
 **DATABASE** : 数据库位置文件存放位置, 默认使用 SQLite (Linux): `file:/usr/local/NodeStatus/server/db.sqlite`，支持的数据库有 `SQLite`、`MySQL`、`PostgreSQL`，请使用对应的正确数据源链接格式填写：`SQLite` 应以 `file:` 开头, `MySQL` 应以 `mysql:` 开头, `PostgreSQL` 应以 `postgresql:` 开头。
 
 **PORT** : NodeStatus 所用端口, 默认 `35601`
 
-**VERBOSE** : 是否启动 verbose 模式，启动后会输出更多信息，默认 `false`
+**VERBOSE** : 是否输出更多日志信息，默认 `false`
 
 **PING_INTERVAL** : 用于心跳检测是否与客户端异常断开连接, 默认 `30` (30 秒)
 
