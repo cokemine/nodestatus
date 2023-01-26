@@ -85,7 +85,7 @@ importers:
       '@msgpack/msgpack': ^2.7.2
       '@prisma/client': ^4.8.0
       '@types/bcryptjs': ^2.4.2
-      '@types/jsonwebtoken': ^8.5.8
+      '@types/jsonwebtoken': ^9.0.0
       '@types/koa': ^2.13.4
       '@types/koa-mount': ^4.0.1
       '@types/koa-static': ^4.0.2
@@ -132,7 +132,7 @@ importers:
       '@koa/router': 12.0.0
       '@msgpack/msgpack': 2.7.2
       '@types/bcryptjs': 2.4.2
-      '@types/jsonwebtoken': 8.5.8
+      '@types/jsonwebtoken': 9.0.0
       '@types/koa': 2.13.4
       '@types/koa-mount': 4.0.1
       '@types/koa-static': 4.0.2
@@ -1797,8 +1797,8 @@ packages:
     resolution: {integrity: sha1-7ihweulOEdK4J7y+UnC86n8+ce4=}
     dev: true
 
-  /@types/jsonwebtoken/8.5.8:
-    resolution: {integrity: sha512-zm6xBQpFDIDM6o9r6HSgDeIcLy82TKWctCXEPbJJcXb5AKmi5BNNdLXneixK4lplX3PqIVcwLBCGE/kAGnlD4A==}
+  /@types/jsonwebtoken/9.0.0:
+    resolution: {integrity: sha512-mM4TkDpA9oixqg1Fv2vVpOFyIVLJjm5x4k0V+K/rEsizfjD7Tk7LKk3GTtbB7KCfP0FEHQtsZqFxYA0+sijNVg==}
     dependencies:
       '@types/node': 16.11.6
     dev: true
