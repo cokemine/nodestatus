@@ -24,7 +24,12 @@ const Login: FC = () => {
     if (!data.code) {
       notify('Success', undefined, 'success');
       localStorage.setItem('token', data.data);
-      mutate('/api/session', { code: 0, msg: 'OK', data: null }, false).then(() => navigate('/dashboard'));
+      await mutate('/api/session', {
+        code: 0,
+        msg: 'OK',
+        data: null
+      }, { revalidate: false });
+      navigate('/dashboard');
     }
   }, [navigate, mutate]);
 
