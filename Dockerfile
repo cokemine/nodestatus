@@ -1,4 +1,4 @@
-FROM node:16-slim as builder
+FROM node:18-slim as builder
 
 LABEL maintainer="Kagurazaka Mizuki"
 
@@ -22,7 +22,7 @@ RUN if [ "$USE_CHINA_MIRROR" = 1 ]; then \
   && pnpm build
 
 
-FROM node:16-alpine as app
+FROM node:18-alpine as app
 
 WORKDIR /app
 
