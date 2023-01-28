@@ -81,6 +81,7 @@ importers:
 
   packages/nodestatus-server:
     specifiers:
+      '@commander-js/extra-typings': ^10.0.2
       '@koa/router': ^12.0.0
       '@msgpack/msgpack': ^2.7.2
       '@prisma/client': ^4.9.0
@@ -95,7 +96,7 @@ importers:
       bcryptjs: ^2.4.3
       bufferutil: ^4.0.5
       classic-theme: workspace:*
-      commander: ^9.2.0
+      commander: ^10.0.0
       cross-env: ^7.0.3
       dotenv: ^16.0.1
       encoding: ^0.1.13
@@ -130,6 +131,7 @@ importers:
       bufferutil: 4.0.5
       utf-8-validate: 5.0.7
     devDependencies:
+      '@commander-js/extra-typings': 10.0.2_commander@10.0.0
       '@koa/router': 12.0.0
       '@msgpack/msgpack': 2.7.2
       '@types/bcryptjs': 2.4.2
@@ -142,7 +144,7 @@ importers:
       '@vercel/node': 2.0.0
       bcryptjs: 2.4.3
       classic-theme: link:../../web/classic-theme
-      commander: 9.2.0
+      commander: 10.0.0
       cross-env: 7.0.3
       encoding: 0.1.13
       hotaru-admin: link:../../web/hotaru-admin
@@ -733,6 +735,14 @@ packages:
 
   /@bcoe/v8-coverage/0.2.3:
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
+    dev: true
+
+  /@commander-js/extra-typings/10.0.2_commander@10.0.0:
+    resolution: {integrity: sha512-PSGG74fpbc2/WRInbKJbwKiUwdN9YqZSgHxDGMqInUe4G6DTLp90ww12uHMC1U/219qPWI0fLSSjwVDUTdnqIQ==}
+    peerDependencies:
+      commander: 10.0.x
+    dependencies:
+      commander: 10.0.0
     dev: true
 
   /@ctrl/tinycolor/3.4.0:
@@ -3238,6 +3248,11 @@ packages:
     engines: {node: '>= 0.8'}
     dependencies:
       delayed-stream: 1.0.0
+    dev: true
+
+  /commander/10.0.0:
+    resolution: {integrity: sha512-zS5PnTI22FIRM6ylNW8G4Ap0IEOyk62fhLSD0+uHRT9McRCLGpkVNvao4bjimpK/GShynyQkFFxHhwMcETmduA==}
+    engines: {node: '>=14'}
     dev: true
 
   /commander/2.15.1:
