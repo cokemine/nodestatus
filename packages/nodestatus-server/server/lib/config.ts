@@ -10,10 +10,10 @@ if (process.env.NODE_ENV !== 'TEST') {
 }
 
 const program = new Command()
-  .addOption(createOption('-p, --port <port>', 'Web server listening port').env('PORT').default(35601))
-  .addOption(createOption('-i, --interval <interval>', 'Update interval').env('INTERVAL').default(1500))
+  .addOption(createOption('-p, --port <port>', 'Web server listening port').env('PORT').default(35601).argParser(value => parseInt(value, 10)))
+  .addOption(createOption('-i, --interval <interval>', 'Update interval').env('INTERVAL').default(1500).argParser(value => parseInt(value, 10)))
   .addOption(createOption('-v, --verbose', 'Verbose mode').env('VERBOSE').default(false))
-  .addOption(createOption('-pi, --ping-interval <pingInterval>', 'Ping interval').env('PING_INTERVAL').default(30))
+  .addOption(createOption('-pi, --ping-interval <pingInterval>', 'Ping interval').env('PING_INTERVAL').default(30).argParser(value => parseInt(value, 10)))
 
   .addOption(createOption('-ipc, --use-ipc', 'Use IPC').env('USE_IPC').default(true))
   .addOption(createOption('-web, --use-web', 'Use Web').env('USE_WEB').default(true))
@@ -37,8 +37,8 @@ const program = new Command()
       )
   )
 
-  .addOption(createOption('-pt, --push-timeout <pushTimeout>', 'Push timeout').env('PUSH_TIMEOUT').default(120))
-  .addOption(createOption('-pd, --push-delay <pushDelay>', 'Push delay').env('PUSH_DELAY').default(15))
+  .addOption(createOption('-pt, --push-timeout <pushTimeout>', 'Push timeout').env('PUSH_TIMEOUT').default(120).argParser(value => parseInt(value, 10)))
+  .addOption(createOption('-pd, --push-delay <pushDelay>', 'Push delay').env('PUSH_DELAY').default(15).argParser(value => parseInt(value, 10)))
 
   .addOption(createOption('-ti, --telegram-bot-token <telegramBotToken>', 'Telegram bot token').env('TGBOT_TOKEN').default(''))
   .addOption(createOption('-tc, --telegram-chat-id <telegramChatId>', 'Telegram chat id').env('TGBOT_CHATID').default(''))
