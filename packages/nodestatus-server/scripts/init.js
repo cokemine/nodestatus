@@ -66,11 +66,12 @@ function initDatabase() {
   });
 }
 
+/* Default testing database */
 if (process.env.NODE_ENV === 'TEST' && !process.env.DATABASE) {
   const database = resolve(__dirname, '../db.test.sqlite');
   fs.rmSync(database, { force: true });
   process.env.DATABASE = database.replace(/\\/g, '/');
 }
 
-dotenv.config({ path: resolve(homedir(), '.nodestatus/.env.local') });
+process.env.NODE_ENV !== 'TEST' && dotenv.config({ path: resolve(homedir(), '.nodestatus/.env.local') });
 initDatabase();

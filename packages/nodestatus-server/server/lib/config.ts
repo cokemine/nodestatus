@@ -5,18 +5,11 @@ import { Command, createOption } from '@commander-js/extra-typings';
 
 if (process.env.NODE_ENV !== 'TEST') {
   dotenv.config({ path: resolve(homedir(), '.nodestatus/.env.local') });
+} else {
+  process.env.DATABASE = process.env.DATABASE ? process.env.DATABASE : resolve(__dirname, '../../db.test.sqlite');
 }
 
 const program = new Command()
-  .addOption(
-    createOption('-db, --database <db>', 'database')
-      .env('DATABASE')
-      .default(
-        platform() === 'win32'
-          ? `file:${resolve(homedir(), '.nodestatus/db.sqlite')}`
-          : 'file:/usr/local/NodeStatus/server/db.sqlite'
-      )
-  )
   .addOption(createOption('-p, --port <port>', 'Web server listening port').env('PORT').default(35601).argParser(parseInt))
   .addOption(createOption('-i, --interval <interval>', 'Update interval').env('INTERVAL').default(1500).argParser(parseInt))
   .addOption(createOption('-v, --verbose', 'Verbose mode').env('VERBOSE').default(false))
@@ -55,9 +48,9 @@ const program = new Command()
 const options = program.opts();
 
 let database = process.env.DATABASE || (
-  process.env.NODE_ENV === 'TEST'
-    ? resolve(__dirname, '../../db.test.sqlite')
-    : options.database
+  platform() === 'win32'
+    ? `file:${resolve(homedir(), '.nodestatus/db.sqlite')}`
+    : 'file:/usr/local/NodeStatus/server/db.sqlite'
 );
 
 if (!(database.includes('file:') || database.includes('mysql:') || database.includes('postgresql:'))) {
