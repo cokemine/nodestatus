@@ -92,8 +92,8 @@ const removeEvent: Middleware = async ctx => {
 
 const queryConfig: Middleware = async ctx => ctx.body = {
   title: config.webTitle,
-  subTitle: config.webSubTitle,
-  headTitle: config.webHeadTitle
+  subTitle: config.webSubtitle,
+  headTitle: config.webHeadtitle
 };
 
 export {
