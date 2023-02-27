@@ -1,7 +1,6 @@
 generator client {
-  provider        = "prisma-client-js"
-  binaryTargets   = env("BINARY_TARGETS")
-  previewFeatures = ["interactiveTransactions"]
+  provider       = "prisma-client-js"
+  BINARY_TARGETS = ["native"]
 }
 
 datasource db {

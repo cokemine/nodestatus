@@ -6,7 +6,6 @@ WORKDIR /app
 COPY . /app
 
 ENV IS_DOCKER=true
-ARG BINARY_TARGETS="[\"linux-musl\"]"
 ARG USE_CHINA_MIRROR=0
 
 RUN if [ "$USE_CHINA_MIRROR" = 1 ]; then \
