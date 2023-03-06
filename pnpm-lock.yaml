@@ -119,7 +119,7 @@ importers:
       replace-in-file: ^6.3.2
       telegraf: ^4.8.2
       typescript: ^4.6.4
-      utf-8-validate: ^5.0.7
+      utf-8-validate: ^6.0.0
       vite: ^4.1.4
       ws: ^8.8.1
     dependencies:
@@ -129,7 +129,7 @@ importers:
       replace-in-file: 6.3.2
     optionalDependencies:
       bufferutil: 4.0.5
-      utf-8-validate: 5.0.7
+      utf-8-validate: 6.0.3
     devDependencies:
       '@commander-js/extra-typings': 10.0.2_commander@10.0.0
       '@koa/router': 12.0.0
@@ -161,11 +161,11 @@ importers:
       koa-static: 5.0.0
       koa2-connect-history-api-fallback: 0.1.3
       log4js: 6.4.7
-      pm2: 5.2.0_lfy3lj2jvemch5kgpjwtdixywm
+      pm2: 5.2.0_sqlgyo4jdo7uy4cu6wqdxvgckq
       telegraf: 4.8.2_encoding@0.1.13
       typescript: 4.6.4
       vite: 4.1.4
-      ws: 8.8.1_lfy3lj2jvemch5kgpjwtdixywm
+      ws: 8.8.1_sqlgyo4jdo7uy4cu6wqdxvgckq
 
   web/classic-theme:
     specifiers:
@@ -1489,7 +1489,7 @@ packages:
       uuid: 3.4.0
     dev: true
 
-  /@pm2/agent/2.0.1_lfy3lj2jvemch5kgpjwtdixywm:
+  /@pm2/agent/2.0.1_sqlgyo4jdo7uy4cu6wqdxvgckq:
     resolution: {integrity: sha512-QKHMm6yexcvdDfcNE7PL9D6uEjoQPGRi+8dh+rc4Hwtbpsbh5IAvZbz3BVGjcd4HaX6pt2xGpOohG7/Y2L4QLw==}
     dependencies:
       async: 3.2.1
@@ -1504,7 +1504,7 @@ packages:
       pm2-axon-rpc: 0.7.1
       proxy-agent: 5.0.0
       semver: 7.2.3
-      ws: 7.4.6_lfy3lj2jvemch5kgpjwtdixywm
+      ws: 7.4.6_sqlgyo4jdo7uy4cu6wqdxvgckq
     transitivePeerDependencies:
       - bufferutil
       - supports-color
@@ -1529,7 +1529,7 @@ packages:
       - supports-color
     dev: true
 
-  /@pm2/js-api/0.6.7_lfy3lj2jvemch5kgpjwtdixywm:
+  /@pm2/js-api/0.6.7_sqlgyo4jdo7uy4cu6wqdxvgckq:
     resolution: {integrity: sha512-jiJUhbdsK+5C4zhPZNnyA3wRI01dEc6a2GhcQ9qI38DyIk+S+C8iC3fGjcjUbt/viLYKPjlAaE+hcT2/JMQPXw==}
     engines: {node: '>=4.0'}
     dependencies:
@@ -1537,7 +1537,7 @@ packages:
       axios: 0.21.4_debug@4.3.4
       debug: 4.3.4
       eventemitter2: 6.4.5
-      ws: 7.5.5_lfy3lj2jvemch5kgpjwtdixywm
+      ws: 7.5.5_sqlgyo4jdo7uy4cu6wqdxvgckq
     transitivePeerDependencies:
       - bufferutil
       - supports-color
@@ -7542,14 +7542,14 @@ packages:
     dev: true
     optional: true
 
-  /pm2/5.2.0_lfy3lj2jvemch5kgpjwtdixywm:
+  /pm2/5.2.0_sqlgyo4jdo7uy4cu6wqdxvgckq:
     resolution: {integrity: sha512-PO5hMVhQ85cTszFM++6v07Me9hPJMkFbHjkFigtMMk+La8ty2wCi2dlBTeZYJDhPUSjK8Ccltpq2buNRcyMOTw==}
     engines: {node: '>=10.0.0'}
     hasBin: true
     dependencies:
-      '@pm2/agent': 2.0.1_lfy3lj2jvemch5kgpjwtdixywm
+      '@pm2/agent': 2.0.1_sqlgyo4jdo7uy4cu6wqdxvgckq
       '@pm2/io': 5.0.0
-      '@pm2/js-api': 0.6.7_lfy3lj2jvemch5kgpjwtdixywm
+      '@pm2/js-api': 0.6.7_sqlgyo4jdo7uy4cu6wqdxvgckq
       '@pm2/pm2-version-check': 1.0.4
       async: 3.2.1
       blessed: 0.1.81
@@ -9805,8 +9805,8 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
-  /utf-8-validate/5.0.7:
-    resolution: {integrity: sha512-vLt1O5Pp+flcArHGIyKEQq883nBt8nN8tVBcoL0qUXj2XT1n7p70yGIq2VK98I5FdZ1YHc0wk/koOnHjnXWk1Q==}
+  /utf-8-validate/6.0.3:
+    resolution: {integrity: sha512-uIuGf9TWQ/y+0Lp+KGZCMuJWc3N9BHA+l/UmHd/oUHwJJDeysyTRxNQVkbzsIWfGFbRe3OcgML/i0mvVRPOyDA==}
     engines: {node: '>=6.14.2'}
     requiresBuild: true
     dependencies:
@@ -10078,7 +10078,7 @@ packages:
       typedarray-to-buffer: 3.1.5
     dev: true
 
-  /ws/7.4.6_lfy3lj2jvemch5kgpjwtdixywm:
+  /ws/7.4.6_sqlgyo4jdo7uy4cu6wqdxvgckq:
     resolution: {integrity: sha512-YmhHDO4MzaDLB+M9ym/mDA5z0naX8j7SIlT8f8z+I0VtzsRbekxEutHSme7NPS2qE8StCYQNUnfWdXta/Yu85A==}
     engines: {node: '>=8.3.0'}
     peerDependencies:
@@ -10091,7 +10091,7 @@ packages:
         optional: true
     dependencies:
       bufferutil: 4.0.5
-      utf-8-validate: 5.0.7
+      utf-8-validate: 6.0.3
     dev: true
 
   /ws/7.5.5:
@@ -10107,7 +10107,7 @@ packages:
         optional: true
     dev: true
 
-  /ws/7.5.5_lfy3lj2jvemch5kgpjwtdixywm:
+  /ws/7.5.5_sqlgyo4jdo7uy4cu6wqdxvgckq:
     resolution: {integrity: sha512-BAkMFcAzl8as1G/hArkxOxq3G7pjUqQ3gzYbLL0/5zNkph70e+lCoxBGnm6AW1+/aiNeV4fnKqZ8m4GZewmH2w==}
     engines: {node: '>=8.3.0'}
     peerDependencies:
@@ -10120,10 +10120,10 @@ packages:
         optional: true
     dependencies:
       bufferutil: 4.0.5
-      utf-8-validate: 5.0.7
+      utf-8-validate: 6.0.3
     dev: true
 
-  /ws/8.8.1_lfy3lj2jvemch5kgpjwtdixywm:
+  /ws/8.8.1_sqlgyo4jdo7uy4cu6wqdxvgckq:
     resolution: {integrity: sha512-bGy2JzvzkPowEJV++hF07hAD6niYSr0JzBNo/J29WsB57A2r7Wlc1UFcTR9IzrPvuNVO4B8LGqF8qcpsVOhJCA==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
@@ -10136,7 +10136,7 @@ packages:
         optional: true
     dependencies:
       bufferutil: 4.0.5
-      utf-8-validate: 5.0.7
+      utf-8-validate: 6.0.3
     dev: true
 
   /xml-name-validator/3.0.0:
