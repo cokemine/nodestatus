@@ -1,5 +1,5 @@
 import React, {
-  FC, ReactElement, Reducer, useCallback, useMemo, useState, useReducer
+  FC, ReactElement, Reducer, useCallback, useMemo, useState, useReducer, PropsWithChildren
 } from 'react';
 import {
   Typography, Table, Tag, Modal, Input, Form, Switch, Button, AutoComplete,
@@ -247,7 +247,7 @@ const Management: FC = () => {
     </>
   ), [dataSource, handleSortOrder, state.sortEnabled]);
 
-  const DraggableContainer = useCallback<FC>(props => (
+  const DraggableContainer = useCallback<FC<PropsWithChildren>>(props => (
     <Droppable droppableId="table">
       {
         provided => (

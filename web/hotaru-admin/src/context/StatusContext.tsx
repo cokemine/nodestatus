@@ -1,4 +1,9 @@
-import React, { useState, FC, useEffect } from 'react';
+import React, {
+  useState,
+  FC,
+  useEffect,
+  PropsWithChildren
+} from 'react';
 import WebSocket from 'reconnecting-websocket';
 import { parseLoad, parseUpdateTime } from '@nodestatus/web-utils/shared';
 import { ITable, ServerItem } from '../types';
@@ -17,7 +22,7 @@ export const StatusContext = React.createContext<IContext>({
   servers: [], timeSince: '从未.'
 });
 
-export const StatusContextProvider: FC = ({ children }) => {
+export const StatusContextProvider: FC<PropsWithChildren> = ({ children }) => {
   const [status, setStatus] = useState<IContext>({ servers: [], timeSince: '从未.' });
 
   useEffect(() => {
