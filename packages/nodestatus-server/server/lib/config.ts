@@ -9,7 +9,7 @@ if (process.env.NODE_ENV !== 'TEST') {
   process.env.DATABASE = process.env.DATABASE ? process.env.DATABASE : resolve(__dirname, '../../db.test.sqlite');
 }
 
-const program = new Command()
+const program = new Command('NodeStatus')
   .addOption(createOption('-p, --port <port>', 'Web server listening port').env('PORT').default(35601).argParser(value => parseInt(value, 10)))
   .addOption(createOption('-i, --interval <interval>', 'Update interval').env('INTERVAL').default(1500).argParser(value => parseInt(value, 10)))
   .addOption(createOption('-v, --verbose', 'Verbose mode').env('VERBOSE').default(false))
