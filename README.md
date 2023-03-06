@@ -242,9 +242,29 @@ pnpm dev
 ## CLI Options
 
 ```shell
+Usage: NodeStatus [options]
+
 Options:
-  -db, --database <db>       the path of database (default: "/usr/local/NodeStatus/server/db.sqlite")
-  -p, --port <port>          the port of NodeStatus (default: "35601")
-  -i, --interval <interval>  update interval (default: "1500")
-  -h, --help                 display help for command
+  -p, --port <port>                             Web server listening port (default: 35601, env: PORT)
+  -i, --interval <interval>                     Update interval (default: 1500, env: INTERVAL)
+  -v, --verbose                                 Verbose mode (default: false, env: VERBOSE)
+  -pi, --ping-interval <pingInterval>           Ping interval (default: 30, env: PING_INTERVAL)
+  -ipc, --use-ipc                               Use IPC (default: true, env: USE_IPC)
+  -web, --use-web                               Use Web (default: true, env: USE_WEB)
+  -push, --use-push                             Use Push (default: true, env: USE_PUSH)
+  -wt, --web-theme <webTheme>                   Web theme (default: "hotaru-theme", env: THEME)
+  -wmt, --web-title <webTitle>                  Web title (default: "Server Status", env: WEB_TITLE)
+  -wst, --web-subtitle <webSubtitle>            Web subtitle (default: "Servers' Probes Set up with NodeStatus", env: WEB_SUBTITLE)
+  -wht, --web-headtitle <webHeadtitle>          Web head title (default: "NodeStatus", env: WEB_HEADTITLE)
+  -wu, --web-username <webUsername>             Web username (default: "admin", env: WEB_USERNAME)
+  -wp, --web-password <webPassword>             Web password (default: "", env: WEB_PASSWORD)
+  -ws, --web-secret <webSecret>                 Web jwt secret (default: "node-secret", env: WEB_SECRET)
+  -ia, --ipc-address <ipcAddress>               IPC address (default: "\\\\.\\pipe\\status_ipc", env: IPC_ADDRESS)
+  -pt, --push-timeout <pushTimeout>             Push timeout (default: 120, env: PUSH_TIMEOUT)
+  -pd, --push-delay <pushDelay>                 Push delay (default: 15, env: PUSH_DELAY)
+  -ti, --telegram-bot-token <telegramBotToken>  Telegram bot token (default: "", env: TGBOT_TOKEN)
+  -tc, --telegram-chat-id <telegramChatId>      Telegram chat id (default: "", env: TGBOT_CHATID)
+  -tp, --telegram-proxy <telegramProxy>         Telegram proxy (env: TGBOT_PROXY)
+  -tw, --telegram-web-hook <telegramWebHook>    Telegram web hook (env: TGBOT_WEBHOOK)
+  -h, --help                                    display help for command
 ```
