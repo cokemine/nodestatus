@@ -114,7 +114,7 @@ Node.js Version(**Deprecated, Not Recommended**): https://github.com/cokemine/no
 
 **WEB_PASSWORD** : WEB 面板密码
 
-**WEB_SECRET** : 用于 jsonwebtoken, 建议设为一个随机的字符串, 默认不填即和密码相同
+**WEB_SECRET** : 用于 jsonwebtoken, 建议设为一个随机的字符串
 
 &nbsp;
 

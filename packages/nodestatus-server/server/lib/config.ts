@@ -26,7 +26,7 @@ const program = new Command('NodeStatus')
 
   .addOption(createOption('-wu, --web-username <webUsername>', 'Web username').env('WEB_USERNAME').default('admin'))
   .addOption(createOption('-wp, --web-password <webPassword>', 'Web password').env('WEB_PASSWORD').default(''))
-  .addOption(createOption('-ws, --web-secret <webSecret>', 'Web jwt secret').env('WEB_SECRET').default('node-secret'))
+  .addOption(createOption('-ws, --web-secret <webSecret>', 'Web jwt secret').env('WEB_SECRET').default('node-secret').argParser(val => val || 'node-secret'))
 
   .addOption(
     createOption('-ia, --ipc-address <ipcAddress>', 'IPC address')
