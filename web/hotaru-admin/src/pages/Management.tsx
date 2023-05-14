@@ -84,6 +84,11 @@ const reducer: Reducer<typeof initialState, ActionType> = (state, action) => {
   }
 };
 
+const basicValidator = (_: unknown, value: string) => ([' ', '+', '&', '%', '/', '\\', '?', '#']
+  .some(v => value.includes(v))
+  ? Promise.reject(new Error('This field cannot contain spaces and special characters'))
+  : Promise.resolve());
+
 const parseInstallationScript = (
   username: string,
   password: string
@@ -349,10 +354,30 @@ const Management: FC = () => {
                   </Form.Item>
                 ) : (
                   <>
-                    <Form.Item label="Username" name="username">
+                    <Form.Item
+                      label="Username"
+                      name="username"
+                      rules={
+                          [
+                            {
+                              validator: basicValidator
+                            }
+                          ]
+                        }
+                    >
                       <Input />
                     </Form.Item>
-                    <Form.Item label="Password" name="password">
+                    <Form.Item
+                      label="Password"
+                      name="password"
+                      rules={
+                          [
+                            {
+                              validator: basicValidator
+                            }
+                          ]
+                        }
+                    >
                       <Input.Password placeholder="留空不修改" />
                     </Form.Item>
                     <Form.Item label="Name" name="name">
