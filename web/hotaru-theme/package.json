@@ -13,7 +13,7 @@
     "@vueuse/head": "^1.0.22",
     "reconnecting-websocket": "^4.4.0",
     "semantic-ui-css": "^2.4.1",
-    "typescript": "^4.6.4",
+    "typescript": "^5.1.6",
     "vite": "^4.1.4",
     "vite-plugin-svg-icons": "^2.0.1",
     "vue": "^3.2.33",
