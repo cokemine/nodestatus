@@ -1,26 +1,33 @@
 {
+  "files": [],
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
+    "moduleResolution": "bundler",
     "strict": true,
-    "moduleResolution": "node",
-    "skipLibCheck": true,
+    "sourceMap": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "sourceMap": true,
-    "baseUrl": "."
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "useDefineForClassFields": true,
+    "skipLibCheck": true,
+    "lib": [
+      "esnext"
+    ]
   },
-  "include": [
-    "packages/**/*.ts",
-    "packages/**/*.d.ts",
-    "web/**/*.ts",
-    "web/**/*.tsx",
-    "web/**/*.d.ts",
-    "web/**/*.vue"
-  ],
   "exclude": [
     "node_modules"
+  ],
+  "references": [
+    {
+      "path": "./tsconfig.web.json"
+    },
+    {
+      "path": "./tsconfig.node.json"
+    },
+    {
+      "path": "./tsconfig.test.json"
+    }
   ]
 }

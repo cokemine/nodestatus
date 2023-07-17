@@ -35,19 +35,27 @@ module.exports = {
     'consistent-return': 'off',
     'one-var': 'off',
     'one-var-declaration-per-line': 'off',
-    'max-len': ['error', 120, 2, {
-      ignoreUrls: true,
-      ignoreComments: false,
-      ignoreRegExpLiterals: true,
-      ignoreStrings: true,
-      ignoreTemplateLiterals: true
-    }],
+    'max-len': [
+      'error',
+      120,
+      2,
+      {
+        ignoreUrls: true,
+        ignoreComments: false,
+        ignoreRegExpLiterals: true,
+        ignoreStrings: true,
+        ignoreTemplateLiterals: true
+      }
+    ],
     'require-await': 1,
     'prefer-object-spread': 'off',
     'template-curly-spacing': [2, 'never'],
     'max-classes-per-file': 'off',
     'import/prefer-default-export': 'off',
-    'import/order': [1, { groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index', 'object', 'type'] }],
+    'import/order': [
+      1,
+      { groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index', 'object', 'type'] }
+    ],
     'import/no-extraneous-dependencies': 'off',
     'react/prop-types': 'off',
     'react/destructuring-assignment': 'off',
@@ -66,7 +74,7 @@ module.exports = {
       files: ['*.{ts,tsx,vue}'],
       extends: ['airbnb-typescript'],
       parserOptions: {
-        project: ['./tsconfig.json', './web/**/tsconfig.json'],
+        project: ['./tsconfig.node.json', './tsconfig.web.json'],
         extraFileExtensions: ['.vue']
       },
       rules: {
@@ -74,11 +82,14 @@ module.exports = {
         '@typescript-eslint/no-explicit-any': 'off',
         '@typescript-eslint/no-shadow': 'off',
         '@typescript-eslint/naming-convention': 'off',
-        '@typescript-eslint/no-unused-expressions': [2, {
-          allowShortCircuit: true,
-          allowTernary: true,
-          allowTaggedTemplates: true
-        }],
+        '@typescript-eslint/no-unused-expressions': [
+          2,
+          {
+            allowShortCircuit: true,
+            allowTernary: true,
+            allowTaggedTemplates: true
+          }
+        ],
         '@typescript-eslint/comma-dangle': [2, 'never']
       }
     },
@@ -89,7 +100,7 @@ module.exports = {
       plugins: ['vue'],
       parserOptions: {
         parser: '@typescript-eslint/parser',
-        project: ['./tsconfig.json', './web/**/tsconfig.json'],
+        project: ['./tsconfig.web.json'],
         extraFileExtensions: ['.vue']
       },
       env: {
