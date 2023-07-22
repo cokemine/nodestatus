@@ -30,7 +30,7 @@ jobs:
           DATABASE: /home/runner/work/nodestatus/nodestatus/db.sqlite
 
       - name: Setup Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: '18'
           cache: 'pnpm'
