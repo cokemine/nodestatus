@@ -74,7 +74,7 @@ module.exports = {
       files: ['*.{ts,tsx,vue}'],
       extends: ['airbnb-typescript'],
       parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.web.json'],
+        project: ['./tsconfig.node.json', './tsconfig.vue.json', './tsconfig.react.json'],
         extraFileExtensions: ['.vue']
       },
       rules: {
@@ -100,7 +100,7 @@ module.exports = {
       plugins: ['vue'],
       parserOptions: {
         parser: '@typescript-eslint/parser',
-        project: ['./tsconfig.web.json'],
+        project: ['./tsconfig.vue.json'],
         extraFileExtensions: ['.vue']
       },
       env: {

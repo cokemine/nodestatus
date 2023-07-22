@@ -3,7 +3,7 @@
   "compilerOptions": {
     "module": "esnext",
     "composite": true,
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "lib": [
       "ESNext",
       "DOM",
@@ -11,8 +11,8 @@
     ]
   },
   "include": [
-    "web/**/*.ts",
-    "web/**/*.tsx",
-    "web/**/*.vue"
+    "web/*-theme/**/*.ts",
+    "web/*-theme/**/*.tsx",
+    "web/*-theme/**/*.vue"
   ]
 }

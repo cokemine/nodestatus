@@ -21,7 +21,10 @@
   ],
   "references": [
     {
-      "path": "./tsconfig.web.json"
+      "path": "./tsconfig.react.json"
+    },
+    {
+      "path": "./tsconfig.vue.json"
     },
     {
       "path": "./tsconfig.node.json"
