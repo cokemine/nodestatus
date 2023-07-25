@@ -29,9 +29,9 @@
     "pretest": "node scripts/init.js"
   },
   "dependencies": {
-    "@prisma/client": "^4.10.1",
+    "@prisma/client": "^5.0.0",
     "dotenv": "^16.0.1",
-    "prisma": "^4.10.1",
+    "prisma": "^5.0.0",
     "replace-in-file": "^6.3.2"
   },
   "devDependencies": {
