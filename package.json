@@ -7,7 +7,7 @@
   "author": "Kagurazaka Mizuki",
   "main": "index.js",
   "engines": {
-    "node": ">=14"
+    "node": ">=16.13.0"
   },
   "scripts": {
     "app:cli": "pnpm --filter=nodestatus-cli",
