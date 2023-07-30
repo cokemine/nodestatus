@@ -193,9 +193,6 @@ importers:
       ipaddr.js:
         specifier: ^2.0.1
         version: 2.0.1
-      isomorphic-timers-promises:
-        specifier: ^1.0.1
-        version: 1.0.1
       jsonwebtoken:
         specifier: ^9.0.0
         version: 9.0.0
@@ -5502,11 +5499,6 @@ packages:
   /isobject@3.0.1:
     resolution: {integrity: sha512-WhB9zCku7EGTj/HQQRz5aUQEUeoQZH2bWcltRErOpymJ4boYE6wL9Tbr23krRPSZ+C5zqNSrSw+Cc7sZZ4b7vg==}
     engines: {node: '>=0.10.0'}
-    dev: true
-
-  /isomorphic-timers-promises@1.0.1:
-    resolution: {integrity: sha512-u4sej9B1LPSxTGKB/HiuzvEQnXH0ECYkSVQU39koSwmFAxhlEAFl9RdTvLv4TOTQUgBS5O3O5fwUxk6byBZ+IQ==}
-    engines: {node: '>=10'}
     dev: true
 
   /istanbul-lib-coverage@3.2.0:

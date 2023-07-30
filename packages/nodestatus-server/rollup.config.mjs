@@ -33,12 +33,11 @@ export default {
   plugins: [
     del({ targets: 'build/*' }),
     esbuild({
-      target: 'es2019'
+      target: 'es2020'
     }),
     alias({
       entries: [
         { find: 'ws', replacement: resolve(__dirname, 'node_modules/ws/index.js') },
-        { find: 'timers/promises', replacement: require.resolve('isomorphic-timers-promises') }
       ]
     }),
     nodeResolve({ preferBuiltins: true }),
