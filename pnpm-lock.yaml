@@ -1,5 +1,9 @@
 lockfileVersion: '6.0'
 
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
 importers:
 
   .:
@@ -227,8 +231,8 @@ importers:
         specifier: ^5.1.6
         version: 5.1.6
       vite:
-        specifier: ^4.1.4
-        version: 4.1.4(@types/node@18.11.18)
+        specifier: ^4.1.5
+        version: 4.1.5(@types/node@18.11.18)
       ws:
         specifier: ^8.12.1
         version: 8.12.1(bufferutil@4.0.7)(utf-8-validate@6.0.3)
@@ -240,7 +244,7 @@ importers:
         version: link:../utils
       '@vitejs/plugin-vue':
         specifier: ^4.0.0
-        version: 4.0.0(vite@4.1.4)(vue@3.2.33)
+        version: 4.0.0(vite@4.1.5)(vue@3.2.33)
       '@vueuse/head':
         specifier: ^1.0.22
         version: 1.0.22(vue@3.2.33)
@@ -254,8 +258,8 @@ importers:
         specifier: ^5.1.6
         version: 5.1.6
       vite:
-        specifier: ^4.1.4
-        version: 4.1.4(@types/node@18.11.18)
+        specifier: ^4.1.5
+        version: 4.1.5(@types/node@18.11.18)
       vue:
         specifier: ^3.2.33
         version: 3.2.33
@@ -288,7 +292,7 @@ importers:
         version: 3.0.0
       '@vitejs/plugin-react':
         specifier: ^3.0.1
-        version: 3.0.1(vite@4.1.4)
+        version: 3.0.1(vite@4.1.5)
       antd:
         specifier: ^4.20.2
         version: 4.20.2(react-dom@17.0.2)(react@17.0.2)
@@ -344,11 +348,11 @@ importers:
         specifier: ^5.1.6
         version: 5.1.6
       vite:
-        specifier: ^4.1.4
-        version: 4.1.4(@types/node@18.11.18)
+        specifier: ^4.1.5
+        version: 4.1.5(@types/node@18.11.18)
       vite-plugin-svg-icons:
         specifier: ^2.0.1
-        version: 2.0.1(vite@4.1.4)
+        version: 2.0.1(vite@4.1.5)
 
   web/hotaru-theme:
     devDependencies:
@@ -357,7 +361,7 @@ importers:
         version: link:../utils
       '@vitejs/plugin-vue':
         specifier: ^4.0.0
-        version: 4.0.0(vite@4.1.4)(vue@3.2.33)
+        version: 4.0.0(vite@4.1.5)(vue@3.2.33)
       '@vueuse/head':
         specifier: ^1.0.22
         version: 1.0.22(vue@3.2.33)
@@ -371,11 +375,11 @@ importers:
         specifier: ^5.1.6
         version: 5.1.6
       vite:
-        specifier: ^4.1.4
-        version: 4.1.4(@types/node@18.11.18)
+        specifier: ^4.1.5
+        version: 4.1.5(@types/node@18.11.18)
       vite-plugin-svg-icons:
         specifier: ^2.0.1
-        version: 2.0.1(vite@4.1.4)
+        version: 2.0.1(vite@4.1.5)
       vue:
         specifier: ^3.2.33
         version: 3.2.33
@@ -2356,7 +2360,7 @@ packages:
       typescript: 4.3.4
     dev: true
 
-  /@vitejs/plugin-react@3.0.1(vite@4.1.4):
+  /@vitejs/plugin-react@3.0.1(vite@4.1.5):
     resolution: {integrity: sha512-mx+QvYwIbbpOIJw+hypjnW1lAbKDHtWK5ibkF/V1/oMBu8HU/chb+SnqJDAsLq1+7rGqjktCEomMTM5KShzUKQ==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
@@ -2367,19 +2371,19 @@ packages:
       '@babel/plugin-transform-react-jsx-source': 7.19.6(@babel/core@7.20.12)
       magic-string: 0.27.0
       react-refresh: 0.14.0
-      vite: 4.1.4(@types/node@18.11.18)
+      vite: 4.1.5(@types/node@18.11.18)
     transitivePeerDependencies:
       - supports-color
     dev: true
 
-  /@vitejs/plugin-vue@4.0.0(vite@4.1.4)(vue@3.2.33):
+  /@vitejs/plugin-vue@4.0.0(vite@4.1.5)(vue@3.2.33):
     resolution: {integrity: sha512-e0X4jErIxAB5oLtDqbHvHpJe/uWNkdpYV83AOG2xo2tEVSzCzewgJMtREZM30wXnM5ls90hxiOtAuVU6H5JgbA==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
       vite: ^4.0.0
       vue: ^3.2.25
     dependencies:
-      vite: 4.1.4(@types/node@18.11.18)
+      vite: 4.1.5(@types/node@18.11.18)
       vue: 3.2.33
     dev: true
 
@@ -5282,12 +5286,6 @@ packages:
       rgba-regex: 1.0.0
     dev: true
 
-  /is-core-module@2.8.0:
-    resolution: {integrity: sha512-vd15qHsaqrRL7dtH6QNuy0ndJmRDrS9HAM1CAiSifNUFv4x1a0CCVsj18hJ1mShxIG6T2i1sO78MkP56r0nYRw==}
-    dependencies:
-      has: 1.0.3
-    dev: true
-
   /is-core-module@2.9.0:
     resolution: {integrity: sha512-+5FPy5PnwmO3lvfMb0AsoPaBG+5KHUI0wYFXOtYPnVVVspTFUuMZNfNaNVRt3FZadstu2c8x23vykRW/NBoU6A==}
     dependencies:
@@ -8058,7 +8056,7 @@ packages:
   /resolve@1.20.0:
     resolution: {integrity: sha512-wENBPt4ySzg4ybFQW2TT1zMQucPK95HSh/nq2CFTZVOGut2+pQvSsgtda4d26YrYcr067wjbmzOG8byDPBX63A==}
     dependencies:
-      is-core-module: 2.8.0
+      is-core-module: 2.9.0
       path-parse: 1.0.7
     dev: true
 
@@ -9065,7 +9063,7 @@ packages:
     engines: {node: '>= 0.8'}
     dev: true
 
-  /vite-plugin-svg-icons@2.0.1(vite@4.1.4):
+  /vite-plugin-svg-icons@2.0.1(vite@4.1.5):
     resolution: {integrity: sha512-6ktD+DhV6Rz3VtedYvBKKVA2eXF+sAQVaKkKLDSqGUfnhqXl3bj5PPkVTl3VexfTuZy66PmINi8Q6eFnVfRUmA==}
     peerDependencies:
       vite: '>=2.0.0'
@@ -9078,13 +9076,13 @@ packages:
       pathe: 0.2.0
       svg-baker: 1.7.0
       svgo: 2.8.0
-      vite: 4.1.4(@types/node@18.11.18)
+      vite: 4.1.5(@types/node@18.11.18)
     transitivePeerDependencies:
       - supports-color
     dev: true
 
-  /vite@4.1.4(@types/node@18.11.18):
-    resolution: {integrity: sha512-3knk/HsbSTKEin43zHu7jTwYWv81f8kgAL99G5NWBcA1LKvtvcVAC4JjBH1arBunO9kQka+1oGbrMKOjk4ZrBg==}
+  /vite@4.1.5(@types/node@18.11.18):
+    resolution: {integrity: sha512-zJ0RiVkf61kpd7O+VtU6r766xgnTaIknP/lR6sJTZq3HtVJ3HGnTo5DaJhTUtYoTyS/CQwZ6yEVdc/lrmQT7dQ==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
     peerDependencies:
