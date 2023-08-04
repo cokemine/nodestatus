@@ -1,10 +1,10 @@
 import { Server } from 'http';
 import { isIPv4 } from 'net';
 import timers from 'timers/promises';
-import ws from 'ws';
+import { WebSocketServer, WebSocket } from 'ws';
 import { decode } from '@msgpack/msgpack';
-import { IPv6 } from 'ipaddr.js';
-import { getLogger } from 'log4js';
+import ipaddr, { IPv6 } from 'ipaddr.js';
+import log4js from 'log4js';
 import {
   Box, ServerItem, BoxItem, IWebSocket
 } from '../../types/server';
@@ -15,6 +15,8 @@ import {
   logger, emitter
 } from './utils';
 import setupHeartbeat from './heartbeat';
+
+const { getLogger } = log4js;
 
 const loggerConnected = getLogger('Connected');
 const loggerConnecting = getLogger('Connecting');
@@ -41,9 +43,9 @@ export default class NodeStatus {
 
   public server !: Server;
 
-  private ioPub = new ws.Server({ noServer: true });
+  private ioPub = new WebSocketServer({ noServer: true });
 
-  private ioConn = new ws.Server({ noServer: true });
+  private ioConn = new WebSocketServer({ noServer: true });
 
   /* username -> socket */
   private userMap = new Map<string, IWebSocket>();
@@ -73,7 +75,7 @@ export default class NodeStatus {
     emitter.on('update', this.updateStatus.bind(this));
   }
 
-  private setBan(socket: ws, address: string, t: number, reason: string): void {
+  private setBan(socket: WebSocket, address: string, t: number, reason: string): void {
     socket.close();
     if (this.isBanned.get(address)) return;
     this.isBanned.set(address, true);
@@ -162,7 +164,7 @@ export default class NodeStatus {
         }
         socket.send('Authentication successful. Access granted.');
         let ipType = 'IPv6';
-        if (isIPv4(address) || IPv6.parse(address).isIPv4MappedAddress()) {
+        if (isIPv4(address) || (ipaddr.IPv6.parse(address) as IPv6).isIPv4MappedAddress()) {
           ipType = 'IPv4';
         }
         socket.send(`You are connecting via: ${ipType}`);

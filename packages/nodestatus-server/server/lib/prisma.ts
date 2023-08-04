@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import { hash } from 'bcryptjs';
+import bcryptjs from 'bcryptjs';
 import { Prisma } from '../../types/server';
 import config from './config';
 
@@ -25,7 +25,7 @@ const parseFields = async (server: Prisma.ServerCreateInput) => {
 
   /* Password should be encrypted */
   if (server.password) {
-    server.password = await hash(server.password, 8);
+    server.password = await bcryptjs.hash(server.password, 8);
   }
 };
 

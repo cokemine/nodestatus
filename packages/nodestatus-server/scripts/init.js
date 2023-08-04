@@ -5,12 +5,15 @@
 *  同时重新调用 `prisma db push` 来实现类似于 Sequelize 的 sync 效果 来应对可能的数据库结构变化
 *  如果有更好的方案欢迎提出
 * */
-const fs = require('fs');
-const { platform, homedir } = require('os');
-const { resolve } = require('path');
-const cp = require('child_process');
-const replace = require('replace-in-file');
-const dotenv = require('dotenv');
+import fs from 'fs';
+import { platform, homedir } from 'os';
+import { resolve, dirname } from 'path';
+import cp from 'child_process';
+import { fileURLToPath } from 'url';
+import replace from 'replace-in-file';
+import dotenv from 'dotenv';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 function checkDatabaseType() {
   const dbPath = process.env.DATABASE || '';

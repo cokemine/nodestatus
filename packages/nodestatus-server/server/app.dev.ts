@@ -1,4 +1,5 @@
 import path from 'path';
+import { createRequire } from 'node:module';
 import { createServer as createViteServer } from 'vite';
 import Koa, { Middleware } from 'koa';
 import { historyApiFallback } from 'koa2-connect-history-api-fallback';
@@ -7,6 +8,7 @@ import { createStatus } from './lib/status';
 import { logger } from './lib/utils';
 import config from './lib/config';
 
+const require = createRequire(import.meta.url);
 const middlewares: Record<string, Middleware> = {};
 const webs = [{ name: config.webTheme, publicPath: '/' }, { name: 'hotaru-admin', publicPath: '/admin' }];
 
@@ -32,27 +34,25 @@ const createMiddleware = async (name: string, publicPath: string): Promise<Middl
   };
 };
 
-(async () => {
-  const app = new Koa();
+const app = new Koa();
 
-  await Promise.all(webs.map(async ({
-    name,
-    publicPath
-  }) => middlewares[name] = await createMiddleware(name, publicPath)));
+await Promise.all(webs.map(async ({
+  name,
+  publicPath
+}) => middlewares[name] = await createMiddleware(name, publicPath)));
 
-  app.use(middlewares['hotaru-admin']);
-  app.use(middlewares[config.webTheme]);
+app.use(middlewares['hotaru-admin']);
+app.use(middlewares[config.webTheme]);
 
-  app.use(historyApiFallback({
-    whiteList: ['/admin/assets', '/telegraf'],
-    rewrites: [
-      { from: /^\/admin/ as any, to: '/admin/index.html' }
-    ]
-  }));
+app.use(historyApiFallback({
+  whiteList: ['/admin/assets', '/telegraf'],
+  rewrites: [
+    { from: /^\/admin/ as any, to: '/admin/index.html' }
+  ]
+}));
 
-  const [server, ipc] = await createStatus(app);
+const [server, ipc] = await createStatus(app);
 
-  server.listen(config.port, () => logger.info(`🎉  NodeStatus is listening on http://127.0.0.1:${config.port}`));
+server.listen(config.port, () => logger.info(`🎉  NodeStatus is listening on http://127.0.0.1:${config.port}`));
 
-  ipc && ipc.listen(config.ipcAddress, () => logger.info(`🎉  NodeStatus Ipc is listening on ${config.ipcAddress}`));
-})();
+ipc && ipc.listen(config.ipcAddress, () => logger.info(`🎉  NodeStatus Ipc is listening on ${config.ipcAddress}`));

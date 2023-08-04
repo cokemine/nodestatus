@@ -1,9 +1,9 @@
 import EventEmitter from 'events';
-import { configure, getLogger } from 'log4js';
+import log4js from 'log4js';
 import { IResp } from '../../types/server';
 import config from './config';
 
-configure({
+log4js.configure({
   appenders: {
     out: { type: 'stdout' }
   },
@@ -11,7 +11,7 @@ configure({
     default: { appenders: ['out'], level: config.verbose ? 'debug' : 'info' }
   }
 });
-export const logger = getLogger();
+export const logger = log4js.getLogger();
 
 export const emitter = new EventEmitter();
 
