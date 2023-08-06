@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import { PrismaClient } from '@prisma/client';
 import bcryptjs from 'bcryptjs';
 import { Prisma } from '../../types/server';
@@ -12,6 +13,10 @@ const prisma = new PrismaClient({
 });
 
 const actions = new Set(['create', 'createMany', 'update', 'updateMany', 'upsert']);
+
+bcryptjs.setRandomFallback(
+  crypto.randomBytes as unknown as (size: number) => number[]
+);
 
 const parseFields = async (server: Prisma.ServerCreateInput) => {
   type Key = keyof Prisma.ServerCreateInput;
