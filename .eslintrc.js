@@ -56,6 +56,7 @@ module.exports = {
       1,
       { groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index', 'object', 'type'] }
     ],
+    'import/extensions': 'off',
     'import/no-extraneous-dependencies': 'off',
     'react/prop-types': 'off',
     'react/destructuring-assignment': 'off',

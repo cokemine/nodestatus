@@ -1,8 +1,11 @@
-const path = require('path');
-const fs = require('fs-extra');
-const { findModPath } = require('./utils');
+import path, { dirname } from 'path';
+import { fileURLToPath } from 'url';
+import fs from 'fs-extra';
+import { findModPath } from './utils.js';
 
 const list = findModPath();
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const outputDir = path.resolve(__dirname, '../packages/nodestatus-server/build/dist');
 

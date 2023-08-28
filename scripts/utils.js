@@ -1,9 +1,12 @@
-const fs = require('fs');
-const { resolve } = require('path');
+import fs from 'fs';
+import { dirname, resolve } from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const libDir = resolve(__dirname, '../web');
 
-function findModPath() {
+export function findModPath() {
   try {
     const lib = fs.readdirSync(libDir);
     const list = [];
@@ -23,7 +26,3 @@ function findModPath() {
     return [];
   }
 }
-
-module.exports = {
-  findModPath
-};
