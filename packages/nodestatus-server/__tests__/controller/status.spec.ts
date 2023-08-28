@@ -1,5 +1,5 @@
 import { mockReset } from 'jest-mock-extended';
-import { hash } from 'bcryptjs';
+import { hash } from 'bcrypt-ts';
 import {
   addServer, authServer, getListServers, getServer, setServer
 } from '../../server/controller/status';

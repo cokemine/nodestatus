@@ -1,4 +1,4 @@
-import bcryptjs from 'bcryptjs';
+import { compare } from 'bcrypt-ts';
 import {
   readServersList,
   createServer,
@@ -29,7 +29,7 @@ async function handleRequest<T = any>(handler: Promise<T>): Promise<IResp<T>> {
 export async function authServer(username: string, password: string): Promise<boolean> {
   const res = await handleRequest(readServerPassword(username));
   if (res.code || !res.data) return false;
-  return bcryptjs.compare(password, res.data);
+  return compare(password, res.data);
 }
 
 export function addServer(obj: Prisma.ServerCreateInput): Promise<IResp<void>> {
