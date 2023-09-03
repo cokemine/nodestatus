@@ -69,7 +69,7 @@
     "log4js": "^6.4.7",
     "telegraf": "^4.8.2",
     "typescript": "^5.1.6",
-    "vite": "^4.1.4",
+    "vite": "^4.1.5",
     "ws": "^8.12.1"
   },
   "optionalDependencies": {
