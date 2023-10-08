@@ -1,6 +1,6 @@
 {
   "name": "nodestatus-server",
-  "version": "1.2.7-beta.5",
+  "version": "1.2.8-beta",
   "repository": {
     "type": "git",
     "url": "https://github.com/cokemine/nodestatus.git",
