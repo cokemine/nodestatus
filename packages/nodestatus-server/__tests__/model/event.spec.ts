@@ -1,11 +1,10 @@
+import { afterEach, expect, test } from 'vitest';
 import prisma from '../../server/lib/prisma';
-import {
-  createEvent,
-  updateEvent,
-  readEvents
-} from '../../server/model/event';
+import { createEvent, updateEvent, readEvents } from '../../server/model/event';
 
-afterEach(() => prisma.event.deleteMany({}));
+afterEach(async () => {
+  await prisma.event.deleteMany({});
+});
 
 test('Create Event', async () => {
   await createEvent('server01');

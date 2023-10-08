@@ -12,13 +12,9 @@
     "baseUrl": ".",
     "useDefineForClassFields": true,
     "skipLibCheck": true,
-    "lib": [
-      "esnext"
-    ]
+    "lib": ["esnext"]
   },
-  "exclude": [
-    "node_modules"
-  ],
+  "exclude": ["node_modules"],
   "references": [
     {
       "path": "./tsconfig.react.json"

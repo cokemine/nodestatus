@@ -1,27 +1,25 @@
-import { mockReset } from 'jest-mock-extended';
+import {
+  vi, afterEach, expect, test
+} from 'vitest';
 import { hash } from 'bcrypt-ts';
 import {
   addServer, authServer, getListServers, getServer, setServer
 } from '../../server/controller/status';
 import {
-  readServersList,
-  createServer,
-  readServer,
-  updateServer,
-  readServerPassword
+  readServersList, createServer, readServer, updateServer, readServerPassword
 } from '../../server/model/server';
 import { IServer, Prisma } from '../../types/server';
 
-jest.mock('../../server/model/server');
+vi.mock('../../server/model/server');
 
-const ReadServersList = readServersList as jest.MockedFunction<typeof readServersList>;
-const CreateServer = createServer as jest.MockedFunction<typeof createServer>;
-const ReadServer = readServer as jest.MockedFunction<typeof readServer>;
-const UpdateServer = updateServer as jest.MockedFunction<typeof updateServer>;
-const ReadServerPassword = readServerPassword as jest.MockedFunction<typeof readServerPassword>;
+const ReadServersList = vi.mocked(readServersList);
+const CreateServer = vi.mocked(createServer);
+const ReadServer = vi.mocked(readServer);
+const UpdateServer = vi.mocked(updateServer);
+const ReadServerPassword = vi.mocked(readServerPassword);
 
 afterEach(() => {
-  [ReadServersList, CreateServer, ReadServer, UpdateServer, ReadServerPassword].forEach(mockReset);
+  [ReadServersList, CreateServer, ReadServer, UpdateServer, ReadServerPassword].forEach(fn => fn.mockReset());
 });
 
 const mockServerInput = (str: string): Prisma.ServerCreateInput => ({
@@ -76,9 +74,11 @@ test('Create a server and find unique Server', async () => {
 });
 
 test('Set Server with disabled', async () => {
-  await expect(setServer('username', {
-    disabled: true
-  })).resolves.toEqual({ code: 0, data: null, msg: 'ok' });
+  await expect(
+    setServer('username', {
+      disabled: true
+    })
+  ).resolves.toEqual({ code: 0, data: null, msg: 'ok' });
   ReadServer.mockResolvedValueOnce(mockIServer('username', true));
   await expect(getServer('username')).resolves.toEqual({
     code: 1,
@@ -89,13 +89,13 @@ test('Set Server with disabled', async () => {
 
 test('get List Servers', async () => {
   const servers = ['Megumi', 'Siesta', 'Emilia'].map(name => mockServerInput(name));
-  await Promise.all(servers.map(
-    server => expect(addServer(server)).resolves.toEqual({
+  await Promise.all(
+    servers.map(server => expect(addServer(server)).resolves.toEqual({
       code: 0,
       data: null,
       msg: 'ok'
-    })
-  ));
+    }))
+  );
   ReadServersList.mockResolvedValueOnce(servers.map(({ name }) => mockIServer(name)));
   const result = await getListServers();
   expect(result).toMatchObject({
