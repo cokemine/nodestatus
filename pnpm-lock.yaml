@@ -129,8 +129,8 @@ importers:
         version: 6.0.3
     devDependencies:
       '@commander-js/extra-typings':
-        specifier: ^10.0.2
-        version: 10.0.2(commander@10.0.0)
+        specifier: ^11.0.0
+        version: 11.0.0(commander@10.0.0)
       '@koa/router':
         specifier: ^12.0.0
         version: 12.0.0
@@ -719,10 +719,10 @@ packages:
       to-fast-properties: 2.0.0
     dev: true
 
-  /@commander-js/extra-typings@10.0.2(commander@10.0.0):
-    resolution: {integrity: sha512-PSGG74fpbc2/WRInbKJbwKiUwdN9YqZSgHxDGMqInUe4G6DTLp90ww12uHMC1U/219qPWI0fLSSjwVDUTdnqIQ==}
+  /@commander-js/extra-typings@11.0.0(commander@10.0.0):
+    resolution: {integrity: sha512-06ol6Kn5gPjFY6v0vWOZ84nQwyqhZdaeZCHYH3vhwewjpOEjniF1KHZxh18887G3poWiJ8qyq5pb6ANuiddfPQ==}
     peerDependencies:
-      commander: 10.0.x
+      commander: 11.0.x
     dependencies:
       commander: 10.0.0
     dev: true
