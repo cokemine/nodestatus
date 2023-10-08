@@ -5,6 +5,7 @@
   },
   "include": [
     "web/**/*.vite.config.ts",
+    "vitest.config.ts",
     "packages/**/*.ts"
   ]
 }

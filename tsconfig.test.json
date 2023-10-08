@@ -2,12 +2,8 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "composite": true,
-    "types": [
-      "jest"
-    ]
   },
   "include": [
-    "packages/**/*.test.ts",
-    "packages/**/*.spec.ts"
+    "packages/server/**/*.ts",
   ]
 }

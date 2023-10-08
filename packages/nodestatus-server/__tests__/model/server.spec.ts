@@ -1,6 +1,8 @@
 import { EventEmitter } from 'events';
-import { DeepMockProxy } from 'jest-mock-extended/lib/Mock';
-import { mockDeep, mockReset } from 'jest-mock-extended';
+import {
+  vi, afterEach, expect, test
+} from 'vitest';
+import { mockDeep, mockReset, DeepMockProxy } from 'vitest-mock-extended';
 import prisma from '../../server/lib/prisma';
 import {
   createServer,
@@ -15,17 +17,17 @@ import {
 import { emitter as Emitter } from '../../server/lib/utils';
 import { Prisma } from '../../types/server';
 
-jest.mock('../../server/lib/utils', () => ({
+vi.mock('../../server/lib/utils', () => ({
   __esModule: true,
   emitter: mockDeep<EventEmitter>()
 }));
 
-const emitter = Emitter as DeepMockProxy<EventEmitter>;
+const emitter = vi.mocked(Emitter) as DeepMockProxy<EventEmitter>;
 
 afterEach(async () => {
   await updateOrder('');
   mockReset(emitter);
-  return prisma.$transaction([prisma.server.deleteMany({}), prisma.option.deleteMany({})]);
+  await prisma.$transaction([prisma.server.deleteMany({}), prisma.option.deleteMany({})]);
 });
 
 const mockServer = (str: string): Prisma.ServerCreateInput => ({
