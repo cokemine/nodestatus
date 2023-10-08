@@ -15,7 +15,7 @@
     "@types/react-beautiful-dnd": "^13.1.2",
     "@types/react-dom": "^17.0.10",
     "@types/react-simple-maps": "^3.0.0",
-    "@vitejs/plugin-react": "^3.0.1",
+    "@vitejs/plugin-react": "^4.0.0",
     "antd": "^4.20.2",
     "array-move": "^4.0.0",
     "autoprefixer": "^10.3.7",
