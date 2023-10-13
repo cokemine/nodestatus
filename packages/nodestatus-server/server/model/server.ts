@@ -16,9 +16,7 @@ const resolveResult = (item: Server | null): IServer | null => {
 
 const updateCacheOrder = (order: string, shouldEmit = true): void => {
   orderMap.clear();
-  const orderList = order === ''
-    ? []
-    : order.split(',');
+  const orderList = order === '' ? [] : order.split(',');
   for (let i = 0; i < orderList.length; ++i) {
     orderMap.set(Number(orderList[i]), i + 1);
   }
@@ -89,11 +87,11 @@ export async function bulkCreateServer(items: Prisma.ServerCreateInput[]): Promi
   //   skipDuplicates: true
   // });
   await prisma.$transaction(async prisma => {
-    const order: number[] = [];
-    await Promise.all(items.map(item => prisma.server
-      .create({ data: item })
-      .then(server => order.push(server.id))));
-    const newOrder = Array.from(orderMap.keys()).concat(order);
+    const preMap: Record<string, number> = {};
+    await Promise.all(
+      items.map(item => prisma.server.create({ data: item }).then(server => (preMap[server.username] = server.id)))
+    );
+    const newOrder = Array.from(orderMap.keys()).concat(items.map(item => preMap[item.username]));
     await updateOrder(newOrder.join(','), prisma as PrismaClient);
   });
   emitter.emit('update');
