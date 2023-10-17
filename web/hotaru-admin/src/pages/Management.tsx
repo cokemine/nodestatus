@@ -358,12 +358,12 @@ const Management: FC = () => {
                       label="Username"
                       name="username"
                       rules={
-                          [
-                            {
-                              validator: basicValidator
-                            }
-                          ]
-                        }
+                        [
+                          {
+                            validator: basicValidator
+                          }
+                        ]
+                      }
                     >
                       <Input />
                     </Form.Item>
@@ -371,12 +371,12 @@ const Management: FC = () => {
                       label="Password"
                       name="password"
                       rules={
-                          [
-                            {
-                              validator: basicValidator
-                            }
-                          ]
-                        }
+                        [
+                          {
+                            validator: basicValidator
+                          }
+                        ]
+                      }
                     >
                       <Input.Password placeholder="留空不修改" />
                     </Form.Item>
@@ -404,10 +404,14 @@ const Management: FC = () => {
                           value,
                           label: value
                         }))}
-                        onChange={value => {
+                        onChange={(value: unknown) => {
+                          if (typeof value !== 'string') return [];
                           const code = countries.getAlpha2Code(value, 'zh');
                           const codeEn = countries.getAlpha2Code(value, 'en');
-                          return setRegionResult([code, codeEn].filter(v => !!v));
+                          const fullMatch = [code, codeEn].filter(v => !!v);
+                          return fullMatch.length ? setRegionResult(fullMatch) : setRegionResult(
+                            Object.keys(countries.getAlpha2Codes()).filter(v => v.startsWith(value.toUpperCase()))
+                          );
                         }}
                       >
                         <Input />
