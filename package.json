@@ -26,7 +26,7 @@
     "test": "cross-env NODE_ENV=TEST vitest"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^24.0.1",
+    "@rollup/plugin-commonjs": "^25.0.0",
     "@rollup/plugin-json": "^6.0.0",
     "@rollup/plugin-node-resolve": "v15.0.1",
     "@rollup/plugin-run": "^3.0.1",
