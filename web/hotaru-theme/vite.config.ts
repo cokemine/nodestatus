@@ -1,4 +1,4 @@
-import path from 'path';
+import { fileURLToPath } from 'url';
 
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
@@ -8,7 +8,7 @@ export default defineConfig({
   plugins: [
     vue(),
     createSvgIconsPlugin({
-      iconDirs: [path.resolve(__dirname, '../utils/assets/img/client')],
+      iconDirs: [fileURLToPath(new URL('../utils/assets/img/client', import.meta.url))],
       symbolId: '[name]'
     })
   ]

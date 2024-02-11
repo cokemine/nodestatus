@@ -2,6 +2,7 @@
   "name": "classic-theme",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "vue-tsc --noEmit && vite build",
     "dev": "vite",
@@ -9,12 +10,12 @@
   },
   "devDependencies": {
     "@nodestatus/web-utils": "workspace:*",
-    "@vitejs/plugin-vue": "^4.0.0",
+    "@vitejs/plugin-vue": "^5.0.4",
     "@vueuse/head": "^1.0.22",
     "bootstrap": "3.4.1",
     "reconnecting-websocket": "^4.4.0",
     "typescript": "^5.1.6",
-    "vite": "^4.1.4",
+    "vite": "^5.1.1",
     "vue": "^3.2.33",
     "vue-tsc": "^1.0.0"
   }
