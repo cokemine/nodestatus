@@ -28,7 +28,7 @@
   "devDependencies": {
     "@rollup/plugin-commonjs": "^24.0.1",
     "@rollup/plugin-json": "^6.0.0",
-    "@rollup/plugin-node-resolve": "v15.0.1",
+    "@rollup/plugin-node-resolve": "15.2.3",
     "@rollup/plugin-run": "^3.0.1",
     "@types/fs-extra": "^9.0.13",
     "@types/node": "^18.11.18",
