@@ -1,12 +1,10 @@
-/* Ant Design */
-@import 'antd/dist/antd.css';
-
-/* Tailwind */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 /* Custom */
+
+body {
+    font-family: inherit !important;
+}
+
 .ant-table {
     overflow: auto;
     /* fix table footer display */

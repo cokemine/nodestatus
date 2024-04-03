@@ -130,11 +130,11 @@ div.bar {
     font-size: 1.2rem;
   }
 
-  #app #header {
+  #header {
     height: 20rem;
 
     /* Replace your header image (for mobile use) at this place! */
-    background: url('assets/img/cover_mobile.png') no-repeat center center !important;
+    background: url('assets/img/cover_mobile.png') no-repeat center center;
   }
 }
 
