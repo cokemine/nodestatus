@@ -153,11 +153,40 @@ status-cli help # check cli help
 
 ### Web
 
-若你启用了 Web, 则可以通过 Web 修改服务器相关配置。不需要手动安装，访问 `http://tz.domain.com/admin` 即可访问面板。
+若你启用了 Web, 则可以通过 Web 修改服务器相关配置。不需要手动安装，访问 `http://status.domain.com/admin` 即可访问面板。
 
 同时通过 Web 面板你可以很简单的从 ServerStatus 迁移至 NodeStatus, 你可以在面板 `Import` 处将 ServerStatus 的 JSON 文件粘贴过去一键添加服务器。（需要去除多余的 `host` 字段）
 
 面板开源地址：https://github.com/cokemine/nodestatus/tree/master/web/hotaru-admin
+
+## 前端样式调整
+
+如果你需要进行比较大规模的 Web 前端样式调整，建议直接修改本项目前端源代码并重新编译。本项目自带 Docker 发布的 CI，CI 环境下修改 Docker Hub 相关环境变量即可发布自定义镜像到自己的 Docker Hub 下方便后续使用，或手动通过 `docker build` 命令手动构建自定义镜像。
+
+如果仅需进行细微调整，可以创建一个自定义样式表映射到容器内，该样式通过 `/custom/style.css` 这个 URL 自动引入到前端。
+
+例如若你想删除 `hotaru-theme` 的头图。可以在当前目录创建一个 `assets` 目录，在其中创建 `style.css` 文件填入以下内容。
+
+```css
+#header {
+  background: none! important;
+}
+
+@media (max-width: 768px) {
+  #header {
+    background: none !important;
+  }
+}
+```
+
+然后在 `docker-compose.yml`文件的 `volumes` 键中，将这个文件映射到容器内部（不要删除原有的映射条目）。
+
+```
+volumes:
+  - ./assets/style.css:/app/packages/nodestatus-server/build/dist/hotaru-theme/assets/custom/style.css
+```
+
+现在，你编写的样式表已经可以通过 `/custom/style.css` 这个 URL 访问，并且自动引入到了对应主题的前端生效。
 
 ## Telegram Commands
 
@@ -169,27 +198,48 @@ status-cli help # check cli help
 
 下面是对几种常见 Web 服务器配置反向代理的实例
 
-### Nginx
+### Nginx v1.25.1+
 
 ```nginx
+# Mozilla modern configuration
 server {
   listen 80;
   listen [::]:80;
-  listen 443 ssl http2;
-  listen [::]:443 ssl http2;
+  server_name status.domain.com; # 需要绑定的域名
+
+  location / {
+    return 301 https://$host$request_uri;
+  }
+}
+
+server {
+  listen 443 ssl;
+  listen [::]:443 ssl;
+  # 开启 HTTP/3
+  listen 443 quic reuseport;
+  listen [::]:443 quic reuseport;
+  # 开启 HTTP/2
+  http2 on;
+    
+  server_name status.domain.com; # 需要绑定的域名
+  access_log /var/log/nginx/status.domain.com_nginx.log combined; # 日志位置, 目录如果不存在需要提前创建好  
+    
   ssl_certificate /etc/nginx/conf.d/ssl/status.domain.com.crt; # SSL 证书路径
   ssl_certificate_key /etc/nginx/conf.d/ssl/status.domain.com.key; # SSL Key 证书路径
-  ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3;
-  ssl_ciphers TLS13-AES-256-GCM-SHA384:TLS13-CHACHA20-POLY1305-SHA256:TLS13-AES-128-GCM-SHA256:TLS13-AES-128-CCM-8-SHA256:TLS13-AES-128-CCM-SHA256:EECDH+CHACHA20:EECDH+AES128:RSA+AES128:EECDH+AES256:RSA+AES256:EECDH+3DES:RSA+3DES:!MD5;
-  ssl_prefer_server_ciphers on;
-  ssl_session_timeout 10m;
-  ssl_session_cache builtin:1000 shared:SSL:10m;
-  ssl_buffer_size 1400;
-  add_header Strict-Transport-Security max-age=15768000;
+  # ssl_trusted_certificate /etc/nginx/conf.d/ssl/status.domain.com.ca.crt; # SSL CA
+  ssl_session_timeout 1d;
+  ssl_session_cache shared:MozSSL:10m; # about 40000 sessions
+  ssl_session_tickets off;
+
+  # modern configuration
+  ssl_protocols TLSv1.3;
+  ssl_prefer_server_ciphers off;
+
+  # HSTS (ngx_http_headers_module is required) (63072000 seconds)
+  add_header Strict-Transport-Security "max-age=63072000" always;
+
   ssl_stapling on;
   ssl_stapling_verify on;
-  server_name status.domain.com; # 需要绑定的域名
-  access_log /var/log/nginx/status.domain.com_nginx.log combined; # 日志位置, 目录如果不存在需要提前创建好
 
   location / {
     proxy_set_header X-Real-IP $remote_addr;
