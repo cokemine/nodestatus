@@ -169,7 +169,7 @@ status-cli help # check cli help
 
 ```css
 #header {
-  background: none! important;
+  background: none !important;
 }
 
 @media (max-width: 768px) {
