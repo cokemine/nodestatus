@@ -258,8 +258,8 @@ importers:
   web/hotaru-admin:
     devDependencies:
       '@ant-design/icons':
-        specifier: ^4.7.0
-        version: 4.7.0(react-dom@17.0.2)(react@17.0.2)
+        specifier: ^5.0.0
+        version: 5.0.0(react-dom@17.0.2)(react@17.0.2)
       '@nodestatus/web-utils':
         specifier: workspace:*
         version: link:../utils
@@ -405,6 +405,12 @@ packages:
       '@ctrl/tinycolor': 3.4.0
     dev: true
 
+  /@ant-design/colors@7.0.0:
+    resolution: {integrity: sha512-iVm/9PfGCbC0dSMBrz7oiEXZaaGH7ceU40OJEfKmyuzR9R5CRimJYPlRiFtMQGQcbNMea/ePcoIebi4ASGYXtg==}
+    dependencies:
+      '@ctrl/tinycolor': 3.4.0
+    dev: true
+
   /@ant-design/icons-svg@4.2.1:
     resolution: {integrity: sha512-EB0iwlKDGpG93hW8f85CTJTs4SvMX7tt5ceupvhALp1IF44SeUFOMhKUOYqpsoYWQKAOuTRDMqn75rEaKDp0Xw==}
     dev: true
@@ -418,9 +424,25 @@ packages:
     dependencies:
       '@ant-design/colors': 6.0.0
       '@ant-design/icons-svg': 4.2.1
-      '@babel/runtime': 7.15.4
+      '@babel/runtime': 7.17.2
       classnames: 2.3.1
-      rc-util: 5.14.0(react-dom@17.0.2)(react@17.0.2)
+      rc-util: 5.21.2(react-dom@17.0.2)(react@17.0.2)
+      react: 17.0.2
+      react-dom: 17.0.2(react@17.0.2)
+    dev: true
+
+  /@ant-design/icons@5.0.0(react-dom@17.0.2)(react@17.0.2):
+    resolution: {integrity: sha512-dPUlZtsIffBrDyFwM+tuO4PWi1DPgGgd10ASistPhLpr1WyssadfhChWs/mICVkCm5PaRm/foMkE1x3xw4OPZw==}
+    engines: {node: '>=8'}
+    peerDependencies:
+      react: '>=16.0.0'
+      react-dom: '>=16.0.0'
+    dependencies:
+      '@ant-design/colors': 7.0.0
+      '@ant-design/icons-svg': 4.2.1
+      '@babel/runtime': 7.17.2
+      classnames: 2.3.1
+      rc-util: 5.21.2(react-dom@17.0.2)(react@17.0.2)
       react: 17.0.2
       react-dom: 17.0.2(react@17.0.2)
     dev: true
@@ -6871,19 +6893,6 @@ packages:
       react-dom: 17.0.2(react@17.0.2)
     dev: true
 
-  /rc-util@5.14.0(react-dom@17.0.2)(react@17.0.2):
-    resolution: {integrity: sha512-2vy6/Z1BJUcwLjm/UEJb/htjUTQPigITUIemCcFEo1fQevAumc9sA32x2z5qyWoa9uhrXbiAjSDpPIUqyg65sA==}
-    peerDependencies:
-      react: '>=16.9.0'
-      react-dom: '>=16.9.0'
-    dependencies:
-      '@babel/runtime': 7.15.4
-      react: 17.0.2
-      react-dom: 17.0.2(react@17.0.2)
-      react-is: 16.13.1
-      shallowequal: 1.1.0
-    dev: true
-
   /rc-util@5.21.2(react-dom@17.0.2)(react@17.0.2):
     resolution: {integrity: sha512-QuuZ2tKMScGtxSx3rLzgPGGDZm/np7phMqA7OcDidSf44abvSk+AdtdD7ZvQPvCEtdC6nCSI5tEVnUaYjjD9/w==}
     peerDependencies:
@@ -6973,7 +6982,7 @@ packages:
       react-native:
         optional: true
     dependencies:
-      '@babel/runtime': 7.15.4
+      '@babel/runtime': 7.17.2
       '@types/react-redux': 7.1.20
       hoist-non-react-statics: 3.3.2
       loose-envify: 1.4.0
@@ -7055,7 +7064,7 @@ packages:
   /redux@4.1.1:
     resolution: {integrity: sha512-hZQZdDEM25UY2P493kPYuKqviVwZ58lEmGQNeQ+gXa+U0gYPUBf7NKYazbe3m+bs/DzM/ahN12DbF+NG8i0CWw==}
     dependencies:
-      '@babel/runtime': 7.15.4
+      '@babel/runtime': 7.17.2
     dev: true
 
   /regenerator-runtime@0.13.9:
