@@ -2,10 +2,10 @@ import net from 'net';
 import {
   addServer, removeServer, getRawListServers, setServer
 } from '../controller/status';
-import { createRes } from './utils';
+import { createRes } from '../lib/utils';
 import type { Server } from '../../types/server';
 
-export default function createIpc(): net.Server {
+export default function useIpc(): net.Server {
   return net.createServer(client => {
     client.on('data', async (buf: Buffer) => {
       try {

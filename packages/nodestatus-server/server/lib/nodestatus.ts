@@ -8,9 +8,7 @@ import log4js from 'log4js';
 import {
   Box, ServerItem, BoxItem, IWebSocket
 } from '../../types/server';
-import {
-  authServer, createNewEvent, getListServers, getServer, resolveEvent
-} from '../controller/status';
+import { authServer, getListServers, getServer } from '../controller/status';
 import { logger, emitter } from './utils';
 import setupHeartbeat from './heartbeat';
 
@@ -24,10 +22,16 @@ const loggerBanned = getLogger('Banned');
 type Options = {
   interval: number;
   pingInterval: number;
+  reconnectTimeout: number;
 };
 
-type CallbackType = 'onServerConnect' | 'onServerBanned' | 'onServerConnected' | 'onServerDisconnected';
-type CallbackFn = (socket: IWebSocket, ...args: any) => unknown;
+type CallbackType =
+  | 'onServerConnect'
+  | 'onServerBanned'
+  | 'onServerConnected'
+  | 'onServerDisconnected'
+  | 'onServerFinish';
+type CallbackFn = (...args: any) => unknown;
 type CallbackFunction = {
   [key in CallbackType]: CallbackFn[];
 };
@@ -47,11 +51,15 @@ export default class NodeStatus {
   /* ip -> banned */
   private isBanned = new Map<string, boolean>();
 
+  /* Username -> timer */
+  private timerMap = new Map<string, NodeJS.Timeout>();
+
   private callbackFn: CallbackFunction = {
     onServerConnect: [],
     onServerBanned: [],
     onServerConnected: [],
-    onServerDisconnected: []
+    onServerDisconnected: [],
+    onServerFinish: []
   };
 
   public servers: Record<string, ServerItem> = {};
@@ -84,10 +92,15 @@ export default class NodeStatus {
     this.registerCallback('onServerDisconnected', fn);
   }
 
-  private callHook(hook: CallbackType, socket: IWebSocket, ...args: any[]) {
+  public onServerFinish(fn: (socket: null, username: string) => unknown) {
+    this.registerCallback('onServerFinish', fn);
+  }
+
+  private callHook(hook: CallbackType, ...args: any[]) {
+    logger.debug(`[hook]: ${hook}`);
     try {
       const fns = this.callbackFn[hook];
-      for (const fn of fns) fn.apply(this, [socket, ...args]);
+      for (const fn of fns) fn.apply(this, args);
     } catch (error: any) {
       logger.error(`[hook]: ${hook} error: ${error.message || error}`);
     }
@@ -187,12 +200,16 @@ export default class NodeStatus {
         }
         socket.send(`You are connecting via: ${ipType}`);
         loggerConnected.info(`Username: ${username} | Address: ${address}`);
-        resolveEvent(username).then();
         socket.on('message', (buf: Buffer) => (this.servers[username].status = decode(buf) as ServerItem['status']));
         this.userMap.set(username, socket);
 
-        this.callHook('onServerConnected', socket, username);
-        // this.callHook('_serverConnectedPush', socket, username);
+        const timer = this.timerMap.get(username);
+        if (timer) {
+          clearTimeout(timer);
+          this.timerMap.delete(username);
+        } else {
+          this.callHook('onServerConnected', socket, username);
+        }
 
         socket.once('close', () => {
           this.userMap.delete(username);
@@ -200,9 +217,13 @@ export default class NodeStatus {
           loggerDisconnected.warn(`Username: ${username} | Address: ${address}`);
 
           this.callHook('onServerDisconnected', socket, username);
-          // this.callHook('_serverDisconnectedPush', socket, username, (now: Date) =>
-          //   createNewEvent(username, now).then()
-          // );
+
+          const timer = setTimeout(() => {
+            this.callHook('onServerFinish', null as any, username);
+            this.timerMap.delete(username);
+          }, this.options.reconnectTimeout * 1000);
+
+          this.timerMap.set(username, timer);
         });
       });
     });

@@ -1,23 +1,18 @@
 import { timingSafeEqual } from 'crypto';
 import { Telegraf } from 'telegraf';
 import HttpsProxyAgent from 'https-proxy-agent';
-import { logger } from './utils';
-import type NodeStatus from './nodestatus';
+import { logger } from '../lib/utils';
+import type NodeStatus from '../lib/nodestatus';
 
 type PushOptions = {
-  pushTimeOut: number;
-  telegram?: {
-    bot_token: string;
-    chat_id: string[];
-    web_hook?: string;
-    proxy?: string;
-  };
+  bot_token: string;
+  chat_id: string[];
+  web_hook?: string;
+  proxy?: string;
 };
 
-export default function createPush(instance: NodeStatus, options: PushOptions) {
+export default function usePush(instance: NodeStatus, options: PushOptions) {
   const pushList: Array<(message: string) => void> = [];
-  /* Username -> timer */
-  const timerMap = new Map<string, NodeJS.Timer>();
 
   const entities = new Set([
     '_',
@@ -90,18 +85,16 @@ export default function createPush(instance: NodeStatus, options: PushOptions) {
     return `🍊*NodeStatus* \n🤖 当前有 ${total} 台服务器, 其中在线 ${online} 台\n\n${str}`;
   };
 
-  const tgConfig = options.telegram;
-
-  if (tgConfig?.bot_token) {
-    const bot = new Telegraf(tgConfig.bot_token, {
-      ...(tgConfig.proxy && {
+  if (options?.bot_token) {
+    const bot = new Telegraf(options.bot_token, {
+      ...(options.proxy && {
         telegram: {
-          agent: HttpsProxyAgent(tgConfig.proxy)
+          agent: HttpsProxyAgent(options.proxy)
         }
       })
     });
 
-    const chatId = new Set<string>(tgConfig.chat_id);
+    const chatId = new Set<string>(options.chat_id);
 
     bot.command('start', ctx => {
       const currentChat = ctx.message.chat.id.toString();
@@ -146,10 +139,10 @@ export default function createPush(instance: NodeStatus, options: PushOptions) {
       }
     });
 
-    if (tgConfig.web_hook) {
+    if (options.web_hook) {
       const secretPath = `/telegraf/${bot.secretPathComponent()}`;
       bot.telegram
-        .setWebhook(`${tgConfig.web_hook}${secretPath}`)
+        .setWebhook(`${options.web_hook}${secretPath}`)
         .then(() => logger.info('🤖 Telegram Bot is running using webhook'));
 
       instance.server.on('request', (req, res) => {
@@ -169,34 +162,22 @@ export default function createPush(instance: NodeStatus, options: PushOptions) {
     pushList.push(message => [...chatId].map(id => bot.telegram.sendMessage(id, `${message}`, { parse_mode: 'MarkdownV2' })));
   }
 
-  instance.onServerConnected((socket, username) => {
-    const timer = timerMap.get(username);
-    if (timer) {
-      clearTimeout(timer);
-      timerMap.delete(username);
-    } else {
-      return Promise.all(
-        pushList.map(fn => fn(
-          `🍊*NodeStatus* \n😀 One new server has connected\\! \n\n *用户名*: ${parseEntities(
-            username
-          )} \n *节点名*: ${parseEntities(instance.servers[username].name)} \n *时间*: ${parseEntities(new Date())}`
-        ))
-      );
-    }
-  });
+  instance.onServerConnected((socket, username) => Promise.all(
+    pushList.map(fn => fn(
+      `🍊*NodeStatus* \n😀 One new server has connected\\! \n\n *用户名*: ${parseEntities(
+        username
+      )} \n *节点名*: ${parseEntities(instance.servers[username].name)} \n *时间*: ${parseEntities(new Date())}`
+    ))
+  ));
 
-  instance.onServerDisconnected((socket, username) => {
+  instance.onServerFinish((socket, username) => {
     const now = new Date();
-    const timer = setTimeout(() => {
-      Promise.all(
-        pushList.map(fn => fn(
-          `🍊*NodeStatus* \n😰 One server has disconnected\\! \n\n *用户名*: ${parseEntities(
-            username
-          )} \n *节点名*: ${parseEntities(instance.servers[username]?.name)} \n *时间*: ${parseEntities(now)}`
-        ))
-      ).then();
-      timerMap.delete(username);
-    }, options.pushTimeOut * 1000);
-    timerMap.set(username, timer);
+    Promise.all(
+      pushList.map(fn => fn(
+        `🍊*NodeStatus* \n😰 One server has disconnected\\! \n\n *用户名*: ${parseEntities(
+          username
+        )} \n *节点名*: ${parseEntities(instance.servers[username]?.name)} \n *时间*: ${parseEntities(now)}`
+      ))
+    ).then();
   });
 }
