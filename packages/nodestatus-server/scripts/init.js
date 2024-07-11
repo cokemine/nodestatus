@@ -48,10 +48,12 @@ function initDatabase() {
     to: `provider = "${databaseType}"`
   }).then(() => {
     let cmd = 'prisma';
-    platform() === 'win32' && (cmd += '.cmd');
+    let args = ['db', 'push'];
+
+    if (platform() === 'win32') { cmd = 'cmd.exe'; args = ['/c', 'prisma', 'db', 'push']; }
 
     /* Regenerate correct prisma client */
-    const args = process.env.IS_VERCEL === 'true' ? ['generate'] : ['db', 'push'];
+
     const prisma = cp.spawn(cmd, args, {
       env: envOption,
       cwd: resolve(__dirname, '../'),

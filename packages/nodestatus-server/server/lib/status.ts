@@ -23,7 +23,7 @@ export async function createStatus(app: Koa): Promise<[Server, NetServer | null]
 
   if (config.usePush) {
     setTimeout(
-      createPush.bind(instance, {
+      () => createPush(instance, {
         pushTimeOut: config.pushTimeout,
         telegram: {
           ...config.telegram,

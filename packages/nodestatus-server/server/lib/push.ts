@@ -11,15 +11,35 @@ type PushOptions = {
     chat_id: string[];
     web_hook?: string;
     proxy?: string;
-  }
+  };
 };
 
-export default function createPush(this: NodeStatus, options: PushOptions) {
+export default function createPush(instance: NodeStatus, options: PushOptions) {
   const pushList: Array<(message: string) => void> = [];
   /* Username -> timer */
   const timerMap = new Map<string, NodeJS.Timer>();
 
-  const entities = new Set(['_', '*', '[', ']', '(', ')', '~', '`', '>', '#', '+', '-', '=', '|', '{', '}', '.', '!', '\\']);
+  const entities = new Set([
+    '_',
+    '*',
+    '[',
+    ']',
+    '(',
+    ')',
+    '~',
+    '`',
+    '>',
+    '#',
+    '+',
+    '-',
+    '=',
+    '|',
+    '{',
+    '}',
+    '.',
+    '!',
+    '\\'
+  ]);
 
   const parseEntities = (msg: any): string => {
     let str: string;
@@ -37,8 +57,9 @@ export default function createPush(this: NodeStatus, options: PushOptions) {
 
   const getBotStatus = (targets: string[]): string => {
     let str = '';
-    let total = 0, online = 0;
-    this.serversPub.forEach(obj => {
+    let total = 0,
+      online = 0;
+    instance.serversPub.forEach(obj => {
       if (targets.length) {
         if (!targets.some(target => obj.name.toLocaleLowerCase().includes(target))) {
           return;
@@ -48,9 +69,7 @@ export default function createPush(this: NodeStatus, options: PushOptions) {
       const item = new Proxy(obj, {
         get(target, key) {
           const value = Reflect.get(target, key);
-          return typeof value === 'string'
-            ? parseEntities(value)
-            : value;
+          return typeof value === 'string' ? parseEntities(value) : value;
         }
       });
       str += `节点名: *${item.name}*\n当前状态: `;
@@ -87,9 +106,21 @@ export default function createPush(this: NodeStatus, options: PushOptions) {
     bot.command('start', ctx => {
       const currentChat = ctx.message.chat.id.toString();
       if (chatId.has(currentChat)) {
-        ctx.reply(`🍊NodeStatus\n🤖 Hi, this chat id is *${parseEntities(currentChat)}*\\.\nYou have access to this service\\. I will alert you when your servers changed\\.\nYou are currently using NodeStatus: *${parseEntities(process.env.npm_package_version)}*`, { parse_mode: 'MarkdownV2' });
+        ctx.reply(
+          `🍊NodeStatus\n🤖 Hi, this chat id is *${parseEntities(
+            currentChat
+          )}*\\.\nYou have access to this service\\. I will alert you when your servers changed\\.\nYou are currently using NodeStatus: *${parseEntities(
+            process.env.npm_package_version
+          )}*`,
+          { parse_mode: 'MarkdownV2' }
+        );
       } else {
-        ctx.reply(`🍊NodeStatus\n🤖 Hi, this chat id is *${parseEntities(currentChat)}*\\.\nYou *do not* have permission to use this service\\.\nPlease check your settings\\.`, { parse_mode: 'MarkdownV2' });
+        ctx.reply(
+          `🍊NodeStatus\n🤖 Hi, this chat id is *${parseEntities(
+            currentChat
+          )}*\\.\nYou *do not* have permission to use this service\\.\nPlease check your settings\\.`,
+          { parse_mode: 'MarkdownV2' }
+        );
       }
     });
 
@@ -117,9 +148,11 @@ export default function createPush(this: NodeStatus, options: PushOptions) {
 
     if (tgConfig.web_hook) {
       const secretPath = `/telegraf/${bot.secretPathComponent()}`;
-      bot.telegram.setWebhook(`${tgConfig.web_hook}${secretPath}`).then(() => logger.info('🤖 Telegram Bot is running using webhook'));
+      bot.telegram
+        .setWebhook(`${tgConfig.web_hook}${secretPath}`)
+        .then(() => logger.info('🤖 Telegram Bot is running using webhook'));
 
-      this.server.on('request', (req, res) => {
+      instance.server.on('request', (req, res) => {
         if (
           req.url
           && req.url.length === secretPath.length
@@ -136,29 +169,34 @@ export default function createPush(this: NodeStatus, options: PushOptions) {
     pushList.push(message => [...chatId].map(id => bot.telegram.sendMessage(id, `${message}`, { parse_mode: 'MarkdownV2' })));
   }
 
-  this._serverConnectedPush = (socket, username) => {
+  instance.onServerConnected((socket, username) => {
     const timer = timerMap.get(username);
     if (timer) {
       clearTimeout(timer);
       timerMap.delete(username);
     } else {
-      return Promise.all(pushList.map(
-        fn => fn(`🍊*NodeStatus* \n😀 One new server has connected\\! \n\n *用户名*: ${parseEntities(username)} \n *节点名*: ${parseEntities(this.servers[username].name)} \n *时间*: ${parseEntities(new Date())}`)
-      ));
+      return Promise.all(
+        pushList.map(fn => fn(
+          `🍊*NodeStatus* \n😀 One new server has connected\\! \n\n *用户名*: ${parseEntities(
+            username
+          )} \n *节点名*: ${parseEntities(instance.servers[username].name)} \n *时间*: ${parseEntities(new Date())}`
+        ))
+      );
     }
-  };
-  this._serverDisconnectedPush = (socket, username, cb) => {
+  });
+
+  instance.onServerDisconnected((socket, username) => {
     const now = new Date();
-    const timer = setTimeout(
-      () => {
-        Promise.all(pushList.map(
-          fn => fn(`🍊*NodeStatus* \n😰 One server has disconnected\\! \n\n *用户名*: ${parseEntities(username)} \n *节点名*: ${parseEntities(this.servers[username]?.name)} \n *时间*: ${parseEntities(now)}`)
-        )).then();
-        cb?.(now);
-        timerMap.delete(username);
-      },
-      options.pushTimeOut * 1000
-    );
+    const timer = setTimeout(() => {
+      Promise.all(
+        pushList.map(fn => fn(
+          `🍊*NodeStatus* \n😰 One server has disconnected\\! \n\n *用户名*: ${parseEntities(
+            username
+          )} \n *节点名*: ${parseEntities(instance.servers[username]?.name)} \n *时间*: ${parseEntities(now)}`
+        ))
+      ).then();
+      timerMap.delete(username);
+    }, options.pushTimeOut * 1000);
     timerMap.set(username, timer);
-  };
+  });
 }
