@@ -17,15 +17,15 @@ mv /usr/local/NodeStatus/db.sqlite /usr/local/NodeStatus/db.sqlite.bak
 ```bash
 # Install Node.js
 # Using Ubuntu
-curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
 sudo apt-get install -y nodejs
 
 # Using Debian, as root
-curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
 apt-get install -y nodejs
 
 # RHEL, CentOS, CloudLinux, Amazon Linux or Fedora as root
-curl -fsSL https://rpm.nodesource.com/setup_18.x | bash -
+curl -fsSL https://rpm.nodesource.com/setup_20.x | bash -
 
 
 #Install From NPM
