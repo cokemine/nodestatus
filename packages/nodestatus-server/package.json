@@ -11,7 +11,7 @@
   "main": "index.js",
   "type": "module",
   "engines": {
-    "node": ">=16.13.0"
+    "node": ">=18.14.0"
   },
   "bin": {
     "status-server": "bin/status-server.js",
@@ -69,11 +69,10 @@
     "log4js": "^6.4.7",
     "telegraf": "^4.16.3",
     "typescript": "^5.1.6",
-    "vite": "^5.1.1",
-    "ws": "^8.12.1"
+    "vite": "^5.3.3",
+    "ws": "^8.18.0"
   },
   "optionalDependencies": {
-    "bufferutil": "^4.0.7",
-    "utf-8-validate": "^6.0.3"
+    "bufferutil": "^4.0.7"
   }
 }
