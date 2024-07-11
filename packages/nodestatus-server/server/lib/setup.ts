@@ -5,11 +5,11 @@ import koaJwt from 'koa-jwt';
 import { koaBody } from 'koa-body';
 import router from '../router';
 import { usePush, useEvent, useIpc } from '../plugin';
-import NodeStatus from './nodestatus';
+import NodeStatus from './core';
 import config from './config';
 import type { Server as NetServer } from 'net';
 
-export async function createStatus(app: Koa): Promise<[Server, NetServer | null]> {
+export default async function setup(app: Koa): Promise<[Server, NetServer | null]> {
   const server = new Server(app.callback());
   let ipc = null;
 

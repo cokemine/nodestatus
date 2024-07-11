@@ -1,5 +1,5 @@
 import { resolveEvent, createNewEvent } from '../controller/status';
-import type NodeStatus from '../lib/nodestatus';
+import type NodeStatus from '../lib/core';
 
 export default function useEvent(instance: NodeStatus) {
   instance.onServerConnected(async (socket, username) => resolveEvent(username));

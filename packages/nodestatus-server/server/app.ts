@@ -5,7 +5,7 @@ import serve from 'koa-static';
 import mount from 'koa-mount';
 import { historyApiFallback } from 'koa2-connect-history-api-fallback';
 import { logger } from './lib/utils';
-import { createStatus } from './lib/status';
+import setup from './lib/setup';
 import config from './lib/config';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -31,7 +31,7 @@ app.use(historyApiFallback({
 app.use(mount('/admin', serve(resolve(__dirname, './dist/hotaru-admin'), { maxage: 2592000 })));
 app.use(serve(resolve(__dirname, `./dist/${config.webTheme}`), { maxage: 2592000 }));
 
-const [server, ipc] = await createStatus(app);
+const [server, ipc] = await setup(app);
 
 server.listen(config.port, () => logger.info(`🎉  NodeStatus is listening on http://127.0.0.1:${config.port}`));
 

@@ -9,6 +9,7 @@ services:
       PORT: 35601
       VERBOSE: "false"
       PING_INTERVAL: 30
+      RECONNECT_TIMEOUT: 120
       TZ: Asia/Shanghai
 
       USE_PUSH: "true"
@@ -24,7 +25,6 @@ services:
       WEB_PASSWORD: ""
       WEB_SECRET: ""
 
-      PUSH_TIMEOUT: 120
       PUSH_DELAY: 15
 
       TGBOT_TOKEN: ""

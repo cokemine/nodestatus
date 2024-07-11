@@ -2,7 +2,7 @@ import { timingSafeEqual } from 'crypto';
 import { Telegraf } from 'telegraf';
 import HttpsProxyAgent from 'https-proxy-agent';
 import { logger } from '../lib/utils';
-import type NodeStatus from '../lib/nodestatus';
+import type NodeStatus from '../lib/core';
 
 type PushOptions = {
   bot_token: string;

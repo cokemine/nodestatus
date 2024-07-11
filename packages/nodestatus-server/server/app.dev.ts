@@ -4,7 +4,7 @@ import { createServer as createViteServer } from 'vite';
 import Koa, { Middleware } from 'koa';
 import { historyApiFallback } from 'koa2-connect-history-api-fallback';
 import c2k from 'koa-connect';
-import { createStatus } from './lib/status';
+import setup from './lib/setup';
 import { logger } from './lib/utils';
 import config from './lib/config';
 
@@ -51,7 +51,7 @@ app.use(historyApiFallback({
   ]
 }));
 
-const [server, ipc] = await createStatus(app);
+const [server, ipc] = await setup(app);
 
 server.listen(config.port, () => logger.info(`🎉  NodeStatus is listening on http://127.0.0.1:${config.port}`));
 
