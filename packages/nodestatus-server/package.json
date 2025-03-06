@@ -11,7 +11,7 @@
   "main": "index.js",
   "type": "module",
   "engines": {
-    "node": ">=18.14.0"
+    "node": ">=22"
   },
   "bin": {
     "status-server": "bin/status-server.js",
@@ -47,7 +47,7 @@
     "@types/koa-mount": "^4.0.1",
     "@types/koa-static": "^4.0.2",
     "@types/koa__router": "^12.0.0",
-    "@types/ws": "^8.5.3",
+    "@types/ws": "^8.18.0",
     "@vercel/node": "^2.0.0",
     "bcrypt-ts": "^4.0.0",
     "classic-theme": "workspace:*",
@@ -70,7 +70,7 @@
     "telegraf": "^4.16.3",
     "typescript": "^5.5.3",
     "vite": "^5.3.3",
-    "ws": "^8.18.0"
+    "ws": "^8.18.1"
   },
   "optionalDependencies": {
     "bufferutil": "^4.0.7"

@@ -5,8 +5,11 @@ import { WebSocketServer, WebSocket } from 'ws';
 import { decode } from '@msgpack/msgpack';
 import ipaddr, { IPv6 } from 'ipaddr.js';
 import log4js from 'log4js';
-import {
-  Box, ServerItem, BoxItem, IWebSocket
+import type {
+  Box,
+  ServerItem,
+  BoxItem,
+  IWebSocket
 } from '../../types/server';
 import { authServer, getListServers, getServer } from '../controller/status';
 import { logger, emitter } from './utils';
@@ -156,10 +159,13 @@ export default class NodeStatus {
           ({ username, password } = decode(buf) as any);
           username = username.trim();
           password = password.trim();
-          if (!this.servers[username]) {
+          if (!this.servers[username] || !(await authServer(username, password))) {
             socket.send('Wrong username and/or password.');
             return this.setBan(socket, address, 120, 'Wrong username and/or password.');
           }
+
+          socket.status = 0;
+
           /*
            * 当客户端与服务端断开连接时，客户端会自动重连。但是服务端可能需要等待下一个心跳检测周期才能断开与客户端的连接
            * Temporary Fix
@@ -169,6 +175,8 @@ export default class NodeStatus {
             const preSocket = this.userMap.get(username);
             if (preSocket) {
               if (preSocket.ipAddress === address) {
+                preSocket.status = 1;
+                socket.status = 2;
                 preSocket.terminate();
               } else {
                 preSocket.isAlive = false;
@@ -181,17 +189,13 @@ export default class NodeStatus {
                   socket.send('Only one connection per user allowed.');
                   return this.setBan(socket, address, 120, 'Only one connection per user allowed.');
                   // eslint-disable-next-line no-empty
-                } catch (error: any) {}
+                } catch (error: any) { }
               }
             }
           }
         } catch (error: any) {
           socket.send('Please check your login details.');
           return this.setBan(socket, address, 120, 'it is an idiot.');
-        }
-        if (!(await authServer(username, password))) {
-          socket.send('Wrong username and/or password.');
-          return this.setBan(socket, address, 60, 'use wrong username and/or password.');
         }
         socket.send('Authentication successful. Access granted.');
         let ipType = 'IPv6';
@@ -207,11 +211,15 @@ export default class NodeStatus {
         if (timer) {
           clearTimeout(timer);
           this.timerMap.delete(username);
-        } else {
+        } else if (socket.status !== 2) {
           this.callHook('onServerConnected', socket, username);
         }
 
         socket.once('close', () => {
+          if (socket.status === 1) {
+            return;
+          }
+
           this.userMap.delete(username);
           this.servers[username] && (this.servers[username].status = {});
           loggerDisconnected.warn(`Username: ${username} | Address: ${address}`);

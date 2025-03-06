@@ -41,4 +41,11 @@ export type IResp<T = any> = {
   data: T,
   msg: string
 };
-export type IWebSocket = WebSocket & { isAlive?: boolean, ipAddress?: string };
+
+enum STATUS {
+  NORMAL = 0,
+  TERMINATED = 1,
+  RESUME = 2
+};
+
+export type IWebSocket = WebSocket & { isAlive?: boolean, ipAddress?: string, status?: STATUS };
