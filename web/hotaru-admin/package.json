@@ -16,7 +16,7 @@
     "@types/react-dom": "^17.0.10",
     "@types/react-simple-maps": "^3.0.0",
     "@vitejs/plugin-react": "^4.2.1",
-    "antd": "^4.20.2",
+    "antd": "^5.0.0",
     "array-move": "^4.0.0",
     "axios": "^0.27.2",
     "fast-deep-equal": "^3.1.3",
