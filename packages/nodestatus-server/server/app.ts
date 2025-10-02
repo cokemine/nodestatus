@@ -1,5 +1,6 @@
 import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
+import { setDefaultResultOrder } from 'node:dns';
 import Koa from 'koa';
 import serve from 'koa-static';
 import mount from 'koa-mount';
@@ -7,6 +8,10 @@ import { historyApiFallback } from 'koa2-connect-history-api-fallback';
 import { logger } from './lib/utils';
 import setup from './lib/setup';
 import config from './lib/config';
+
+
+// https://github.com/telegraf/telegraf/issues/1961
+setDefaultResultOrder('ipv6first');
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 

@@ -1,12 +1,15 @@
 import path from 'path';
 import { createRequire } from 'node:module';
 import { createServer as createViteServer } from 'vite';
+import { setDefaultResultOrder } from 'node:dns';
 import Koa, { Middleware } from 'koa';
 import { historyApiFallback } from 'koa2-connect-history-api-fallback';
 import c2k from 'koa-connect';
 import setup from './lib/setup';
 import { logger } from './lib/utils';
 import config from './lib/config';
+
+setDefaultResultOrder('ipv6first');
 
 const require = createRequire(import.meta.url);
 const middlewares: Record<string, Middleware> = {};
