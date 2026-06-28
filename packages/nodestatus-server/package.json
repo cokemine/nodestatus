@@ -54,7 +54,7 @@
     "@types/ws": "^8.18.0",
     "bcrypt-ts": "^4.0.0",
     "classic-theme": "workspace:*",
-    "commander": "^10.0.0",
+    "commander": "^15.0.0",
     "cross-env": "^7.0.3",
     "encoding": "^0.1.13",
     "hotaru-admin": "workspace:*",
