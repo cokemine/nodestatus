@@ -204,7 +204,11 @@ export default class NodeStatus {
         }
         socket.send(`You are connecting via: ${ipType}`);
         loggerConnected.info(`Username: ${username} | Address: ${address}`);
-        socket.on('message', (buf: Buffer) => (this.servers[username].status = decode(buf) as ServerItem['status']));
+        socket.on('message', (buf: Buffer) => {
+          if (this.servers[username]) {
+            this.servers[username].status = decode(buf) as ServerItem['status'];
+          }
+        });
         this.userMap.set(username, socket);
 
         const timer = this.timerMap.get(username);
