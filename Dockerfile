@@ -57,6 +57,8 @@ RUN if [ "$USE_CHINA_MIRROR" = 1 ]; then \
   && apk add --no-cache openssl \
   && npm install pm2 pnpm -g \
   && pnpm install --prod --frozen-lockfile \
+  && pnpm store prune \
+  && rm -rf $(pnpm store path) \
   && npm cache clean --force \
   && apk del .build-deps
 
