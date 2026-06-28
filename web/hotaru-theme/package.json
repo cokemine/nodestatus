@@ -11,7 +11,7 @@
   "devDependencies": {
     "@nodestatus/web-utils": "workspace:*",
     "@vitejs/plugin-vue": "^6.0.7",
-    "@vueuse/head": "^1.0.22",
+    "@vueuse/head": "^2.0.0",
     "reconnecting-websocket": "^4.4.0",
     "semantic-ui-css": "^2.4.1",
     "typescript": "^5.5.3",

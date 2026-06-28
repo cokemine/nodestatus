@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "devDependencies": {
-    "@vueuse/head": "^1.0.22",
+    "@vueuse/head": "^2.0.0",
     "ky": "^1.8.2",
     "nodestatus": "workspace:*",
     "vue": "^3.2.33"
