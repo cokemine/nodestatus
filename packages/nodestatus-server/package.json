@@ -30,7 +30,7 @@
     "lint": "eslint . --ext .js --ext .ts --ignore-pattern build --ignore-pattern dist --fix",
     "prestart": "node scripts/init.js",
     "start": "node build/app.js",
-    "pretest": "node scripts/init.js"
+    "pretest": "cross-env NODE_ENV=TEST node scripts/init.js"
   },
   "dependencies": {
     "@hono/node-server": "^2.0.6",

@@ -2,6 +2,13 @@ packages:
   - 'packages/*'
   - 'web/*'
 
+allowBuilds:
+  '@prisma/engines': true
+  better-sqlite3: true
+  bufferutil: true
+  esbuild: true
+  prisma: true
+
 onlyBuiltDependencies:
   - better-sqlite3
   - prisma

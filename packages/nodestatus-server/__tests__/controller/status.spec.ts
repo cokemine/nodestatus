@@ -48,9 +48,9 @@ const mockIServer = (str: string | Prisma.ServerCreateInput, disabled = false): 
   };
 };
 
-test('Call get servers first and expect empty object', () => {
+test('Call get servers first and expect empty object', async () => {
   ReadServersList.mockResolvedValueOnce([]);
-  expect(getListServers()).resolves.toEqual({ code: 0, data: {}, msg: 'ok' });
+  await expect(getListServers()).resolves.toEqual({ code: 0, data: {}, msg: 'ok' });
 });
 
 test('Create a server and find unique Server', async () => {
