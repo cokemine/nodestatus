@@ -1,7 +1,7 @@
 {
   "name": "nodestatus-server",
   "type": "module",
-  "version": "1.2.10-beta.2",
+  "version": "1.2.10-beta.3",
   "author": "Kagurazaka Mizuki",
   "license": "MIT",
   "repository": {
