@@ -6,7 +6,7 @@ import { IResp } from '../types';
 import Layout from './Layout';
 
 const LayoutHandler: FC = () => {
-  const { data, error } = useSWR<IResp>('/api/session');
+  const { data, error } = useSWR<IResp>('/api/admin/session');
   const isLogin = data?.code === 0;
 
   /*

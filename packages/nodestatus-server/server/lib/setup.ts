@@ -1,16 +1,16 @@
 import { Server } from 'http';
 import fs from 'fs';
-import Koa from 'koa';
-import koaJwt from 'koa-jwt';
-import { koaBody } from 'koa-body';
-import router from '../router';
+import { Hono } from 'hono';
+import { jwt } from 'hono/jwt';
+import { getRequestListener } from '@hono/node-server';
+import { adminApi, webApi } from '../router';
 import { usePush, useEvent, useIpc } from '../plugin';
 import NodeStatus from './core';
 import config from './config';
 import type { Server as NetServer } from 'net';
 
-export default async function setup(app: Koa): Promise<[Server, NetServer | null]> {
-  const server = new Server(app.callback());
+export default async function setup(app: Hono): Promise<[Server, NetServer | null]> {
+  const server = new Server(getRequestListener(app.fetch));
   let ipc = null;
 
   const instance = new NodeStatus(server, {
@@ -45,16 +45,16 @@ export default async function setup(app: Koa): Promise<[Server, NetServer | null
   }
 
   if (config.useWeb) {
-    app.use(koaBody());
-    app.use(
-      koaJwt({
-        secret: config.webSecret
-      }).unless({
-        path: [/^\/api\/session/, /^\/telegraf/, /^\/api\/config/]
-      })
-    );
-    app.use(router.routes());
-    app.use(router.allowedMethods());
+    app.use('/api/admin/*', async (c, next) => {
+      const path = c.req.path;
+      if (path === '/api/admin/session') {
+        return next();
+      }
+      const middleware = jwt({ secret: config.webSecret, alg: 'HS256' });
+      return middleware(c, next);
+    });
+    app.route('/api/admin', adminApi);
+    app.route('/api', webApi);
   }
   return [server, ipc];
 }

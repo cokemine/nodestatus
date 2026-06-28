@@ -19,12 +19,12 @@ const Login: FC = () => {
 
   const onFinish = useCallback(async (values: { username: string, password: string }) => {
     const { username, password } = values;
-    const res = await axios.post<IResp<string>>('/api/session', { username, password });
+    const res = await axios.post<IResp<string>>('/api/admin/session', { username, password });
     const { data } = res;
     if (!data.code) {
       notify('Success', undefined, 'success');
       localStorage.setItem('token', data.data);
-      await mutate('/api/session', {
+      await mutate('/api/admin/session', {
         code: 0,
         msg: 'OK',
         data: null

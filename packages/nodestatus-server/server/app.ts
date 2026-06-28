@@ -1,10 +1,9 @@
 import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { setDefaultResultOrder } from 'node:dns';
-import Koa from 'koa';
-import serve from 'koa-static';
-import mount from 'koa-mount';
-import { historyApiFallback } from 'koa2-connect-history-api-fallback';
+import fs from 'fs';
+import { Hono } from 'hono';
+import { serveStatic } from '@hono/node-server/serve-static';
 import { logger } from './lib/utils';
 import setup from './lib/setup';
 import config from './lib/config';
@@ -23,17 +22,37 @@ if (config.useWeb && !config.webPassword) {
   process.exit(1);
 }
 
-const app = new Koa();
+const app = new Hono();
 
-app.use(historyApiFallback({
-  whiteList: ['/admin/assets', '/telegraf'],
-  rewrites: [
-    { from: /^\/admin/ as any, to: '/admin/index.html' }
-  ]
-}));
+// Redirect /admin to /admin/
+app.get('/admin', (c) => c.redirect('/admin/'));
 
-app.use(mount('/admin', serve(resolve(__dirname, './dist/hotaru-admin'), { maxage: 2592000 })));
-app.use(serve(resolve(__dirname, `./dist/${config.webTheme}`), { maxage: 2592000 }));
+// Serve admin static files (SPA)
+app.use(
+  '/admin/*',
+  serveStatic({
+    root: resolve(__dirname, './dist/hotaru-admin'),
+    rewriteRequestPath: (p) => p.replace(/^\/admin/, '')
+  })
+);
+
+// Fallback for admin pages (history routing)
+app.get('/admin/*', async (c) => {
+  try {
+    const html = await fs.promises.readFile(resolve(__dirname, './dist/hotaru-admin/index.html'), 'utf-8');
+    return c.html(html);
+  } catch {
+    return c.text('Not Found', 404);
+  }
+});
+
+// Serve frontend static files
+app.use(
+  '/*',
+  serveStatic({
+    root: resolve(__dirname, `./dist/${config.webTheme}`)
+  })
+);
 
 const [server, ipc] = await setup(app);
 

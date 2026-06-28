@@ -1,4 +1,4 @@
-import { Context, Middleware } from 'koa';
+import { Context } from 'hono';
 import {
   bulkCreateServer,
   createServer,
@@ -11,90 +11,97 @@ import { createRes } from '../lib/utils';
 import { deleteAllEvents, deleteEvent, readEvents } from '../model/event';
 import config from '../lib/config';
 
-async function handleRequest<T>(ctx: Context, handler: Promise<T>): Promise<void> {
+async function handleRequest<T>(c: Context, handler: Promise<T>): Promise<Response> {
   try {
-    ctx.body = createRes({ data: await handler });
+    return c.json(createRes({ data: await handler }));
   } catch (err: any) {
-    ctx.status = 500;
-    ctx.body = createRes(1, err.message);
+    return c.json(createRes(1, err.message), 500);
   }
 }
 
-const getListServers: Middleware = async ctx => {
-  await handleRequest(ctx, readServersList().then(data => data.sort((x, y) => y.order - x.order)));
+const getListServers = async (c: Context) => {
+  return handleRequest(c, readServersList().then(data => data.sort((x, y) => y.order - x.order)));
 };
 
-const setServer: Middleware = async ctx => {
-  const { username } = ctx.request.body;
-  const { data } = ctx.request.body;
+const setServer = async (c: Context) => {
+  let body: any;
+  try {
+    body = await c.req.json();
+  } catch {
+    body = {};
+  }
+  const { username, data } = body;
   if (!username || !data) {
-    ctx.status = 400;
-    ctx.body = createRes(1, 'Wrong request');
-    return;
+    return c.json(createRes(1, 'Wrong request'), 400);
   }
   if (username === data.username) delete data.username;
-  await handleRequest(ctx, updateServer(username, data));
+  return handleRequest(c, updateServer(username, data));
 };
 
-const addServer: Middleware = async ctx => {
-  const data = ctx.request.body;
+const addServer = async (c: Context) => {
+  let data: any;
+  try {
+    data = await c.req.json();
+  } catch {
+    return c.json(createRes(1, 'Wrong request'), 400);
+  }
   if (!data) {
-    ctx.status = 400;
-    ctx.body = createRes(1, 'Wrong request');
-    return;
+    return c.json(createRes(1, 'Wrong request'), 400);
   }
   if (Object.hasOwnProperty.call(data, 'data')) {
     try {
       const d = JSON.parse(data.data);
-      await handleRequest(ctx, bulkCreateServer(d));
+      return handleRequest(c, bulkCreateServer(d));
     } catch (error: any) {
-      ctx.status = 400;
-      ctx.body = createRes(1, 'Wrong request');
+      return c.json(createRes(1, 'Wrong request'), 400);
     }
   } else {
-    await handleRequest(ctx, createServer(data));
+    return handleRequest(c, createServer(data));
   }
 };
 
-const removeServer: Middleware = async ctx => {
-  const { username = '' } = ctx.params;
+const removeServer = async (c: Context) => {
+  const username = c.req.param('username') || '';
   if (!username) {
-    ctx.status = 400;
-    ctx.body = createRes(1, 'Wrong request');
-    return;
+    return c.json(createRes(1, 'Wrong request'), 400);
   }
-  await handleRequest(ctx, deleteServer(username));
+  return handleRequest(c, deleteServer(username));
 };
 
-const modifyOrder: Middleware = async ctx => {
-  const { order = [] } = ctx.request.body as { order: number[] };
+const modifyOrder = async (c: Context) => {
+  let body: any;
+  try {
+    body = await c.req.json();
+  } catch {
+    body = {};
+  }
+  const { order = [] } = body as { order: number[] };
   if (!order.length) {
-    ctx.status = 400;
-    ctx.body = createRes(1, 'Wrong request');
-    return;
+    return c.json(createRes(1, 'Wrong request'), 400);
   }
-  await handleRequest(ctx, updateOrder(order.join(',')));
+  return handleRequest(c, updateOrder(order.join(',')));
 };
 
-const queryEvents: Middleware = async ctx => {
-  const size = Number(ctx.query.size) || 10;
-  const offset = Number(ctx.query.offset) || 0;
-  await handleRequest(ctx, readEvents(size, offset).then(([count, list]) => ({ count, list })));
+const queryEvents = async (c: Context) => {
+  const size = Number(c.req.query('size')) || 10;
+  const offset = Number(c.req.query('offset')) || 0;
+  return handleRequest(c, readEvents(size, offset).then(([count, list]) => ({ count, list })));
 };
 
-const removeEvent: Middleware = async ctx => {
-  if (ctx.params.id) {
-    await handleRequest(ctx, deleteEvent(Number(ctx.params.id)));
+const removeEvent = async (c: Context) => {
+  const id = c.req.param('id');
+  if (id) {
+    return handleRequest(c, deleteEvent(Number(id)));
   } else {
-    await handleRequest(ctx, deleteAllEvents());
+    return handleRequest(c, deleteAllEvents());
   }
 };
 
-const queryConfig: Middleware = async ctx => ctx.body = {
+const queryConfig = async (c: Context) => c.json({
   title: config.webTitle,
   subTitle: config.webSubtitle,
   headTitle: config.webHeadtitle
-};
+});
 
 export {
   getListServers,

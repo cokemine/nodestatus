@@ -1,26 +1,26 @@
-import Router from '@koa/router';
+import { Hono } from 'hono';
 import { createSession, verifySession } from './controller/user';
 import {
   removeServer, getListServers, addServer, setServer, modifyOrder, queryEvents, removeEvent, queryConfig
 } from './controller/web';
 
-const router = new Router({ prefix: '/api' });
+const adminApi = new Hono();
+const webApi = new Hono();
 
-/* 假装用 session */
-router.get('/session', verifySession);
-router.post('/session', createSession);
+/* Admin endpoints */
+adminApi.get('/session', verifySession);
+adminApi.post('/session', createSession);
 
-router.get('/servers', getListServers);
-router.post('/servers', addServer);
-router.put('/servers', setServer);
-router.put('/servers/order', modifyOrder);
-router.delete('/servers/:username', removeServer);
+adminApi.get('/servers', getListServers);
+adminApi.post('/servers', addServer);
+adminApi.put('/servers', setServer);
+adminApi.put('/servers/order', modifyOrder);
+adminApi.delete('/servers/:username', removeServer);
 
-router.get('/events', queryEvents);
-router.delete('/events/:id?', removeEvent);
+adminApi.get('/events', queryEvents);
+adminApi.delete('/events/:id?', removeEvent);
 
-/* Config */
+/* Web public config */
+webApi.get('/config', queryConfig);
 
-router.get('/config', queryConfig);
-
-export default router;
+export { adminApi, webApi };
