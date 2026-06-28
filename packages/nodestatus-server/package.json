@@ -47,7 +47,7 @@
     "replace-in-file": "^6.3.2"
   },
   "devDependencies": {
-    "@commander-js/extra-typings": "^10.0.2",
+    "@commander-js/extra-typings": "^15.0.0",
     "@msgpack/msgpack": "^3.0.0",
     "@types/jsonwebtoken": "^9.0.0",
     "@types/ws": "^8.18.0",
