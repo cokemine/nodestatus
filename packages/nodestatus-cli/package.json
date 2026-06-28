@@ -17,7 +17,7 @@
     "build"
   ],
   "scripts": {
-    "build": "rollup -c"
+    "build": "rolldown -c rolldown.config.mjs"
   },
   "dependencies": {
     "figlet": "^1.5.2",

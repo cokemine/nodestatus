@@ -15,7 +15,7 @@
     "@types/react-beautiful-dnd": "^13.1.2",
     "@types/react-dom": "^17.0.10",
     "@types/react-simple-maps": "^3.0.0",
-    "@vitejs/plugin-react": "^4.2.1",
+    "@vitejs/plugin-react": "^6.0.3",
     "antd": "^4.20.2",
     "array-move": "^4.0.0",
     "axios": "^0.27.2",
@@ -31,8 +31,8 @@
     "reconnecting-websocket": "^4.4.0",
     "swr": "^2.0.1",
     "typescript": "^5.5.3",
-    "unocss": "^0.58.5",
-    "vite": "^5.3.3",
+    "unocss": "^66.7.3",
+    "vite": "^8.1.0",
     "vite-plugin-svg-icons": "^2.0.1"
   }
 }

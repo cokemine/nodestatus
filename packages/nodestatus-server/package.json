@@ -24,8 +24,8 @@
     "prisma"
   ],
   "scripts": {
-    "build": "rollup -c",
-    "dev": "cross-env NODE_ENV=development rollup -c --watch",
+    "build": "rolldown -c rolldown.config.mjs",
+    "dev": "cross-env NODE_ENV=development rolldown -c rolldown.config.mjs --watch",
     "postinstall": "node scripts/init.js",
     "lint": "eslint . --ext .js --ext .ts --ignore-pattern build --ignore-pattern dist --fix",
     "prestart": "node scripts/init.js",
@@ -74,7 +74,7 @@
     "log4js": "^6.4.7",
     "telegraf": "^4.16.3",
     "typescript": "^5.5.3",
-    "vite": "^5.3.3",
+    "vite": "^8.1.0",
     "ws": "^8.18.1"
   },
   "optionalDependencies": {

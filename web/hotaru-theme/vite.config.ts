@@ -11,5 +11,8 @@ export default defineConfig({
       iconDirs: [fileURLToPath(new URL('../utils/assets/img/client', import.meta.url))],
       symbolId: '[name]'
     })
-  ]
+  ],
+  build: {
+    cssMinify: 'esbuild'
+  }
 });

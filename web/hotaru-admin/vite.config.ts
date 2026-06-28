@@ -8,7 +8,9 @@ export default defineConfig({
   base: '/admin/',
   plugins: [
     react(),
-    unocss(),
+    unocss({
+      configFile: path.resolve(__dirname, 'uno.config.ts')
+    }),
     createSvgIconsPlugin({
       iconDirs: [path.resolve(__dirname, '../utils/assets/img/client')],
       symbolId: '[name]'
