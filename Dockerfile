@@ -38,6 +38,7 @@ COPY --from=0 /app/packages/nodestatus-server/package.json ./packages/nodestatus
 COPY --from=0 /app/packages/nodestatus-server/build ./packages/nodestatus-server/build
 COPY --from=0 /app/packages/nodestatus-server/scripts ./packages/nodestatus-server/scripts
 COPY --from=0 /app/packages/nodestatus-server/prisma ./packages/nodestatus-server/prisma
+COPY --from=0 /app/packages/nodestatus-server/prisma.config.js ./packages/nodestatus-server/prisma.config.js
 
 COPY --from=0 /app/web/classic-theme/package.json ./web/classic-theme/
 COPY --from=0 /app/web/hotaru-theme/package.json ./web/hotaru-theme/

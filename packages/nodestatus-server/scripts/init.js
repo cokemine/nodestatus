@@ -65,6 +65,26 @@ function initDatabase() {
         console.log('Something wrong while updating database schema.');
         process.exit(code);
       } else {
+        try {
+          let genCmd = 'prisma';
+          let genArgs = ['generate'];
+          if (platform() === 'win32') {
+            genCmd = 'cmd.exe';
+            genArgs = ['/c', 'prisma', 'generate'];
+          }
+          const genResult = cp.spawnSync(genCmd, genArgs, {
+            env: envOption,
+            cwd: resolve(__dirname, '../'),
+            stdio: 'inherit'
+          });
+          if (genResult.status) {
+            console.log('Something wrong while generating Prisma client.');
+            process.exit(genResult.status);
+          }
+        } catch (e) {
+          console.error('Failed to run prisma generate:', e);
+          process.exit(1);
+        }
         console.log(`Database file location: ${dbPath}`);
       }
     });
