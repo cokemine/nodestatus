@@ -52,7 +52,7 @@
     "@msgpack/msgpack": "^3.0.0",
     "@types/jsonwebtoken": "^9.0.0",
     "@types/ws": "^8.18.0",
-    "bcrypt-ts": "^4.0.0",
+    "bcrypt-ts": "^8.0.1",
     "classic-theme": "workspace:*",
     "commander": "^10.0.0",
     "cross-env": "^7.0.3",
