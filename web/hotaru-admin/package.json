@@ -31,6 +31,7 @@
     "reconnecting-websocket": "^4.4.0",
     "swr": "^2.0.1",
     "typescript": "^5.5.3",
+    "@unocss/reset": "^66.7.3",
     "unocss": "^66.7.3",
     "vite": "^8.1.0",
     "vite-plugin-svg-icons": "^2.0.1"

@@ -281,6 +281,9 @@ importers:
       '@types/react-simple-maps':
         specifier: ^3.0.0
         version: 3.0.0
+      '@unocss/reset':
+        specifier: ^66.7.3
+        version: 66.7.3
       '@vitejs/plugin-react':
         specifier: ^6.0.3
         version: 6.0.3(vite@8.1.0(@types/node@24.6.2)(esbuild@0.28.1)(jiti@2.7.0))
@@ -1626,6 +1629,9 @@ packages:
 
   '@unocss/preset-wind@66.7.3':
     resolution: {integrity: sha512-Uwnni+FrYFlYhDIe6/8IwUUeTQMTwvOmqyxNIjz4mOknMALq5IeuS5WCmq3AI8NqME77xgYPeW9Qx4bGzCyjfQ==}
+
+  '@unocss/reset@66.7.3':
+    resolution: {integrity: sha512-EuWSHSWsl+qdc+7c4car0IPEDbcuyrGUvFqTOo2AV383lOuIzvyuRxkuL1rLqb2kh+ZYkpBnL49+FXmjX36/nA==}
 
   '@unocss/rule-utils@66.7.3':
     resolution: {integrity: sha512-DKg1Rr/pxc5owCbFTpF1hXGoSqZjX7EzgfOkgO9R0VDnsufXIf776xUw7I3PWKXMMdC3SLnY6jT9bhlnZ6aM7w==}
@@ -6382,6 +6388,8 @@ snapshots:
     dependencies:
       '@unocss/core': 66.7.3
       '@unocss/preset-wind3': 66.7.3
+
+  '@unocss/reset@66.7.3': {}
 
   '@unocss/rule-utils@66.7.3':
     dependencies:
