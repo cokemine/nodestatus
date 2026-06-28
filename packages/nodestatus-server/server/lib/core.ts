@@ -5,15 +5,15 @@ import { WebSocketServer, WebSocket } from 'ws';
 import { decode } from '@msgpack/msgpack';
 import ipaddr, { IPv6 } from 'ipaddr.js';
 import log4js from 'log4js';
+import { authServer, getListServers, getServer } from '../controller/status';
+import { logger, emitter } from './utils';
+import setupHeartbeat from './heartbeat';
 import type {
   Box,
   ServerItem,
   BoxItem,
   IWebSocket
 } from '../../types/server';
-import { authServer, getListServers, getServer } from '../controller/status';
-import { logger, emitter } from './utils';
-import setupHeartbeat from './heartbeat';
 
 const { getLogger } = log4js;
 

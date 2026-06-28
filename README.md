@@ -17,15 +17,15 @@ mv /usr/local/NodeStatus/db.sqlite /usr/local/NodeStatus/db.sqlite.bak
 ```bash
 # Install Node.js
 # Using Ubuntu
-curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+curl -fsSL https://deb.nodesource.com/setup_26.x | sudo -E bash -
 sudo apt-get install -y nodejs
 
 # Using Debian, as root
-curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+curl -fsSL https://deb.nodesource.com/setup_26.x | bash -
 apt-get install -y nodejs
 
 # RHEL, CentOS, CloudLinux, Amazon Linux or Fedora as root
-curl -fsSL https://rpm.nodesource.com/setup_22.x | bash -
+curl -fsSL https://rpm.nodesource.com/setup_26.x | bash -
 
 
 #Install From NPM
@@ -135,8 +135,6 @@ Node.js Version(**Deprecated, Not Recommended**): https://github.com/cokemine/no
 ## 部署到容器服务
 
 如果你需要将 NodeStatus 部署到如 Railway 或 Okteto 等容器服务中。请注意数据持久化问题。你应该使用外部的 `MySQL` 或是 `PostgreSQL` 而不是本项目默认的 `SQLite`，因为如果使用 `SQLite` 在每次重置服务端都会导致原有的配置失效。使用时注意通过调整环境变量以使用可持续存储的数据库服务。
-
-目前本项目还无法部署到如 Vercel 等 Serverless 服务中，因为目前 Serverless 不支持 WebSocket。
 
 ## 修改客户端配置
 

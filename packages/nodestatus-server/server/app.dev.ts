@@ -1,7 +1,7 @@
 import path from 'path';
 import { createRequire } from 'node:module';
-import { createServer as createViteServer } from 'vite';
 import { setDefaultResultOrder } from 'node:dns';
+import { createServer as createViteServer } from 'vite';
 import Koa, { Middleware } from 'koa';
 import { historyApiFallback } from 'koa2-connect-history-api-fallback';
 import c2k from 'koa-connect';

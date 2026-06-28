@@ -9,7 +9,6 @@ import { logger } from './lib/utils';
 import setup from './lib/setup';
 import config from './lib/config';
 
-
 // https://github.com/telegraf/telegraf/issues/1961
 setDefaultResultOrder('ipv6first');
 
