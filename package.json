@@ -25,8 +25,11 @@
     "pretest": "pnpm --filter=nodestatus-server pretest",
     "test": "cross-env NODE_ENV=TEST vitest"
   },
-  "devDependencies": {
+  "dependencies": {
     "@prisma/client": "7.8.0",
+    "@prisma/client-runtime-utils": "7.8.0"
+  },
+  "devDependencies": {
     "@rollup/plugin-run": "^3.1.0",
     "@types/fs-extra": "^9.0.13",
     "@types/node": "^24.6.2",

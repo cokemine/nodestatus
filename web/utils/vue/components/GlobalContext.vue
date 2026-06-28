@@ -6,7 +6,7 @@
 import {
   provide, onBeforeMount, ref, computed
 } from 'vue';
-import axios from 'axios';
+import ky from 'ky';
 import { useHead } from '@vueuse/head';
 import type { IWebConfig } from '../../types';
 
@@ -17,8 +17,7 @@ const config = ref<IWebConfig>({
 });
 
 onBeforeMount(() => {
-  axios.get<IWebConfig>('/api/config').then(res => {
-    const { data } = res;
+  ky.get('/api/config').json<IWebConfig>().then(data => {
     config.value = data;
   });
 });

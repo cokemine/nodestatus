@@ -38,6 +38,7 @@
     "@prisma/adapter-mariadb": "^7.8.0",
     "@prisma/adapter-pg": "^7.8.0",
     "@prisma/client": "^7.8.0",
+    "@prisma/client-runtime-utils": "^7.8.0",
     "better-sqlite3": "^12.11.1",
     "dotenv": "^16.0.1",
     "hono": "^4.12.27",
