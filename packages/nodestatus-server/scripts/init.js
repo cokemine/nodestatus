@@ -29,9 +29,9 @@ function checkDatabaseType() {
 function initDatabase() {
   const databaseType = checkDatabaseType();
   const dbPath = process.env.DATABASE || (
-    platform() === 'win32'
-      ? `file:${resolve(homedir(), '.nodestatus/db.sqlite')}`
-      : 'file:/usr/local/NodeStatus/server/db.sqlite'
+    fs.existsSync('/usr/local/NodeStatus/server/db.sqlite')
+      ? 'file:/usr/local/NodeStatus/server/db.sqlite'
+      : `file:${resolve(homedir(), '.nodestatus/db.sqlite')}`
   );
   const envOption = { BINARY_TARGETS: '["native"]', ...process.env };
 

@@ -1,3 +1,4 @@
+import fs from 'node:fs';
 import { homedir, platform } from 'node:os';
 import { resolve } from 'node:path';
 import { Command, createOption } from '@commander-js/extra-typings';
@@ -98,9 +99,9 @@ const program = new Command('NodeStatus')
 const options = program.opts();
 
 let database = process.env.DATABASE
-  || (platform() === 'win32'
-    ? `file:${resolve(homedir(), '.nodestatus/db.sqlite')}`
-    : 'file:/usr/local/NodeStatus/server/db.sqlite');
+  || (fs.existsSync('/usr/local/NodeStatus/server/db.sqlite')
+    ? 'file:/usr/local/NodeStatus/server/db.sqlite'
+    : `file:${resolve(homedir(), '.nodestatus/db.sqlite')}`);
 
 if (!(database.includes('file:') || database.includes('mysql:') || database.includes('postgresql:'))) {
   database = `file:${database}`;

@@ -30,27 +30,25 @@ curl -fsSL https://rpm.nodesource.com/setup_26.x | bash -
 
 #Install From NPM
 npm i pm2 -g
-# Two cli tools `status-server and status-server-run` will be installed. Default database is located at `file:/usr/local/NodeStatus/server/db.sqlite` so it's needed to add `--unsafe-perm` flag.
-# You can set environment variable `DATABASE` to the location in your user's home directory in advance if you don't want to add `--unsafe-perm` flag.
-npm i nodestatus-server@latest --unsafe-perm -g 
+# Two cli tools `status-server and status-server-run` will be installed. Default database is located at `file:~/.nodestatus/db.sqlite` (falls back to `file:/usr/local/NodeStatus/server/db.sqlite` if it exists).
+# You can set environment variable `DATABASE` to specify a custom database location.
+npm i nodestatus-server@latest -g 
 status-server # start nodestatus-server
 status-server-run # start nodestatus-server with pm2
 pm2 status # check running status
 pm2 log nodestatus # check logs
 
 # How to Update
-npm i nodestatus-server@latest --unsafe-perm -g
+npm i nodestatus-server@latest -g
 ```
 
 ### Install with Docker (Recommended)
 
 ```bash
-# Install Docker with docker-compose v2
+# Install Docker
 curl -fsSL https://get.docker.com | bash -s docker
 docker --version
-mkdir -p ~/.docker/cli-plugins/
-curl -SL https://github.com/docker/compose/releases/latest/download/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose # for x86_64
-chmod +x ~/.docker/cli-plugins/docker-compose
+docker compose version
 
 # Download docker-compose.yml
 mkdir ~/nodestatus
@@ -80,7 +78,7 @@ Node.js Version(**Deprecated, Not Recommended**): https://github.com/cokemine/no
 
 **INTERVAL** : 服务端向前端（浏览器）推送的间隔时间, 默认 `1500` (1.5 秒)
 
-**DATABASE** : 数据库位置文件存放位置, 默认使用 SQLite (Linux): `file:/usr/local/NodeStatus/server/db.sqlite`，支持的数据库有 `SQLite`、`MySQL`、`PostgreSQL`，请使用对应的正确数据源链接格式填写：`SQLite` 应以 `file:` 开头, `MySQL` 应以 `mysql:` 开头, `PostgreSQL` 应以 `postgresql:` 开头。
+**DATABASE** : 数据库位置文件存放位置, 默认使用 SQLite: `file:~/.nodestatus/db.sqlite`（如果存在旧版路径 `file:/usr/local/NodeStatus/server/db.sqlite`，程序中仍然会回退到该路径进行查询），支持的数据库有 `SQLite`、`MySQL`、`PostgreSQL`，请使用对应的正确数据源链接格式填写：`SQLite` 应以 `file:` 开头, `MySQL` 应以 `mysql:` 开头, `PostgreSQL` 应以 `postgresql:` 开头。
 
 **PORT** : NodeStatus 所用端口, 默认 `35601`
 
