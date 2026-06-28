@@ -1,5 +1,20 @@
+<script lang="ts">
+import useConfig from '@nodestatus/web-utils/vue/hooks/useConfig';
+import { defineComponent } from 'vue';
+
+export default defineComponent({
+  name: 'TheHeader',
+  setup() {
+    const config = useConfig()!;
+    return {
+      config,
+    };
+  },
+});
+</script>
+
 <template>
-  <div class="ui vertical masthead center aligned" id="header">
+  <div id="header" class="ui vertical masthead center aligned">
     <div class="header__content">
       <h1 class="ui inverted header">
         {{ config.title }}
@@ -8,20 +23,7 @@
     </div>
   </div>
 </template>
-<script lang="ts">
-import { defineComponent } from 'vue';
-import useConfig from '@nodestatus/web-utils/vue/hooks/useConfig';
 
-export default defineComponent({
-  name: 'TheHeader',
-  setup() {
-    const config = useConfig()!;
-    return {
-      config
-    };
-  }
-});
-</script>
 <style>
 #header {
   height: 25rem;

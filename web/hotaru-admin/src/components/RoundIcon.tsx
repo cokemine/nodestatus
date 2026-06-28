@@ -1,16 +1,17 @@
-import React, { FC, SVGProps } from 'react';
+import type { FC, SVGProps } from 'react';
 import classNames from 'classnames';
+import React from 'react';
 
 interface Props {
-  icon: FC<SVGProps<SVGSVGElement>>,
-  iconColorClass: string,
-  bgColorClass: string,
+  icon: FC<SVGProps<SVGSVGElement>>;
+  iconColorClass: string;
+  bgColorClass: string;
 }
 
 const RoundIcon: FC<Props> = ({
   icon: Icon,
   iconColorClass,
-  bgColorClass
+  bgColorClass,
 }) => {
   const baseStyle = 'p-3 rounded-full';
 

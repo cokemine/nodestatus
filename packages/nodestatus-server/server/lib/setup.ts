@@ -1,13 +1,13 @@
-import { Server } from 'http';
-import fs from 'fs';
-import { Hono } from 'hono';
-import { jwt } from 'hono/jwt';
+import type { Hono } from 'hono';
+import type { Server as NetServer } from 'node:net';
+import fs from 'node:fs';
+import { Server } from 'node:http';
 import { getRequestListener } from '@hono/node-server';
+import { jwt } from 'hono/jwt';
+import { useEvent, useIpc, usePush } from '../plugin';
 import { adminApi, webApi } from '../router';
-import { usePush, useEvent, useIpc } from '../plugin';
-import NodeStatus from './core';
 import config from './config';
-import type { Server as NetServer } from 'net';
+import NodeStatus from './core';
 
 export default async function setup(app: Hono): Promise<[Server, NetServer | null]> {
   const server = new Server(getRequestListener(app.fetch));
@@ -16,7 +16,7 @@ export default async function setup(app: Hono): Promise<[Server, NetServer | nul
   const instance = new NodeStatus(server, {
     interval: config.interval,
     pingInterval: config.pingInterval,
-    reconnectTimeout: config.reconnectTimeout
+    reconnectTimeout: config.reconnectTimeout,
   });
 
   await instance.launch();
@@ -25,22 +25,20 @@ export default async function setup(app: Hono): Promise<[Server, NetServer | nul
     setTimeout(
       () => usePush(instance, {
         ...config.telegram,
-        chat_id: config.telegram.chat_id.split(',')
+        chat_id: config.telegram.chat_id.split(','),
       }),
-      config.pushDelay * 1000
+      config.pushDelay * 1000,
     );
   }
 
   if (config.useEvent) {
     // @TODO: ESLint
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     useEvent(instance);
   }
 
   if (config.useIpc) {
     fs.existsSync(config.ipcAddress) && fs.unlinkSync(config.ipcAddress);
     // @TODO: ESLint
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     ipc = useIpc();
   }
 

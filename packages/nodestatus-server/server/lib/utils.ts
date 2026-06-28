@@ -1,15 +1,15 @@
-import EventEmitter from 'events';
+import type { IResp } from '../../types/server';
+import EventEmitter from 'node:events';
 import log4js from 'log4js';
-import { IResp } from '../../types/server';
 import config from './config';
 
 log4js.configure({
   appenders: {
-    out: { type: 'stdout' }
+    out: { type: 'stdout' },
   },
   categories: {
-    default: { appenders: ['out'], level: config.verbose ? 'debug' : 'info' }
-  }
+    default: { appenders: ['out'], level: config.verbose ? 'debug' : 'info' },
+  },
 });
 export const logger = log4js.getLogger();
 
@@ -23,12 +23,12 @@ export function createRes<T = any>(code: 0 | 1 | Partial<IResp<T>> = 0, msg = 'o
       code: 0,
       msg: 'ok',
       data,
-      ...code
+      ...code,
     } as IResp<T>;
   }
   return {
     code,
     msg,
-    data
+    data,
   } as IResp<T>;
 }

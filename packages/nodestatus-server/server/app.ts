@@ -1,12 +1,12 @@
-import { dirname, resolve } from 'path';
-import { fileURLToPath } from 'url';
 import { setDefaultResultOrder } from 'node:dns';
-import fs from 'fs';
-import { Hono } from 'hono';
+import fs from 'node:fs';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { serveStatic } from '@hono/node-server/serve-static';
-import { logger } from './lib/utils';
-import setup from './lib/setup';
+import { Hono } from 'hono';
 import config from './lib/config';
+import setup from './lib/setup';
+import { logger } from './lib/utils';
 
 // https://github.com/telegraf/telegraf/issues/1961
 setDefaultResultOrder('ipv6first');
@@ -25,15 +25,15 @@ if (config.useWeb && !config.webPassword) {
 const app = new Hono();
 
 // Redirect /admin to /admin/
-app.get('/admin', (c) => c.redirect('/admin/'));
+app.get('/admin', c => c.redirect('/admin/'));
 
 // Serve admin static files (SPA)
 app.use(
   '/admin/*',
   serveStatic({
     root: resolve(__dirname, './dist/hotaru-admin'),
-    rewriteRequestPath: (p) => p.replace(/^\/admin/, '')
-  })
+    rewriteRequestPath: p => p.replace(/^\/admin/, ''),
+  }),
 );
 
 // Fallback for admin pages (history routing)
@@ -41,7 +41,8 @@ app.get('/admin/*', async (c) => {
   try {
     const html = await fs.promises.readFile(resolve(__dirname, './dist/hotaru-admin/index.html'), 'utf-8');
     return c.html(html);
-  } catch {
+  }
+  catch {
     return c.text('Not Found', 404);
   }
 });
@@ -50,8 +51,8 @@ app.get('/admin/*', async (c) => {
 app.use(
   '/*',
   serveStatic({
-    root: resolve(__dirname, `./dist/${config.webTheme}`)
-  })
+    root: resolve(__dirname, `./dist/${config.webTheme}`),
+  }),
 );
 
 const [server, ipc] = await setup(app);

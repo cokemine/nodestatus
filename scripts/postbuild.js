@@ -1,5 +1,5 @@
-import path, { dirname } from 'path';
-import { fileURLToPath } from 'url';
+import path, { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import fs from 'fs-extra';
 import { findModPath } from './utils.js';
 
@@ -14,8 +14,10 @@ if (fs.pathExistsSync(outputDir)) {
 }
 
 list.forEach(({ modPath, mod }) => {
-  if (!mod.includes('theme') && !mod.includes('admin')) return;
+  if (!mod.includes('theme') && !mod.includes('admin'))
+    return;
   const buildPath = path.join(modPath, './dist');
-  if (!fs.existsSync(buildPath)) return;
+  if (!fs.existsSync(buildPath))
+    return;
   fs.copySync(buildPath, `${outputDir}/${path.basename(modPath)}`);
 });

@@ -1,7 +1,14 @@
 import { Hono } from 'hono';
 import { createSession, verifySession } from './controller/user';
 import {
-  removeServer, getListServers, addServer, setServer, modifyOrder, queryEvents, removeEvent, queryConfig
+  addServer,
+  getListServers,
+  modifyOrder,
+  queryConfig,
+  queryEvents,
+  removeEvent,
+  removeServer,
+  setServer,
 } from './controller/web';
 
 const adminApi = new Hono();

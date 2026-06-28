@@ -1,13 +1,14 @@
-import { Context } from 'hono';
+import type { Context } from 'hono';
 import jwt from 'jsonwebtoken';
-import { createRes } from '../lib/utils';
 import config from '../lib/config';
+import { createRes } from '../lib/utils';
 
-export const createSession = async (c: Context) => {
+export async function createSession(c: Context) {
   let body: any;
   try {
     body = await c.req.json();
-  } catch {
+  }
+  catch {
     body = {};
   }
   const { username = '', password = '' } = body;
@@ -17,12 +18,13 @@ export const createSession = async (c: Context) => {
   if (username.trim() === config.webUsername && password.trim() === config.webPassword) {
     const token = jwt.sign({ username }, config.webSecret, { expiresIn: '7d' });
     return c.json(createRes({ data: token }));
-  } else {
+  }
+  else {
     return c.json(createRes(1, 'username or password is incorrect'), 401);
   }
-};
+}
 
-export const verifySession = async (c: Context) => {
+export async function verifySession(c: Context) {
   const authHeader = c.req.header('authorization');
   if (authHeader) {
     const parts = authHeader.split(' ');
@@ -36,11 +38,12 @@ export const verifySession = async (c: Context) => {
             return c.json(createRes(1, 'Verification failure'), 401);
           }
           return c.json(createRes({ msg: 'Verification success' }));
-        } catch (error: any) {
+        }
+        catch {
           return c.json(createRes(1, 'Verification failure'), 401);
         }
       }
     }
   }
   return c.json(createRes(1, 'Verification failure'), 401);
-};
+}

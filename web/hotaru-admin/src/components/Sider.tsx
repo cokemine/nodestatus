@@ -1,9 +1,12 @@
-import React, { FC } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Menu } from 'antd';
+import type { FC } from 'react';
 import {
-  DashboardOutlined, ProfileFilled, AlertFilled
+  AlertFilled,
+  DashboardOutlined,
+  ProfileFilled,
 } from '@ant-design/icons';
+import { Menu } from 'antd';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import logo from '../assets/img/logo.png';
 import smallLogo from '../assets/img/logo.svg';
 
@@ -11,22 +14,22 @@ const menus = [
   {
     label: 'Dashboard',
     icon: <DashboardOutlined />,
-    key: '/dashboard'
+    key: '/dashboard',
   },
   {
     label: 'Management',
     icon: <ProfileFilled />,
-    key: '/management'
+    key: '/management',
   },
   {
     label: 'Incidents',
     icon: <AlertFilled />,
-    key: '/incidents'
-  }
+    key: '/incidents',
+  },
 ].map(menu => ({
   ...menu,
   className: 'h-12',
-  style: { lineHeight: '3rem' }
+  style: { lineHeight: '3rem' },
 }));
 
 interface Props {

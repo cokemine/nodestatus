@@ -1,12 +1,15 @@
-import net from 'net';
+import type { Server } from '../../types/server';
+import net from 'node:net';
 import {
-  addServer, removeServer, getRawListServers, setServer
+  addServer,
+  getRawListServers,
+  removeServer,
+  setServer,
 } from '../controller/status';
 import { createRes } from '../lib/utils';
-import type { Server } from '../../types/server';
 
 export default function useIpc(): net.Server {
-  return net.createServer(client => {
+  return net.createServer((client) => {
     client.on('data', async (buf: Buffer) => {
       try {
         const [method, payload] = buf.toString().trim().split(' @;@ ');
@@ -43,7 +46,8 @@ export default function useIpc(): net.Server {
             client.write(JSON.stringify(createRes(1, 'Unknown Method')));
           }
         }
-      } catch (error: any) {
+      }
+      catch (error: any) {
         client.write(JSON.stringify(createRes(1, error.message)));
       }
     });

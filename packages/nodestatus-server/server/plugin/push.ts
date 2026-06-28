@@ -1,15 +1,15 @@
-import { timingSafeEqual } from 'crypto';
-import { Telegraf } from 'telegraf';
-import HttpsProxyAgent from 'https-proxy-agent';
-import { logger } from '../lib/utils';
 import type NodeStatus from '../lib/core';
+import { timingSafeEqual } from 'node:crypto';
+import HttpsProxyAgent from 'https-proxy-agent';
+import { Telegraf } from 'telegraf';
+import { logger } from '../lib/utils';
 
-type PushOptions = {
+interface PushOptions {
   bot_token: string;
   chat_id: string[];
   web_hook?: string;
   proxy?: string;
-};
+}
 
 export default function usePush(instance: NodeStatus, options: PushOptions) {
   const pushList: Array<(message: string) => void> = [];
@@ -33,12 +33,13 @@ export default function usePush(instance: NodeStatus, options: PushOptions) {
     '}',
     '.',
     '!',
-    '\\'
+    '\\',
   ]);
 
   const parseEntities = (msg: any): string => {
     let str: string;
-    if (typeof msg !== 'string') str = msg?.toString() || '';
+    if (typeof msg !== 'string')
+      str = msg?.toString() || '';
     else str = msg;
     let newStr = '';
     for (const char of str) {
@@ -52,9 +53,9 @@ export default function usePush(instance: NodeStatus, options: PushOptions) {
 
   const getBotStatus = (targets: string[]): string => {
     let str = '';
-    let total = 0,
-      online = 0;
-    instance.serversPub.forEach(obj => {
+    let total = 0;
+    let online = 0;
+    instance.serversPub.forEach((obj) => {
       if (targets.length) {
         if (!targets.some(target => obj.name.toLocaleLowerCase().includes(target))) {
           return;
@@ -65,13 +66,14 @@ export default function usePush(instance: NodeStatus, options: PushOptions) {
         get(target, key) {
           const value = Reflect.get(target, key);
           return typeof value === 'string' ? parseEntities(value) : value;
-        }
+        },
       });
       str += `节点名: *${item.name}*\n当前状态: `;
       if (item.status.online4 || item.status.online6) {
         str += '✅*在线*\n';
         online++;
-      } else {
+      }
+      else {
         str += '❌*离线*';
         str += '\n\n';
         return;
@@ -89,40 +91,41 @@ export default function usePush(instance: NodeStatus, options: PushOptions) {
     const bot = new Telegraf(options.bot_token, {
       ...(options.proxy && {
         telegram: {
-          agent: HttpsProxyAgent(options.proxy)
-        }
-      })
+          agent: HttpsProxyAgent(options.proxy),
+        },
+      }),
     });
 
     const chatId = new Set<string>(options.chat_id);
 
-    bot.command('start', ctx => {
+    bot.command('start', (ctx) => {
       const currentChat = ctx.message.chat.id.toString();
       if (chatId.has(currentChat)) {
         ctx.reply(
           `🍊NodeStatus\n🤖 Hi, this chat id is *${parseEntities(
-            currentChat
+            currentChat,
           )}*\\.\nYou have access to this service\\. I will alert you when your servers changed\\.\nYou are currently using NodeStatus: *${parseEntities(
-            process.env.npm_package_version
+            process.env.npm_package_version,
           )}*`,
-          { parse_mode: 'MarkdownV2' }
+          { parse_mode: 'MarkdownV2' },
         );
-      } else {
+      }
+      else {
         ctx.reply(
           `🍊NodeStatus\n🤖 Hi, this chat id is *${parseEntities(
-            currentChat
+            currentChat,
           )}*\\.\nYou *do not* have permission to use this service\\.\nPlease check your settings\\.`,
-          { parse_mode: 'MarkdownV2' }
+          { parse_mode: 'MarkdownV2' },
         );
       }
     });
 
-    bot.command('status', ctx => {
+    bot.command('status', (ctx) => {
       const { entities } = ctx.message;
       const msg = ctx.message.text.toLocaleLowerCase().split('');
       if (entities) {
         let len = 0;
-        entities.forEach(entity => {
+        entities.forEach((entity) => {
           msg.splice(entity.offset - len, entity.length);
           len += entity.length;
         });
@@ -134,7 +137,8 @@ export default function usePush(instance: NodeStatus, options: PushOptions) {
         .filter(item => item);
       if (chatId.has(ctx.message.chat.id.toString())) {
         ctx.reply(getBotStatus(targets), { parse_mode: 'MarkdownV2' });
-      } else {
+      }
+      else {
         ctx.reply('🍊NodeStatus\n*No permission*', { parse_mode: 'MarkdownV2' });
       }
     });
@@ -155,7 +159,8 @@ export default function usePush(instance: NodeStatus, options: PushOptions) {
           res.statusCode = 200;
         }
       });
-    } else {
+    }
+    else {
       bot.launch().then(() => logger.info('🤖 Telegram Bot is running using polling'));
     }
 
@@ -165,9 +170,9 @@ export default function usePush(instance: NodeStatus, options: PushOptions) {
   instance.onServerConnected((socket, username) => Promise.all(
     pushList.map(fn => fn(
       `🍊*NodeStatus* \n😀 One new server has connected\\! \n\n *用户名*: ${parseEntities(
-        username
-      )} \n *节点名*: ${parseEntities(instance.servers[username].name)} \n *时间*: ${parseEntities(new Date())}`
-    ))
+        username,
+      )} \n *节点名*: ${parseEntities(instance.servers[username].name)} \n *时间*: ${parseEntities(new Date())}`,
+    )),
   ));
 
   instance.onServerFinish((socket, username) => {
@@ -175,9 +180,9 @@ export default function usePush(instance: NodeStatus, options: PushOptions) {
     Promise.all(
       pushList.map(fn => fn(
         `🍊*NodeStatus* \n😰 One server has disconnected\\! \n\n *用户名*: ${parseEntities(
-          username
-        )} \n *节点名*: ${parseEntities(instance.servers[username]?.name)} \n *时间*: ${parseEntities(now)}`
-      ))
+          username,
+        )} \n *节点名*: ${parseEntities(instance.servers[username]?.name)} \n *时间*: ${parseEntities(now)}`,
+      )),
     ).then();
   });
 }

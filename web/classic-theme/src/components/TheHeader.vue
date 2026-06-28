@@ -1,5 +1,11 @@
+<script lang="ts" setup>
+import useConfig from '@nodestatus/web-utils/vue/hooks/useConfig';
+
+const config = useConfig()!;
+</script>
+
 <template>
-  <div role="navigation" class="navbar navbar-inverse navbar-fixed-top" id="header">
+  <div id="header" role="navigation" class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
       <div class="container">
         <div class="navbar-header">
@@ -9,12 +15,6 @@
     </div>
   </div>
 </template>
-
-<script lang="ts" setup>
-import useConfig from '@nodestatus/web-utils/vue/hooks/useConfig';
-
-const config = useConfig()!;
-</script>
 
 <style>
 #header {

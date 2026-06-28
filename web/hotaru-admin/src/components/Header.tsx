@@ -1,18 +1,22 @@
-import React, { FC } from 'react';
-import { Avatar, Dropdown, Menu } from 'antd';
+import type { FC } from 'react';
 import {
-  UserOutlined, MenuFoldOutlined, MenuUnfoldOutlined, LogoutOutlined
+  LogoutOutlined,
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+  UserOutlined,
 } from '@ant-design/icons';
+import { Avatar, Dropdown, Menu } from 'antd';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface Props {
   collapsed: {
     isCollapsed: boolean;
     toggleCollapsed: () => void;
-  }
+  };
 }
 
-const Header: FC<Props> = props => {
+const Header: FC<Props> = (props) => {
   const navigate = useNavigate();
   const { isCollapsed, toggleCollapsed } = props.collapsed;
 
@@ -23,8 +27,8 @@ const Header: FC<Props> = props => {
           key: 'logout',
           label: 'Logout',
           icon: <LogoutOutlined className="mr-2 align-middle" />,
-          className: 'align-middle'
-        }
+          className: 'align-middle',
+        },
       ]}
       onClick={({ key }) => {
         if (key === 'logout') {
@@ -39,7 +43,7 @@ const Header: FC<Props> = props => {
     <div className="h-full flex items-center justify-between">
       {React.createElement(isCollapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
         className: 'text-2xl',
-        onClick: toggleCollapsed
+        onClick: toggleCollapsed,
       })}
       <Dropdown overlay={menu} placement="bottom">
         <Avatar size={40} icon={<UserOutlined />} />

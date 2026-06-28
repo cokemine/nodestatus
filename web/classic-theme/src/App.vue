@@ -1,26 +1,14 @@
-<template>
-  <global-context>
-  <the-header />
-  <div class="main container content" id="main">
-    <the-error v-show="!servers" />
-    <servers-table :servers="servers" />
-    <UpdateTime :updated="updated" style="padding: 10px" />
-  </div>
-  <the-footer />
-  </global-context>
-</template>
-
 <script lang="ts" setup>
-import { onBeforeUnmount, ref } from 'vue';
-import WebSocket from 'reconnecting-websocket';
+import type { ServerItem } from './types';
+import GlobalContext from '@nodestatus/web-utils/vue/components/GlobalContext.vue';
 
 import TheError from '@nodestatus/web-utils/vue/components/TheError.vue';
 import UpdateTime from '@nodestatus/web-utils/vue/components/UpdateTime.vue';
-import GlobalContext from '@nodestatus/web-utils/vue/components/GlobalContext.vue';
-import TheHeader from './components/TheHeader.vue';
-import TheFooter from './components/TheFooter.vue';
+import WebSocket from 'reconnecting-websocket';
+import { onBeforeUnmount, ref } from 'vue';
 import ServersTable from './components/ServersTable.vue';
-import type { ServerItem } from './types';
+import TheFooter from './components/TheFooter.vue';
+import TheHeader from './components/TheHeader.vue';
 
 /* Bootstrap Style */
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -32,13 +20,25 @@ const ws = new WebSocket(`${document.location.protocol.replace('http', 'ws')}${w
 ws.onopen = () => console.info('Connect to backend successfully!');
 ws.onclose = () => console.warn('WebSocket disconnected!');
 ws.onerror = () => console.error('An error occurred while connecting to the backend');
-ws.onmessage = evt => {
+ws.onmessage = (evt) => {
   const data = JSON.parse(evt.data);
   servers.value = data.servers;
   updated.value = data.updated;
 };
 onBeforeUnmount(ws.close);
 </script>
+
+<template>
+  <GlobalContext>
+    <TheHeader />
+    <div id="main" class="main container content">
+      <TheError v-show="!servers" />
+      <ServersTable :servers="servers" />
+      <UpdateTime :updated="updated" style="padding: 10px" />
+    </div>
+    <TheFooter />
+  </GlobalContext>
+</template>
 
 <style>
 body {
@@ -117,5 +117,4 @@ body {
     font-size: 80%;
   }
 }
-
 </style>

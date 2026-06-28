@@ -1,23 +1,22 @@
-<template>
-  <slot></slot>
-</template>
-
 <script lang="ts" setup>
-import {
-  provide, onBeforeMount, ref, computed
-} from 'vue';
-import ky from 'ky';
-import { useHead } from '@vueuse/head';
 import type { IWebConfig } from '../../types';
+import { useHead } from '@vueuse/head';
+import ky from 'ky';
+import {
+  computed,
+  onBeforeMount,
+  provide,
+  ref,
+} from 'vue';
 
 const config = ref<IWebConfig>({
   title: '',
   subTitle: '',
-  headTitle: ''
+  headTitle: '',
 });
 
 onBeforeMount(() => {
-  ky.get('/api/config').json<IWebConfig>().then(data => {
+  ky.get('/api/config').json<IWebConfig>().then((data) => {
     config.value = data;
   });
 });
@@ -27,10 +26,14 @@ useHead({
   meta: [
     {
       name: 'description',
-      content: computed(() => config.value.subTitle)
-    }
-  ]
+      content: computed(() => config.value.subTitle),
+    },
+  ],
 });
 
 provide('config', config);
 </script>
+
+<template>
+  <slot />
+</template>

@@ -1,18 +1,15 @@
 {
   "name": "nodestatus-server",
+  "type": "module",
   "version": "1.2.9-beta",
+  "author": "Kagurazaka Mizuki",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/cokemine/nodestatus.git",
     "directory": "packages/nodestatus-server"
   },
-  "license": "MIT",
-  "author": "Kagurazaka Mizuki",
   "main": "index.js",
-  "type": "module",
-  "engines": {
-    "node": ">=22"
-  },
   "bin": {
     "status-server": "bin/status-server.js",
     "status-server-run": "bin/status-server-run.js"
@@ -20,14 +17,17 @@
   "files": [
     "bin",
     "build",
-    "scripts",
-    "prisma"
+    "prisma",
+    "scripts"
   ],
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "build": "rolldown -c rolldown.config.mjs",
     "dev": "cross-env NODE_ENV=development rolldown -c rolldown.config.mjs --watch",
     "postinstall": "node scripts/init.js",
-    "lint": "eslint . --ext .js --ext .ts --ignore-pattern build --ignore-pattern dist --fix",
+    "lint": "eslint . --fix",
     "prestart": "node scripts/init.js",
     "start": "node build/app.js",
     "pretest": "cross-env NODE_ENV=TEST node scripts/init.js"
@@ -47,6 +47,9 @@
     "prisma": "^7.8.0",
     "replace-in-file": "^6.3.2"
   },
+  "optionalDependencies": {
+    "bufferutil": "^4.0.7"
+  },
   "devDependencies": {
     "@commander-js/extra-typings": "^10.0.2",
     "@msgpack/msgpack": "^3.0.0",
@@ -64,11 +67,8 @@
     "jsonwebtoken": "^9.0.3",
     "log4js": "^6.4.7",
     "telegraf": "^4.16.3",
-    "typescript": "^5.5.3",
+    "typescript": "^6.0.3",
     "vite": "^8.1.0",
     "ws": "^8.21.0"
-  },
-  "optionalDependencies": {
-    "bufferutil": "^4.0.7"
   }
 }

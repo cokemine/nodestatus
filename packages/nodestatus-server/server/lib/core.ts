@@ -1,19 +1,21 @@
-import { Server } from 'http';
-import { isIPv4 } from 'net';
-import timers from 'timers/promises';
-import { WebSocketServer, WebSocket } from 'ws';
-import { decode } from '@msgpack/msgpack';
-import ipaddr, { IPv6 } from 'ipaddr.js';
-import log4js from 'log4js';
-import { authServer, getListServers, getServer } from '../controller/status';
-import { logger, emitter } from './utils';
-import setupHeartbeat from './heartbeat';
+import type { IPv6 } from 'ipaddr.js';
+import type { Server } from 'node:http';
+import type { WebSocket } from 'ws';
 import type {
   Box,
-  ServerItem,
   BoxItem,
-  IWebSocket
+  IWebSocket,
+  ServerItem,
 } from '../../types/server';
+import { isIPv4 } from 'node:net';
+import timers from 'node:timers/promises';
+import { decode } from '@msgpack/msgpack';
+import ipaddr from 'ipaddr.js';
+import log4js from 'log4js';
+import { WebSocketServer } from 'ws';
+import { authServer, getListServers, getServer } from '../controller/status';
+import setupHeartbeat from './heartbeat';
+import { emitter, logger } from './utils';
 
 const { getLogger } = log4js;
 
@@ -22,18 +24,18 @@ const loggerConnecting = getLogger('Connecting');
 const loggerDisconnected = getLogger('Disconnected');
 const loggerBanned = getLogger('Banned');
 
-type Options = {
+interface Options {
   interval: number;
   pingInterval: number;
   reconnectTimeout: number;
-};
+}
 
-type CallbackType =
-  | 'onServerConnect'
-  | 'onServerBanned'
-  | 'onServerConnected'
-  | 'onServerDisconnected'
-  | 'onServerFinish';
+type CallbackType
+  = | 'onServerConnect'
+    | 'onServerBanned'
+    | 'onServerConnected'
+    | 'onServerDisconnected'
+    | 'onServerFinish';
 type CallbackFn = (...args: any) => unknown;
 type CallbackFunction = {
   [key in CallbackType]: CallbackFn[];
@@ -62,7 +64,7 @@ export default class NodeStatus {
     onServerBanned: [],
     onServerConnected: [],
     onServerDisconnected: [],
-    onServerFinish: []
+    onServerFinish: [],
   };
 
   public servers: Record<string, ServerItem> = {};
@@ -104,14 +106,16 @@ export default class NodeStatus {
     try {
       const fns = this.callbackFn[hook];
       for (const fn of fns) fn.apply(this, args);
-    } catch (error: any) {
+    }
+    catch (error: any) {
       logger.error(`[hook]: ${hook} error: ${error.message || error}`);
     }
   }
 
   private setBan(socket: WebSocket, address: string, t: number, reason: string): void {
     socket.close();
-    if (this.isBanned.get(address)) return;
+    if (this.isBanned.get(address))
+      return;
     this.isBanned.set(address, true);
     loggerBanned.debug('Address:', address, '|', 'Reason:', reason);
     this.callHook('onServerBanned', socket, address, reason);
@@ -131,11 +135,13 @@ export default class NodeStatus {
           ws.ipAddress = (request.headers['x-forwarded-for'] as any)?.split(',')?.[0]?.trim() || request.socket.remoteAddress;
           this.ioConn.emit('connection', ws);
         });
-      } else if (pathname === '/public') {
-        this.ioPub.handleUpgrade(request, socket, head, ws => {
+      }
+      else if (pathname === '/public') {
+        this.ioPub.handleUpgrade(request, socket, head, (ws) => {
           this.ioPub.emit('connection', ws);
         });
-      } else {
+      }
+      else {
         socket.destroy();
       }
     });
@@ -153,8 +159,8 @@ export default class NodeStatus {
           socket.send('You are banned. Please try connecting after 60 / 120 seconds');
           return socket.close();
         }
-        let username = '',
-          password = '';
+        let username = '';
+        let password = '';
         try {
           ({ username, password } = decode(buf) as any);
           username = username.trim();
@@ -178,7 +184,8 @@ export default class NodeStatus {
                 preSocket.status = 1;
                 socket.status = 2;
                 preSocket.terminate();
-              } else {
+              }
+              else {
                 preSocket.isAlive = false;
                 preSocket.ping();
                 const ac = new AbortController();
@@ -188,12 +195,13 @@ export default class NodeStatus {
                   await promise;
                   socket.send('Only one connection per user allowed.');
                   return this.setBan(socket, address, 120, 'Only one connection per user allowed.');
-                  // eslint-disable-next-line no-empty
-                } catch (error: any) { }
+                }
+                catch { }
               }
             }
           }
-        } catch (error: any) {
+        }
+        catch {
           socket.send('Please check your login details.');
           return this.setBan(socket, address, 120, 'it is an idiot.');
         }
@@ -215,7 +223,8 @@ export default class NodeStatus {
         if (timer) {
           clearTimeout(timer);
           this.timerMap.delete(username);
-        } else if (socket.status !== 2) {
+        }
+        else if (socket.status !== 2) {
           this.callHook('onServerConnected', socket, username);
         }
 
@@ -240,12 +249,12 @@ export default class NodeStatus {
       });
     });
 
-    this.ioPub.on('connection', socket => {
+    this.ioPub.on('connection', (socket) => {
       const runPush = () => socket.send(
         JSON.stringify({
           servers: this.serversPub,
-          updated: ~~(Date.now() / 1000)
-        })
+          updated: ~~(Date.now() / 1000),
+        }),
       );
       runPush();
       const id = setInterval(runPush, interval);
@@ -258,18 +267,23 @@ export default class NodeStatus {
   private async updateStatus(username?: string, shouldDisconnect = false): Promise<void> {
     if (username) {
       const server = (await getServer(username)).data as BoxItem | null;
-      if (!server) delete this.servers[username];
+      if (!server)
+        delete this.servers[username];
       else this.servers[username] = Object.assign(server, { status: this.servers?.[username]?.status || {} });
       shouldDisconnect && this.userMap.get(username)?.terminate() && this.userMap.delete(username);
-    } else {
+    }
+    else {
       const box = (await getListServers()).data as Box | null;
-      if (!box) return;
+      if (!box)
+        return;
       for (const k of Object.keys(box)) {
-        if (!this.servers[k]) this.servers[k] = Object.assign(box[k], { status: {} });
+        if (!this.servers[k])
+          this.servers[k] = Object.assign(box[k], { status: {} });
         this.servers[k].order = box[k].order;
       }
       for (const k of Object.keys(this.servers)) {
-        if (!box[k]) delete this.servers[k];
+        if (!box[k])
+          delete this.servers[k];
       }
       if (shouldDisconnect) {
         for (const socket of this.userMap.values()) {

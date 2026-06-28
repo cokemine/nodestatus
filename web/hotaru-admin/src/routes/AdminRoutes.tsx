@@ -1,28 +1,29 @@
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import type { RouteObject } from 'react-router-dom';
+import React from 'react';
 import { Navigate, useRoutes } from 'react-router-dom';
 import Dashboard from '../pages/Dashboard';
-import Management from '../pages/Management';
 import Incidents from '../pages/Incidents';
-import type { RouteObject } from 'react-router-dom';
+import Management from '../pages/Management';
 
 const AdminRoutes: FC = () => {
   const routes: RouteObject[] = [
     {
       path: '/dashboard',
-      element: <Dashboard />
+      element: <Dashboard />,
     },
     {
       path: '/management',
-      element: <Management />
+      element: <Management />,
     },
     {
       path: '/incidents',
-      element: <Incidents />
+      element: <Incidents />,
     },
     {
       path: '/',
-      element: <Navigate to="/dashboard" />
-    }
+      element: <Navigate to="/dashboard" />,
+    },
   ];
 
   return useRoutes(routes);

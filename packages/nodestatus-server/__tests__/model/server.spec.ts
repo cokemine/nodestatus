@@ -1,25 +1,29 @@
-import { EventEmitter } from 'events';
+import type { EventEmitter } from 'node:events';
+import type { DeepMockProxy } from 'vitest-mock-extended';
+import type { Prisma } from '../../types/server';
 import {
-  vi, afterEach, expect, test
+  afterEach,
+  expect,
+  it,
+  vi,
 } from 'vitest';
-import { mockDeep, mockReset, DeepMockProxy } from 'vitest-mock-extended';
+import { mockDeep, mockReset } from 'vitest-mock-extended';
 import prisma from '../../server/lib/prisma';
-import {
-  createServer,
-  readServer,
-  readServersList,
-  updateServer,
-  deleteServer,
-  bulkCreateServer,
-  updateOrder,
-  readServerPassword
-} from '../../server/model/server';
 import { emitter as Emitter } from '../../server/lib/utils';
-import { Prisma } from '../../types/server';
+import {
+  bulkCreateServer,
+  createServer,
+  deleteServer,
+  readServer,
+  readServerPassword,
+  readServersList,
+  updateOrder,
+  updateServer,
+} from '../../server/model/server';
 
 vi.mock('../../server/lib/utils', () => ({
   __esModule: true,
-  emitter: mockDeep<EventEmitter>()
+  emitter: mockDeep<EventEmitter>(),
 }));
 
 const emitter = vi.mocked(Emitter) as DeepMockProxy<EventEmitter>;
@@ -30,25 +34,26 @@ afterEach(async () => {
   await prisma.$transaction([prisma.server.deleteMany({}), prisma.option.deleteMany({})]);
 });
 
-const mockServer = (str: string): Prisma.ServerCreateInput => ({
-  name: str,
-  username: str,
-  password: str,
-  region: str,
-  type: str,
-  location: str
-});
+function mockServer(str: string): Prisma.ServerCreateInput {
+  return {
+    name: str,
+    username: str,
+    password: str,
+    region: str,
+    type: str,
+    location: str,
+  };
+}
 
-const mockResolve = (server: Prisma.ServerCreateInput) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { password, ...rest } = server;
+function mockResolve(server: Prisma.ServerCreateInput) {
+  const { password: _password, ...rest } = server;
   return {
     ...rest,
-    disabled: false
+    disabled: false,
   };
-};
+}
 
-test('Init getListServers should call emitter', async () => {
+it('init getListServers should call emitter', async () => {
   const result = await readServersList();
   expect(result).toEqual([]);
   expect(emitter.emit.mock.calls.length).toBe(1);
@@ -57,7 +62,7 @@ test('Init getListServers should call emitter', async () => {
   expect(emitter.emit.mock.calls.length).toBe(1);
 });
 
-test('Create a server and find unique Server', async () => {
+it('create a server and find unique Server', async () => {
   const server = mockServer('username');
   await expect(createServer(server)).resolves.toBeUndefined();
   const result = await readServer('username');
@@ -66,7 +71,7 @@ test('Create a server and find unique Server', async () => {
   expect(result).toMatchObject({
     ...mockResolve(server),
     /* disabled should default to be false */
-    disabled: false
+    disabled: false,
   });
   /* first server order should be 1 */
   expect(result?.order).toBe(1);
@@ -75,7 +80,7 @@ test('Create a server and find unique Server', async () => {
   expect(emitter.emit.mock.calls[0][1]).toBe('username');
 });
 
-test('Create Multi servers with getListServers', async () => {
+it('create Multi servers with getListServers', async () => {
   const server1 = mockServer('Megumi');
   await expect(createServer(server1)).resolves.toBeUndefined();
   const server2 = mockServer('Siesta');
@@ -92,7 +97,7 @@ test('Create Multi servers with getListServers', async () => {
   }
 });
 
-test('Create servers with same username', async () => {
+it('create servers with same username', async () => {
   const server1 = mockServer('username');
   await expect(createServer(server1)).resolves.toBeUndefined();
   expect(emitter.emit.mock.calls.length).toBe(1);
@@ -101,12 +106,14 @@ test('Create servers with same username', async () => {
   expect(emitter.emit.mock.calls.length).toBe(1);
 });
 
-test('Bulk create servers', async () => {
+it('bulk create servers', async () => {
   const servers = [mockServer('Megumi'), mockServer('Siesta'), mockServer('Emilia')];
   await expect(bulkCreateServer(servers)).resolves.toBeUndefined();
 
   const result = await readServersList();
-  await expect(result).toEqual(expect.arrayContaining(servers.map(mockResolve).map(item => expect.objectContaining(item))));
+  await expect(result).toEqual(
+    expect.arrayContaining(servers.map(mockResolve).map(item => expect.objectContaining(item))),
+  );
 
   for (let i = 0; i < 3; ++i) {
     expect(result[i].order).toBe(i + 1);
@@ -116,7 +123,7 @@ test('Bulk create servers', async () => {
   expect(emitter.emit.mock.calls[0][1]).toBeUndefined();
 });
 
-test('Update server', async () => {
+it('update server', async () => {
   const server1 = mockServer('username');
 
   await expect(createServer(server1)).resolves.toBeUndefined();
@@ -157,7 +164,7 @@ test('Update server', async () => {
   expect(emitter.emit.mock.calls[6][2]).toBe(true);
 });
 
-test('Delete a server', async () => {
+it('delete a server', async () => {
   const servers = [mockServer('Megumi'), mockServer('username'), mockServer('Siesta'), mockServer('Emilia')];
   await expect(bulkCreateServer(servers)).resolves.toBeUndefined();
 
@@ -174,7 +181,7 @@ test('Delete a server', async () => {
   }
 });
 
-test('Set order', async () => {
+it('set order', async () => {
   await expect(bulkCreateServer([mockServer('Megumi'), mockServer('Siesta'), mockServer('Emilia'), mockServer('Irina')])).resolves.toBeUndefined();
   const servers = await readServersList();
   const ids = servers.map(({ id }) => id).sort(() => Math.random() - 0.5);
@@ -192,7 +199,7 @@ test('Set order', async () => {
   result2.forEach(({ id, order }) => expect(order).toBe(ids.findIndex(i => i === id) + 1));
 });
 
-test('Test password', async () => {
+it('test password', async () => {
   const server = mockServer('username');
   await expect(createServer(server)).resolves.toBeUndefined();
   await expect(readServerPassword('username')).resolves.not.toBe('username');

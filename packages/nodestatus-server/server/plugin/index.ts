@@ -1,5 +1,5 @@
-import usePush from './push';
 import useEvent from './event';
 import useIpc from './ipc';
+import usePush from './push';
 
-export { usePush, useEvent, useIpc };
+export { useEvent, useIpc, usePush };

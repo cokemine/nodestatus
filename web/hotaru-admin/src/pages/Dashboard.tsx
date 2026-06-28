@@ -1,26 +1,32 @@
-import React, {
+import type { ColumnsType } from 'antd/es/table';
+import type {
   FC,
+} from 'react';
+import type { ITable } from '../types';
+import { parseUptime } from '@nodestatus/web-utils/shared';
+
+import {
+  Col,
+  Row,
+  Table,
+  Tag,
+  Typography,
+} from 'antd';
+import React, {
   useCallback,
   useContext,
   useEffect,
+  useMemo,
   useState,
-  useMemo
 } from 'react';
-import {
-  Col, Row, Typography, Table, Tag
-} from 'antd';
-import { ColumnsType } from 'antd/es/table';
-
-import { BiServer } from 'react-icons/bi';
 import { AiFillWarning } from 'react-icons/ai';
+import { BiServer } from 'react-icons/bi';
 import { HiOutlineStatusOnline } from 'react-icons/hi';
-import { parseUptime } from '@nodestatus/web-utils/shared';
-import StateCard from '../components/StateCard';
-import RoundIcon from '../components/RoundIcon';
-import { StatusContext } from '../context/StatusContext';
-
-import { ITable } from '../types';
 import MapChart from '../components/MapChart';
+import RoundIcon from '../components/RoundIcon';
+
+import StateCard from '../components/StateCard';
+import { StatusContext } from '../context/StatusContext';
 
 const { Title } = Typography;
 
@@ -38,11 +44,13 @@ const Dashboard: FC = () => {
       record[key]++;
     };
     for (const item of servers) {
-      if (item.status) online++;
+      if (item.status)
+        online++;
       add(item.region);
     }
     setCount({
-      online, record
+      online,
+      record,
     });
   }, [servers]);
 
@@ -62,7 +70,7 @@ const Dashboard: FC = () => {
             </div>
           </div>
         );
-      }
+      },
     },
     {
       title: 'STATUS',
@@ -72,7 +80,7 @@ const Dashboard: FC = () => {
         status
           ? <Tag color="success">Online</Tag>
           : <Tag color="error">Offline</Tag>
-      )
+      ),
     },
     {
       title: 'UPTIME',
@@ -80,13 +88,13 @@ const Dashboard: FC = () => {
       align: 'center',
       render(uptime) {
         return uptime === '-' ? '-' : parseUptime(uptime);
-      }
+      },
     },
     {
       title: 'LOAD',
       dataIndex: 'load',
-      align: 'center'
-    }
+      align: 'center',
+    },
   ], []);
 
   const TableFooter = useCallback(() => (

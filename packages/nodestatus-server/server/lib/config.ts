@@ -1,11 +1,12 @@
-import { platform, homedir } from 'os';
-import { resolve } from 'path';
-import dotenv from 'dotenv';
+import { homedir, platform } from 'node:os';
+import { resolve } from 'node:path';
 import { Command, createOption } from '@commander-js/extra-typings';
+import dotenv from 'dotenv';
 
 if (process.env.NODE_ENV !== 'TEST') {
   dotenv.config({ path: resolve(homedir(), '.nodestatus/.env.local') });
-} else {
+}
+else {
   process.env.DATABASE = process.env.DATABASE ? process.env.DATABASE : resolve(__dirname, '../../db.test.sqlite');
 }
 
@@ -14,26 +15,26 @@ const program = new Command('NodeStatus')
     createOption('-p, --port <port>', 'Web server listening port')
       .env('PORT')
       .default(35601)
-      .argParser(value => parseInt(value, 10))
+      .argParser(value => parseInt(value, 10)),
   )
   .addOption(
     createOption('-i, --interval <interval>', 'Update interval')
       .env('INTERVAL')
       .default(1500)
-      .argParser(value => parseInt(value, 10))
+      .argParser(value => parseInt(value, 10)),
   )
   .addOption(createOption('-v, --verbose', 'Verbose mode').env('VERBOSE').default(false))
   .addOption(
     createOption('-pi, --ping-interval <pingInterval>', 'Ping interval')
       .env('PING_INTERVAL')
       .default(30)
-      .argParser(value => parseInt(value, 10))
+      .argParser(value => parseInt(value, 10)),
   )
   .addOption(
     createOption('--dt, --reconnect-timeout <reconnectTimeout>', 'Reconnect timeout')
       .env('RECONNECT_TIMEOUT')
       .default(120)
-      .argParser(value => parseInt(value, 10))
+      .argParser(value => parseInt(value, 10)),
   )
 
   .addOption(createOption('-ipc, --use-ipc', 'Use IPC').env('USE_IPC').default(true))
@@ -42,16 +43,16 @@ const program = new Command('NodeStatus')
   .addOption(createOption('-event, --use-event', 'Use Event').env('USE_EVENT').default(true))
 
   .addOption(
-    createOption('-wt, --web-theme <webTheme>', 'Web theme').env('WEB_THEME').env('THEME').default('hotaru-theme')
+    createOption('-wt, --web-theme <webTheme>', 'Web theme').env('WEB_THEME').env('THEME').default('hotaru-theme'),
   )
   .addOption(createOption('-wmt, --web-title <webTitle>', 'Web title').env('WEB_TITLE').default('Server Status'))
   .addOption(
     createOption('-wst, --web-subtitle <webSubtitle>', 'Web subtitle')
       .env('WEB_SUBTITLE')
-      .default("Servers' Probes Set up with NodeStatus")
+      .default('Servers\' Probes Set up with NodeStatus'),
   )
   .addOption(
-    createOption('-wht, --web-headtitle <webHeadtitle>', 'Web head title').env('WEB_HEADTITLE').default('NodeStatus')
+    createOption('-wht, --web-headtitle <webHeadtitle>', 'Web head title').env('WEB_HEADTITLE').default('NodeStatus'),
   )
 
   .addOption(createOption('-wu, --web-username <webUsername>', 'Web username').env('WEB_USERNAME').default('admin'))
@@ -60,13 +61,13 @@ const program = new Command('NodeStatus')
     createOption('-ws, --web-secret <webSecret>', 'Web jwt secret')
       .env('WEB_SECRET')
       .default('node-secret')
-      .argParser(val => val || 'node-secret')
+      .argParser(val => val || 'node-secret'),
   )
 
   .addOption(
     createOption('-ia, --ipc-address <ipcAddress>', 'IPC address')
       .env('IPC_ADDRESS')
-      .default(platform() !== 'win32' ? '/tmp/status_unix.sock' : '\\\\.\\pipe\\status_ipc')
+      .default(platform() !== 'win32' ? '/tmp/status_unix.sock' : '\\\\.\\pipe\\status_ipc'),
   )
 
   /*
@@ -76,20 +77,20 @@ const program = new Command('NodeStatus')
     createOption('-pt, --push-timeout <pushTimeout>', 'Push timeout')
       .env('PUSH_TIMEOUT')
       .default(undefined)
-      .argParser(value => parseInt(value, 10))
+      .argParser(value => parseInt(value, 10)),
   )
   .addOption(
     createOption('-pd, --push-delay <pushDelay>', 'Push delay')
       .env('PUSH_DELAY')
       .default(15)
-      .argParser(value => parseInt(value, 10))
+      .argParser(value => parseInt(value, 10)),
   )
 
   .addOption(
-    createOption('-ti, --telegram-bot-token <telegramBotToken>', 'Telegram bot token').env('TGBOT_TOKEN').default('')
+    createOption('-ti, --telegram-bot-token <telegramBotToken>', 'Telegram bot token').env('TGBOT_TOKEN').default(''),
   )
   .addOption(
-    createOption('-tc, --telegram-chat-id <telegramChatId>', 'Telegram chat id').env('TGBOT_CHATID').default('')
+    createOption('-tc, --telegram-chat-id <telegramChatId>', 'Telegram chat id').env('TGBOT_CHATID').default(''),
   )
   .addOption(createOption('-tp, --telegram-proxy <telegramProxy>', 'Telegram proxy').env('TGBOT_PROXY'))
   .addOption(createOption('-tw, --telegram-web-hook <telegramWebHook>', 'Telegram web hook').env('TGBOT_WEBHOOK'))
@@ -112,10 +113,10 @@ const config = {
     proxy: options.telegramProxy,
     bot_token: options.telegramBotToken,
     chat_id: options.telegramChatId,
-    web_hook: options.telegramWebHook
+    web_hook: options.telegramWebHook,
   },
   database,
-  reconnectTimeout: options.pushTimeout || options.reconnectTimeout
+  reconnectTimeout: options.pushTimeout || options.reconnectTimeout,
 };
 
 export default config;

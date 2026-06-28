@@ -1,8 +1,35 @@
+<script lang="ts">
+import type { PropType } from 'vue';
+import type { ServerItem } from '../types';
+
+import useStatus from '@nodestatus/web-utils/vue/hooks/useStatus';
+import { defineComponent, ref } from 'vue';
+
+export default defineComponent({
+  name: 'TableItem',
+  props: {
+    server: {
+      type: Object as PropType<ServerItem>,
+      default: () => ({ status: {} }),
+    },
+  },
+  setup(props) {
+    const collapsed = ref(true);
+    const utils = useStatus(props);
+    return {
+      collapsed,
+      ...utils,
+    };
+  },
+});
+</script>
+
 <template>
   <tr class="tableRow" @click="collapsed = !collapsed">
     <td>
       <div class="ui progress" :class="getStatus ? 'success' : 'error'">
-        <div class="bar" style="width: 100%"><span> {{ getStatus ? '运行中' : '维护中' }} </span>
+        <div class="bar" style="width: 100%">
+          <span> {{ getStatus ? '运行中' : '维护中' }} </span>
         </div>
       </div>
     </td>
@@ -10,41 +37,44 @@
     <td>{{ server.type }}</td>
     <td>{{ server.location }}</td>
     <td>{{ getUpTime || '–' }}</td>
-    <td>{{
+    <td>
+      {{
         getStatus
-            ? getLoad
-            : '-'
+          ? getLoad
+          : '-'
       }}
     </td>
-    <td>{{
+    <td>
+      {{
         getStatus
-            ? `${formatNetwork(server.status.network_rx)} | ${formatNetwork(server.status.network_tx)}`
-            : '–'
+          ? `${formatNetwork(server.status.network_rx)} | ${formatNetwork(server.status.network_tx)}`
+          : '–'
       }}
     </td>
-    <td>{{
+    <td>
+      {{
         getStatus
-            ? `${formatNetwork(server.status.network_in)} | ${formatNetwork(server.status.network_out)}`
-            : '–'
+          ? `${formatNetwork(server.status.network_in)} | ${formatNetwork(server.status.network_out)}`
+          : '–'
       }}
     </td>
     <td>
       <div class="ui progress" :class="getProcessBarStatus(getCpuStatus)">
-        <div class="bar" :style="{'width': `${getCpuStatus.toString()}%`}">
+        <div class="bar" :style="{ width: `${getCpuStatus.toString()}%` }">
           {{ getStatus ? `${getCpuStatus.toString()}%` : '维护中' }}
         </div>
       </div>
     </td>
     <td>
       <div class="ui progress" :class="getProcessBarStatus(getRAMStatus)">
-        <div class="bar" :style="{'width': `${getRAMStatus.toString()}%`}">
+        <div class="bar" :style="{ width: `${getRAMStatus.toString()}%` }">
           {{ getStatus ? `${getRAMStatus.toString()}%` : '维护中' }}
         </div>
       </div>
     </td>
     <td>
       <div class="ui progress" :class="getProcessBarStatus(getHDDStatus)">
-        <div class="bar" :style="{'width': `${getHDDStatus.toString()}%`}">
+        <div class="bar" :style="{ width: `${getHDDStatus.toString()}%` }">
           {{ getStatus ? `${getHDDStatus.toString()}%` : '维护中' }}
         </div>
       </div>
@@ -52,61 +82,38 @@
   </tr>
   <tr class="expandRow">
     <td colspan="12">
-      <div :class="{collapsed}" :style="{'max-height': getStatus ? '' : '0'}">
-        <div>内存信息: {{
+      <div :class="{ collapsed }" :style="{ 'max-height': getStatus ? '' : '0' }">
+        <div>
+          内存信息: {{
             getStatus
-                ? `${formatByte(server.status.memory_used * 1024)}
+              ? `${formatByte(server.status.memory_used * 1024)}
                  / ${formatByte(server.status.memory_total * 1024)}`
-                : '–'
+              : '–'
           }}
         </div>
-        <div>交换分区: {{
+        <div>
+          交换分区: {{
             getStatus
-                ? `${formatByte(server.status.swap_used * 1024)}
+              ? `${formatByte(server.status.swap_used * 1024)}
                  / ${formatByte(server.status.swap_total * 1024)}`
-                : '–'
+              : '–'
           }}
         </div>
-        <div>硬盘信息: {{
+        <div>
+          硬盘信息: {{
             getStatus
-                ? `${formatByte(server.status.hdd_used * 1024 * 1024)}
+              ? `${formatByte(server.status.hdd_used * 1024 * 1024)}
                  / ${formatByte(server.status.hdd_total * 1024 * 1024)}`
-                : '–'
+              : '–'
           }}
         </div>
-        <!--        <div id="expand_custom">{{server.custom}}</div>-->
+        <!--        <div id="expand_custom">{{server.custom}}</div> -->
       </div>
     </td>
   </tr>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, PropType } from 'vue';
-
-import useStatus from '@nodestatus/web-utils/vue/hooks/useStatus';
-import type { ServerItem } from '../types';
-
-export default defineComponent({
-  name: 'TableItem',
-  props: {
-    server: {
-      type: Object as PropType<ServerItem>,
-      default: () => ({ status: {} })
-    }
-  },
-  setup(props) {
-    const collapsed = ref(true);
-    const utils = useStatus(props);
-    return {
-      collapsed,
-      ...utils
-    };
-  }
-});
-</script>
-
 <style scoped>
-
 .tableRow {
   background-color: rgba(249, 249, 249, .8);
   vertical-align: middle;

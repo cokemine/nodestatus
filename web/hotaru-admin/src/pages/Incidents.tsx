@@ -1,23 +1,28 @@
-import React, {
-  FC, useCallback, useMemo, useState
+import type { ColumnsType } from 'antd/es/table';
+import type {
+  FC,
 } from 'react';
+import type { Event as IEvent, IResp } from '../types';
 import {
+  ExclamationCircleOutlined,
+} from '@ant-design/icons';
+import {
+  Button,
+  Modal,
   Table,
   Tag,
   Typography,
-  Modal,
-  Button
 } from 'antd';
-import useSWR from 'swr';
-import { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
-import {
-  ExclamationCircleOutlined
-} from '@ant-design/icons';
-import api from '../lib/api';
+import React, {
+  useCallback,
+  useMemo,
+  useState,
+} from 'react';
+import useSWR from 'swr';
 import Loading from '../components/Loading';
+import api from '../lib/api';
 import { notify } from '../utils';
-import type { IResp, Event as IEvent } from '../types';
 
 const { Title } = Typography;
 
@@ -26,12 +31,12 @@ const Incidents: FC = () => {
   // this may not be the optimum solution for using SWR in React
   const {
     data: resp,
-    mutate
-  } = useSWR<IResp<{ count: number, list: IEvent[] }>>(`/api/admin/events?size=10&offset=${(currentPage - 1) * 10}`);
+    mutate,
+  } = useSWR<IResp<{ count: number; list: IEvent[] }>>(`/api/admin/events?size=10&offset=${(currentPage - 1) * 10}`);
   const { count, list: dataList } = resp?.data || {};
 
   const handleDeleteEvent = useCallback((id: number) => {
-    api.delete(`/api/admin/events/${id}`).json<IResp>().then(res => {
+    api.delete(`/api/admin/events/${id}`).json<IResp>().then((res) => {
       notify('Success', res.msg, 'success');
       return mutate();
     });
@@ -43,14 +48,14 @@ const Incidents: FC = () => {
       dataIndex: 'server',
       render(_, record) {
         return record.username;
-      }
+      },
     },
     {
       title: 'TYPE',
       dataIndex: 'type',
       render() {
         return <Tag color="error">DOWN</Tag>;
-      }
+      },
     },
     {
       title: 'RESOLVED',
@@ -59,21 +64,21 @@ const Incidents: FC = () => {
         return resolved
           ? <Tag color="success">Resolved</Tag>
           : <Tag color="error">Unresolved</Tag>;
-      }
+      },
     },
     {
       title: 'CreatedAt',
       dataIndex: 'created_at',
       render(createdAt) {
         return dayjs(createdAt).format('YYYY-MM-DD hh:mm');
-      }
+      },
     },
     {
       title: 'ResolvedAt',
       dataIndex: 'updated_at',
       render(updatedAt, record) {
         return record.resolved ? dayjs(updatedAt).format('YYYY-MM-DD hh:mm') : '';
-      }
+      },
     },
     {
       title: 'ACTION',
@@ -86,14 +91,14 @@ const Incidents: FC = () => {
             onClick={() => Modal.confirm({
               title: 'Are you sure you want to delete this item?',
               icon: <ExclamationCircleOutlined />,
-              onOk: () => handleDeleteEvent(record.id)
+              onOk: () => handleDeleteEvent(record.id),
             })}
           >
             Delete
           </Button>
         );
-      }
-    }
+      },
+    },
   ], [handleDeleteEvent]);
 
   const Footer = useCallback(() => (
@@ -104,10 +109,10 @@ const Incidents: FC = () => {
         onClick={() => Modal.confirm({
           title: 'Are you sure you want to delete all items?',
           icon: <ExclamationCircleOutlined />,
-          onOk: () => api.delete('/api/admin/events').json<IResp>().then(res => {
+          onOk: () => api.delete('/api/admin/events').json<IResp>().then((res) => {
             notify('Success', res.msg, 'success');
             return mutate();
-          })
+          }),
         })}
       >
         Delete All
@@ -121,19 +126,19 @@ const Incidents: FC = () => {
       {
         dataList
           ? (
-            <Table
-              className="rounded-lg max-w-full"
-              dataSource={dataList}
-              columns={columns}
-              footer={Footer}
-              rowKey="id"
-              pagination={{
-                total: count,
-                current: currentPage,
-                onChange: page => setCurrentPage(page)
-              }}
-            />
-          )
+              <Table
+                className="rounded-lg max-w-full"
+                dataSource={dataList}
+                columns={columns}
+                footer={Footer}
+                rowKey="id"
+                pagination={{
+                  total: count,
+                  current: currentPage,
+                  onChange: page => setCurrentPage(page),
+                }}
+              />
+            )
           : <Loading />
       }
     </>

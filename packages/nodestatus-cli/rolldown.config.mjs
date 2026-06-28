@@ -6,10 +6,10 @@ export default defineConfig({
   input: 'index.js',
   output: {
     file: './build/bundle.js',
-    format: 'cjs'
+    format: 'cjs',
   },
   external: Object.keys(pkg.dependencies),
   plugins: [
-    del({ targets: 'build/*' })
-  ]
+    del({ targets: 'build/*' }),
+  ],
 });

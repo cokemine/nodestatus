@@ -1,10 +1,16 @@
-import type { WebSocket } from 'ws';
 import type {
-  Server, Prisma, PrismaClient, Event
+  Event,
+  Prisma,
+  PrismaClient,
+  Server,
 } from '@prisma/client';
+import type { WebSocket } from 'ws';
 
 export {
-  Server, Prisma, PrismaClient, Event
+  Event,
+  Prisma,
+  PrismaClient,
+  Server,
 };
 
 export type BaseItem = Omit<Server, 'password' | 'disabled' | 'created_at' | 'updated_at'> & { order: number };
@@ -33,19 +39,19 @@ export type ServerItem = BoxItem & {
     hdd_total: number;
     hdd_used: number;
     custom: string;
-  } | Record<string, never>
+  } | Record<string, never>;
 };
 
-export type IResp<T = any> = {
-  code: 0 | 1,
-  data: T,
-  msg: string
-};
+export interface IResp<T = any> {
+  code: 0 | 1;
+  data: T;
+  msg: string;
+}
 
 enum STATUS {
   NORMAL = 0,
   TERMINATED = 1,
-  RESUME = 2
+  RESUME = 2,
 }
 
-export type IWebSocket = WebSocket & { isAlive?: boolean, ipAddress?: string, status?: STATUS };
+export type IWebSocket = WebSocket & { isAlive?: boolean; ipAddress?: string; status?: STATUS };

@@ -1,23 +1,24 @@
-import React, { FC, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Form, Input, Button } from 'antd';
-import { useSWRConfig } from 'swr';
+import type { FC } from 'react';
+import type { IResp } from '../types';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { notify } from '../utils';
-import api from '../lib/api';
-
-/* https://unsplash.com/photos/McsNra2VRQQ */
-import cherry from '../assets/img/cherry.jpg';
+import { Button, Form, Input } from 'antd';
+import React, { useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useSWRConfig } from 'swr';
 /* https://www.tbs.co.jp/anime/adashima/ */
 import loginBackground from '../assets/img/bg_howatama.png';
 
-import type { IResp } from '../types';
+/* https://unsplash.com/photos/McsNra2VRQQ */
+import cherry from '../assets/img/cherry.jpg';
+import api from '../lib/api';
+
+import { notify } from '../utils';
 
 const Login: FC = () => {
   const navigate = useNavigate();
   const { mutate } = useSWRConfig();
 
-  const onFinish = useCallback(async (values: { username: string, password: string }) => {
+  const onFinish = useCallback(async (values: { username: string; password: string }) => {
     const { username, password } = values;
     const data = await api.post<IResp<string>>('/api/admin/session', { json: { username, password } }).json<IResp<string>>();
     if (!data.code) {
@@ -26,7 +27,7 @@ const Login: FC = () => {
       await mutate('/api/admin/session', {
         code: 0,
         msg: 'OK',
-        data: null
+        data: null,
       }, { revalidate: false });
       navigate('/dashboard');
     }

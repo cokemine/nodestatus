@@ -1,53 +1,58 @@
-<template>
-  <div class="column card__wrapper">
-    <div class="ui fluid card">
-      <div class="card__header">
-        <svg viewBox="0 0 100 100" class="flag-icon">
-          <use :xlink:href="`#${server.region}`"></use>
-        </svg>
-        <span> {{ server.name }} </span>
-        <p>{{ server.type }}</p>
-      </div>
-      <div class="ui tiny progress success">
-        <div class="bar" :style="{width: getStatus ? `${getRAMStatus.toString()}%` : '0%'}">
-        </div>
-      </div>
-      <div class="card__content">
-        <p>Network: {{
-            `${formatNetwork(server.status.network_rx)} | ${formatNetwork(server.status.network_tx)}`
-          }}</p>
-        <p>负载状态: {{ getStatus ? getLoad : 'Offline' }}</p>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
-import useStatus from '@nodestatus/web-utils/vue/hooks/useStatus';
+import type { PropType } from 'vue';
 import type { ServerItem } from '../types';
+import useStatus from '@nodestatus/web-utils/vue/hooks/useStatus';
+import { defineComponent } from 'vue';
 
 export default defineComponent({
   name: 'CardItem',
   props: {
     server: {
       type: Object as PropType<ServerItem>,
-      default: () => ({ status: {} })
-    }
+      default: () => ({ status: {} }),
+    },
   },
   setup(props) {
     const {
-      getStatus, getLoad, getRAMStatus, formatNetwork
+      getStatus,
+      getLoad,
+      getRAMStatus,
+      formatNetwork,
     } = useStatus(props);
     return {
       getStatus,
       getLoad,
       getRAMStatus,
-      formatNetwork
+      formatNetwork,
     };
-  }
+  },
 });
 </script>
+
+<template>
+  <div class="column card__wrapper">
+    <div class="ui fluid card">
+      <div class="card__header">
+        <svg viewBox="0 0 100 100" class="flag-icon">
+          <use :xlink:href="`#${server.region}`" />
+        </svg>
+        <span> {{ server.name }} </span>
+        <p>{{ server.type }}</p>
+      </div>
+      <div class="ui tiny progress success">
+        <div class="bar" :style="{ width: getStatus ? `${getRAMStatus.toString()}%` : '0%' }" />
+      </div>
+      <div class="card__content">
+        <p>
+          Network: {{
+            `${formatNetwork(server.status.network_rx)} | ${formatNetwork(server.status.network_tx)}`
+          }}
+        </p>
+        <p>负载状态: {{ getStatus ? getLoad : 'Offline' }}</p>
+      </div>
+    </div>
+  </div>
+</template>
 
 <style scoped>
 .card__wrapper .card {

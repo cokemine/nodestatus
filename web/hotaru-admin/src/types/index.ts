@@ -1,5 +1,8 @@
 export type {
-  IResp, IServer, ServerItem, Event
+  Event,
+  IResp,
+  IServer,
+  ServerItem,
 } from '@nodestatus/web-utils/types';
 
 export interface ITable {

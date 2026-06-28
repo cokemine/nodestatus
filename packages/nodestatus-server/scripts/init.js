@@ -1,3 +1,4 @@
+import cp from 'node:child_process';
 /*
 *  Prisma 在 https://github.com/prisma/prisma/issues/3834 移除了对多 Provider 的支持。
 *  这使得我们需要在每次运行时重新根据 DATABASE_URL 手动修改 schema
@@ -5,13 +6,12 @@
 *  同时重新调用 `prisma db push` 来实现类似于 Sequelize 的 sync 效果 来应对可能的数据库结构变化
 *  如果有更好的方案欢迎提出
 * */
-import fs from 'fs';
-import { platform, homedir } from 'os';
-import { resolve, dirname } from 'path';
-import cp from 'child_process';
-import { fileURLToPath } from 'url';
-import replace from 'replace-in-file';
+import fs from 'node:fs';
+import { homedir, platform } from 'node:os';
+import { dirname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import dotenv from 'dotenv';
+import replace from 'replace-in-file';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -37,7 +37,8 @@ function initDatabase() {
 
   if (databaseType === 'sqlite') {
     envOption.DATABASE_URL = dbPath.includes('file:') ? dbPath : `file:${dbPath}`;
-  } else {
+  }
+  else {
     envOption.DATABASE_URL = dbPath;
   }
 
@@ -45,7 +46,7 @@ function initDatabase() {
   replace.replaceInFile({
     files: resolve(__dirname, '../prisma/schema.prisma'),
     from: /provider = "\w+"/,
-    to: `provider = "${databaseType}"`
+    to: `provider = "${databaseType}"`,
   }).then(() => {
     let cmd = 'prisma';
     let args = ['db', 'push'];
@@ -57,14 +58,15 @@ function initDatabase() {
     const prisma = cp.spawn(cmd, args, {
       env: envOption,
       cwd: resolve(__dirname, '../'),
-      stdio: 'inherit'
+      stdio: 'inherit',
     });
 
-    prisma.on('close', code => {
+    prisma.on('close', (code) => {
       if (code) {
         console.log('Something wrong while updating database schema.');
         process.exit(code);
-      } else {
+      }
+      else {
         try {
           let genCmd = 'prisma';
           let genArgs = ['generate'];
@@ -75,13 +77,14 @@ function initDatabase() {
           const genResult = cp.spawnSync(genCmd, genArgs, {
             env: envOption,
             cwd: resolve(__dirname, '../'),
-            stdio: 'inherit'
+            stdio: 'inherit',
           });
           if (genResult.status) {
             console.log('Something wrong while generating Prisma client.');
             process.exit(genResult.status);
           }
-        } catch (e) {
+        }
+        catch (e) {
           console.error('Failed to run prisma generate:', e);
           process.exit(1);
         }
@@ -98,5 +101,7 @@ if (process.env.NODE_ENV === 'TEST' && !process.env.DATABASE) {
   process.env.DATABASE = database.replace(/\\/g, '/');
 }
 
-process.env.NODE_ENV !== 'TEST' && dotenv.config({ path: resolve(homedir(), '.nodestatus/.env.local') });
+if (process.env.NODE_ENV !== 'TEST') {
+  dotenv.config({ path: resolve(homedir(), '.nodestatus/.env.local') });
+}
 initDatabase();

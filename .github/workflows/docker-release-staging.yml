@@ -3,7 +3,7 @@ name: Docker Release Staging
 on:
   push:
     branches-ignore:
-      - "renovate/**"
+      - 'renovate/**'
   workflow_dispatch:
 
 jobs:

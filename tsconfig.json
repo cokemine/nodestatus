@@ -1,20 +1,19 @@
 {
-  "files": [],
   "compilerOptions": {
     "target": "esnext",
+    "lib": ["esnext"],
+    "useDefineForClassFields": true,
+    "baseUrl": ".",
     "module": "esnext",
     "moduleResolution": "bundler",
+    "resolveJsonModule": true,
     "strict": true,
     "sourceMap": true,
-    "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "resolveJsonModule": true,
-    "baseUrl": ".",
-    "useDefineForClassFields": true,
-    "skipLibCheck": true,
-    "lib": ["esnext"]
+    "esModuleInterop": true,
+    "ignoreDeprecations": "6.0",
+    "skipLibCheck": true
   },
-  "exclude": ["node_modules"],
   "references": [
     {
       "path": "./tsconfig.react.json"
@@ -28,5 +27,7 @@
     {
       "path": "./tsconfig.test.json"
     }
-  ]
+  ],
+  "files": [],
+  "exclude": ["node_modules"]
 }

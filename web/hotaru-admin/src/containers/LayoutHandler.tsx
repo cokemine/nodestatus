@@ -1,8 +1,9 @@
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import type { IResp } from '../types';
+import React from 'react';
 import { Navigate } from 'react-router-dom';
 import useSWR from 'swr';
 import Loading from '../components/Loading';
-import { IResp } from '../types';
 import Layout from './Layout';
 
 const LayoutHandler: FC = () => {

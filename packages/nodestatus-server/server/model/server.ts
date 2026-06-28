@@ -1,44 +1,48 @@
-import { emitter } from '../lib/utils';
-import prisma from '../lib/prisma';
 import type {
-  IServer, Prisma, Server, PrismaClient
+  IServer,
+  Prisma,
+  PrismaClient,
+  Server,
 } from '../../types/server';
+import prisma from '../lib/prisma';
+import { emitter } from '../lib/utils';
 
 let isInitial = true;
 const orderMap = new Map<number, number>();
 
-const resolveResult = (item: Server | null): IServer | null => {
-  if (!item) return item;
+function resolveResult(item: Server | null): IServer | null {
+  if (!item)
+    return item;
   type Key = keyof Server;
   for (const key of ['password', 'created_at', 'updated_at']) delete item[key as Key];
   return Object.assign(item, { order: orderMap.get(item.id) || item.id || 0 });
-};
+}
 
-const updateCacheOrder = (order: string, shouldEmit = true): void => {
+function updateCacheOrder(order: string, shouldEmit = true): void {
   orderMap.clear();
   const orderList = order === '' ? [] : order.split(',');
   for (let i = 0; i < orderList.length; ++i) {
     orderMap.set(Number(orderList[i]), i + 1);
   }
   shouldEmit && emitter.emit('update');
-};
+}
 
-const queryOrder = async (): Promise<void> => {
+async function queryOrder(): Promise<void> {
   const order = await prisma.option.findUnique({
     where: {
-      name: 'order'
-    }
+      name: 'order',
+    },
   });
   isInitial = false;
   return updateCacheOrder(order?.value || '');
-};
+}
 
 export async function updateOrder(order: string, Prisma = prisma): Promise<void> {
   const shouldEmit = Prisma === prisma;
   await Prisma.option.upsert({
     where: { name: 'order' },
     update: { value: order },
-    create: { name: 'order', value: order }
+    create: { name: 'order', value: order },
   });
   updateCacheOrder(order, shouldEmit);
 }
@@ -46,8 +50,8 @@ export async function updateOrder(order: string, Prisma = prisma): Promise<void>
 export async function readServer(username: string): Promise<IServer | null> {
   const item = await prisma.server.findUnique({
     where: {
-      username
-    }
+      username,
+    },
   });
   return resolveResult(item);
 }
@@ -55,8 +59,8 @@ export async function readServer(username: string): Promise<IServer | null> {
 export async function readServerPassword(username: string): Promise<string | null> {
   const item = await prisma.server.findUnique({
     where: {
-      username
-    }
+      username,
+    },
   });
   return item?.password || null;
 }
@@ -71,7 +75,7 @@ export async function readServersList(): Promise<IServer[]> {
 }
 
 export async function createServer(item: Prisma.ServerCreateInput): Promise<void> {
-  await prisma.$transaction(async prisma => {
+  await prisma.$transaction(async (prisma) => {
     const server = await prisma.server.create({ data: item });
     const order = Array.from(orderMap.keys());
     order.push(server.id);
@@ -86,10 +90,10 @@ export async function bulkCreateServer(items: Prisma.ServerCreateInput[]): Promi
   //   data: items,
   //   skipDuplicates: true
   // });
-  await prisma.$transaction(async prisma => {
+  await prisma.$transaction(async (prisma) => {
     const preMap: Record<string, number> = {};
     await Promise.all(
-      items.map(item => prisma.server.create({ data: item }).then(server => (preMap[server.username] = server.id)))
+      items.map(item => prisma.server.create({ data: item }).then(server => (preMap[server.username] = server.id))),
     );
     const newOrder = Array.from(orderMap.keys()).concat(items.map(item => preMap[item.username]));
     await updateOrder(newOrder.join(','), prisma as PrismaClient);
@@ -98,11 +102,11 @@ export async function bulkCreateServer(items: Prisma.ServerCreateInput[]): Promi
 }
 
 export async function deleteServer(username: string): Promise<void> {
-  await prisma.$transaction(async prisma => {
+  await prisma.$transaction(async (prisma) => {
     const server = await prisma.server.delete({
       where: {
-        username
-      }
+        username,
+      },
     });
     orderMap.delete(server.id);
     await updateOrder(Array.from(orderMap.keys()).join(','), prisma as PrismaClient);
@@ -113,9 +117,9 @@ export async function deleteServer(username: string): Promise<void> {
 export async function updateServer(username: string, obj: Partial<Server>): Promise<void> {
   await prisma.server.update({
     where: {
-      username
+      username,
     },
-    data: obj
+    data: obj,
   });
   const shouldDisconnect = !!(obj.username || obj.password || obj.disabled === true);
   emitter.emit('update', username, shouldDisconnect);

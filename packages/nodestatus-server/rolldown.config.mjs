@@ -1,6 +1,6 @@
+import run from '@rollup/plugin-run';
 import { defineConfig } from 'rolldown';
 import del from 'rollup-plugin-delete';
-import run from '@rollup/plugin-run';
 import pkg from './package.json' with { type: 'json' };
 
 export default defineConfig((args) => {
@@ -17,13 +17,13 @@ export default defineConfig((args) => {
     output: {
       dir: './build',
       format: 'esm',
-      sourcemap: !isProd
+      sourcemap: !isProd,
     },
     platform: 'node',
     external,
     plugins: [
       del({ targets: 'build/*' }),
-      !isProd && run()
-    ]
+      !isProd && run(),
+    ],
   };
 });

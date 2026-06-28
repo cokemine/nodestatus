@@ -1,14 +1,25 @@
-import {
-  vi, afterEach, expect, test
-} from 'vitest';
+import type { IServer, Prisma } from '../../types/server';
 import { hash } from 'bcrypt-ts';
 import {
-  addServer, authServer, getListServers, getServer, setServer
+  afterEach,
+  expect,
+  it,
+  vi,
+} from 'vitest';
+import {
+  addServer,
+  authServer,
+  getListServers,
+  getServer,
+  setServer,
 } from '../../server/controller/status';
 import {
-  readServersList, createServer, readServer, updateServer, readServerPassword
+  createServer,
+  readServer,
+  readServerPassword,
+  readServersList,
+  updateServer,
 } from '../../server/model/server';
-import { IServer, Prisma } from '../../types/server';
 
 vi.mock('../../server/model/server');
 
@@ -22,48 +33,49 @@ afterEach(() => {
   [ReadServersList, CreateServer, ReadServer, UpdateServer, ReadServerPassword].forEach(fn => fn.mockReset());
 });
 
-const mockServerInput = (str: string): Prisma.ServerCreateInput => ({
-  name: str,
-  username: str,
-  password: str,
-  region: str,
-  type: str,
-  location: str
-});
+function mockServerInput(str: string): Prisma.ServerCreateInput {
+  return {
+    name: str,
+    username: str,
+    password: str,
+    region: str,
+    type: str,
+    location: str,
+  };
+}
 
-const mockIServer = (str: string | Prisma.ServerCreateInput, disabled = false): IServer => {
+function mockIServer(str: string | Prisma.ServerCreateInput, disabled = false): IServer {
   let server: Prisma.ServerCreateInput;
   if (typeof str === 'object') {
     server = str;
-  } else {
+  }
+  else {
     server = mockServerInput(str);
   }
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { password, ...rest } = server;
+  const { password: _password, ...rest } = server;
   return {
     ...rest,
     id: 1,
     order: 1,
-    disabled
+    disabled,
   };
-};
+}
 
-test('Call get servers first and expect empty object', async () => {
+it('call get servers first and expect empty object', async () => {
   ReadServersList.mockResolvedValueOnce([]);
   await expect(getListServers()).resolves.toEqual({ code: 0, data: {}, msg: 'ok' });
 });
 
-test('Create a server and find unique Server', async () => {
-  const server = mockServerInput('username'),
-    iServer = mockIServer(server);
+it('create a server and find unique Server', async () => {
+  const server = mockServerInput('username');
+  const iServer = mockIServer(server);
   await expect(addServer(server)).resolves.toEqual({ code: 0, data: null, msg: 'ok' });
   ReadServer.mockResolvedValueOnce(iServer);
   const result = await getServer('username');
   expect(result.code).toBe(0);
   expect(result.msg).toBe('ok');
   ['password', 'created_at', 'updated_at', 'username', 'disabled'].forEach(prop => expect(result.data).not.toHaveProperty(prop));
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { disabled, username, ...rest } = iServer;
+  const { disabled: _disabled, username: _username, ...rest } = iServer;
   expect(result.data).toEqual(rest);
 
   // /* NOT Find server */
@@ -73,34 +85,34 @@ test('Create a server and find unique Server', async () => {
   // expect(result2.data).toBe(null);
 });
 
-test('Set Server with disabled', async () => {
+it('set Server with disabled', async () => {
   await expect(
     setServer('username', {
-      disabled: true
-    })
+      disabled: true,
+    }),
   ).resolves.toEqual({ code: 0, data: null, msg: 'ok' });
   ReadServer.mockResolvedValueOnce(mockIServer('username', true));
   await expect(getServer('username')).resolves.toEqual({
     code: 1,
     data: null,
-    msg: 'Server disabled'
+    msg: 'Server disabled',
   });
 });
 
-test('get List Servers', async () => {
+it('get List Servers', async () => {
   const servers = ['Megumi', 'Siesta', 'Emilia'].map(name => mockServerInput(name));
   await Promise.all(
     servers.map(server => expect(addServer(server)).resolves.toEqual({
       code: 0,
       data: null,
-      msg: 'ok'
-    }))
+      msg: 'ok',
+    })),
   );
   ReadServersList.mockResolvedValueOnce(servers.map(({ name }) => mockIServer(name)));
   const result = await getListServers();
   expect(result).toMatchObject({
     code: 0,
-    msg: 'ok'
+    msg: 'ok',
   });
   const { data } = result;
   expect(Object.keys(data)).toHaveLength(3);
@@ -109,7 +121,7 @@ test('get List Servers', async () => {
   }
 });
 
-test('auth password', async () => {
+it('auth password', async () => {
   const password = await hash('username', 8);
   ReadServerPassword.mockResolvedValue(password);
   await expect(authServer('username', 'username')).resolves.toBe(true);

@@ -1,20 +1,22 @@
-import React, { FC } from 'react';
+import type { FC } from 'react';
+import { Tooltip } from 'antd';
+import isEqual from 'fast-deep-equal/es6/react';
+
+/* https://simplemaps.com/data/world-cities */
+import countries from 'i18n-iso-countries';
+import React from 'react';
 import {
   ComposableMap,
   Geographies,
-  Geography, Marker
+  Geography,
+  Marker,
 } from 'react-simple-maps';
-
-import isEqual from 'fast-deep-equal/es6/react';
-/* https://simplemaps.com/data/world-cities */
-import countries from 'i18n-iso-countries';
-import { Tooltip } from 'antd';
 import coordinates from '../utils/coordinates.json';
 /* https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json */
 import geoMap from '../utils/world-110m.json';
 
 interface Props {
-  count: Record<string, number>,
+  count: Record<string, number>;
 }
 
 const MapChart: FC<Props> = props => (
@@ -33,16 +35,17 @@ const MapChart: FC<Props> = props => (
             style={{
               default: { outline: 'none' },
               hover: { outline: 'none' },
-              pressed: { outline: 'none' }
+              pressed: { outline: 'none' },
             }}
           />
         ))}
       </Geographies>
       {
-        Object.keys(props.count).map(key => {
+        Object.keys(props.count).map((key) => {
           const count = props.count[key];
           const K = key as keyof typeof coordinates;
-          if (!coordinates[K]) return;
+          if (!coordinates[K])
+            return;
           const country = countries.getName(key, 'en', { select: 'official' });
           return (
             <Tooltip

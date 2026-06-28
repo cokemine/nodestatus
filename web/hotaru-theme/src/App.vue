@@ -1,28 +1,15 @@
-<template>
-  <global-context>
-    <the-header />
-    <the-error v-show="!servers" />
-    <div class="container">
-      <servers-table :servers="servers" />
-      <update-time :updated="updated" />
-      <servers-card :servers="servers" />
-    </div>
-    <the-footer />
-  </global-context>
-</template>
-
 <script lang="ts">
-import { defineComponent, ref, onBeforeUnmount } from 'vue';
-import WebSocket from 'reconnecting-websocket';
+import type { ServerItem } from './types';
+import GlobalContext from '@nodestatus/web-utils/vue/components/GlobalContext.vue';
 
 import TheError from '@nodestatus/web-utils/vue/components/TheError.vue';
 import UpdateTime from '@nodestatus/web-utils/vue/components/UpdateTime.vue';
-import GlobalContext from '@nodestatus/web-utils/vue/components/GlobalContext.vue';
-import TheHeader from './components/TheHeader.vue';
-import ServersTable from './components/ServersTable.vue';
+import WebSocket from 'reconnecting-websocket';
+import { defineComponent, onBeforeUnmount, ref } from 'vue';
 import ServersCard from './components/ServersCard.vue';
+import ServersTable from './components/ServersTable.vue';
 import TheFooter from './components/TheFooter.vue';
-import type { ServerItem } from './types';
+import TheHeader from './components/TheHeader.vue';
 
 /* Semantic UI Style */
 import 'semantic-ui-css/semantic.min.css';
@@ -36,7 +23,7 @@ export default defineComponent({
     ServersCard,
     TheFooter,
     UpdateTime,
-    GlobalContext
+    GlobalContext,
   },
   setup() {
     const servers = ref<Array<ServerItem>>();
@@ -45,7 +32,7 @@ export default defineComponent({
     ws.onopen = () => console.info('Connect to backend successfully!');
     ws.onclose = () => console.warn('WebSocket disconnected!');
     ws.onerror = () => console.error('An error occurred while connecting to the backend');
-    ws.onmessage = evt => {
+    ws.onmessage = (evt) => {
       const data = JSON.parse(evt.data);
       servers.value = data.servers;
       updated.value = data.updated;
@@ -53,11 +40,24 @@ export default defineComponent({
     onBeforeUnmount(ws.close);
     return {
       servers,
-      updated
+      updated,
     };
-  }
+  },
 });
 </script>
+
+<template>
+  <GlobalContext>
+    <TheHeader />
+    <TheError v-show="!servers" />
+    <div class="container">
+      <ServersTable :servers="servers" />
+      <UpdateTime :updated="updated" />
+      <ServersCard :servers="servers" />
+    </div>
+    <TheFooter />
+  </GlobalContext>
+</template>
 
 <style>
 body {

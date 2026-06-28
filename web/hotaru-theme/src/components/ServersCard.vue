@@ -1,3 +1,20 @@
+<script lang="ts">
+import type { PropType } from 'vue';
+import type { ServerItem } from '../types';
+import { defineComponent } from 'vue';
+import CardItem from './CardItem.vue';
+
+export default defineComponent({
+  name: 'ServersCard',
+  components: {
+    CardItem,
+  },
+  props: {
+    servers: Array as PropType<Array<ServerItem>>,
+  },
+});
+</script>
+
 <template>
   <div id="cards">
     <div class="ui doubling three column grid">
@@ -5,22 +22,6 @@
     </div>
   </div>
 </template>
-
-<script lang="ts">
-import { defineComponent, PropType } from 'vue';
-import CardItem from './CardItem.vue';
-import type { ServerItem } from '../types';
-
-export default defineComponent({
-  name: 'ServersCard',
-  props: {
-    servers: Array as PropType<Array<ServerItem>>
-  },
-  components: {
-    CardItem
-  }
-});
-</script>
 
 <style>
 #cards {

@@ -1,9 +1,10 @@
-import React, { FC, ReactNode } from 'react';
+import type { FC, ReactNode } from 'react';
+import React from 'react';
 
 interface Props {
-  icon: ReactNode,
+  icon: ReactNode;
   title: string;
-  count: number,
+  count: number;
 }
 
 const StateCard: FC<Props> = ({ icon, title, count }) => (

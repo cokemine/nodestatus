@@ -1,48 +1,52 @@
-import { Context } from 'hono';
+import type { Context } from 'hono';
+import config from '../lib/config';
+import { createRes } from '../lib/utils';
+import { deleteAllEvents, deleteEvent, readEvents } from '../model/event';
 import {
   bulkCreateServer,
   createServer,
   deleteServer,
   readServersList,
+  updateOrder,
   updateServer,
-  updateOrder
 } from '../model/server';
-import { createRes } from '../lib/utils';
-import { deleteAllEvents, deleteEvent, readEvents } from '../model/event';
-import config from '../lib/config';
 
 async function handleRequest<T>(c: Context, handler: Promise<T>): Promise<Response> {
   try {
     return c.json(createRes({ data: await handler }));
-  } catch (err: any) {
+  }
+  catch (err: any) {
     return c.json(createRes(1, err.message), 500);
   }
 }
 
-const getListServers = async (c: Context) => {
+async function getListServers(c: Context) {
   return handleRequest(c, readServersList().then(data => data.sort((x, y) => y.order - x.order)));
-};
+}
 
-const setServer = async (c: Context) => {
+async function setServer(c: Context) {
   let body: any;
   try {
     body = await c.req.json();
-  } catch {
+  }
+  catch {
     body = {};
   }
   const { username, data } = body;
   if (!username || !data) {
     return c.json(createRes(1, 'Wrong request'), 400);
   }
-  if (username === data.username) delete data.username;
+  if (username === data.username)
+    delete data.username;
   return handleRequest(c, updateServer(username, data));
-};
+}
 
-const addServer = async (c: Context) => {
+async function addServer(c: Context) {
   let data: any;
   try {
     data = await c.req.json();
-  } catch {
+  }
+  catch {
     return c.json(createRes(1, 'Wrong request'), 400);
   }
   if (!data) {
@@ -52,27 +56,30 @@ const addServer = async (c: Context) => {
     try {
       const d = JSON.parse(data.data);
       return handleRequest(c, bulkCreateServer(d));
-    } catch (error: any) {
+    }
+    catch {
       return c.json(createRes(1, 'Wrong request'), 400);
     }
-  } else {
+  }
+  else {
     return handleRequest(c, createServer(data));
   }
-};
+}
 
-const removeServer = async (c: Context) => {
+async function removeServer(c: Context) {
   const username = c.req.param('username') || '';
   if (!username) {
     return c.json(createRes(1, 'Wrong request'), 400);
   }
   return handleRequest(c, deleteServer(username));
-};
+}
 
-const modifyOrder = async (c: Context) => {
+async function modifyOrder(c: Context) {
   let body: any;
   try {
     body = await c.req.json();
-  } catch {
+  }
+  catch {
     body = {};
   }
   const { order = [] } = body as { order: number[] };
@@ -80,36 +87,39 @@ const modifyOrder = async (c: Context) => {
     return c.json(createRes(1, 'Wrong request'), 400);
   }
   return handleRequest(c, updateOrder(order.join(',')));
-};
+}
 
-const queryEvents = async (c: Context) => {
+async function queryEvents(c: Context) {
   const size = Number(c.req.query('size')) || 10;
   const offset = Number(c.req.query('offset')) || 0;
   return handleRequest(c, readEvents(size, offset).then(([count, list]) => ({ count, list })));
-};
+}
 
-const removeEvent = async (c: Context) => {
+async function removeEvent(c: Context) {
   const id = c.req.param('id');
   if (id) {
     return handleRequest(c, deleteEvent(Number(id)));
-  } else {
+  }
+  else {
     return handleRequest(c, deleteAllEvents());
   }
-};
+}
 
-const queryConfig = async (c: Context) => c.json({
-  title: config.webTitle,
-  subTitle: config.webSubtitle,
-  headTitle: config.webHeadtitle
-});
+async function queryConfig(c: Context) {
+  return c.json({
+    title: config.webTitle,
+    subTitle: config.webSubtitle,
+    headTitle: config.webHeadtitle,
+  });
+}
 
 export {
-  getListServers,
-  setServer,
   addServer,
-  removeServer,
+  getListServers,
   modifyOrder,
+  queryConfig,
   queryEvents,
   removeEvent,
-  queryConfig
+  removeServer,
+  setServer,
 };

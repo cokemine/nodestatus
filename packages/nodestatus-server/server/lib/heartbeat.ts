@@ -1,4 +1,4 @@
-import { Server } from 'ws';
+import type { Server } from 'ws';
 import type { IWebSocket } from '../../types/server';
 
 function heartbeat(this: IWebSocket) {

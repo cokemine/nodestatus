@@ -1,8 +1,8 @@
 {
   "name": "classic-theme",
+  "type": "module",
   "version": "0.0.0",
   "private": true,
-  "type": "module",
   "scripts": {
     "build": "vue-tsc --noEmit && vite build",
     "dev": "vite",
@@ -14,7 +14,7 @@
     "@vueuse/head": "^1.0.22",
     "bootstrap": "3.4.1",
     "reconnecting-websocket": "^4.4.0",
-    "typescript": "^5.5.3",
+    "typescript": "^6.0.3",
     "vite": "^8.1.0",
     "vue": "^3.2.33",
     "vue-tsc": "^2.0.0"

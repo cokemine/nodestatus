@@ -1,45 +1,44 @@
-import { vi, afterEach, expect, test } from 'vitest';
-import { Context } from 'hono';
+import type { Context } from 'hono';
+import { afterEach, expect, it, vi } from 'vitest';
 import {
-  getListServers,
-  setServer,
   addServer,
-  removeServer,
+  getListServers,
   modifyOrder,
+  queryConfig,
   queryEvents,
   removeEvent,
-  queryConfig
+  removeServer,
+  setServer,
 } from '../../server/controller/web';
+import { deleteAllEvents, deleteEvent, readEvents } from '../../server/model/event';
 import {
-  readServersList,
-  updateServer,
-  createServer,
   bulkCreateServer,
   deleteServer,
-  updateOrder
+  readServersList,
+  updateOrder,
+  updateServer,
 } from '../../server/model/server';
-import { readEvents, deleteEvent, deleteAllEvents } from '../../server/model/event';
 
 vi.mock('../../server/model/server');
 vi.mock('../../server/model/event');
 
-const mockContext = (jsonBody: any = {}, queryParams: any = {}, routeParams: any = {}) => {
+function mockContext(jsonBody: any = {}, queryParams: any = {}, routeParams: any = {}) {
   const c = {
     req: {
       json: vi.fn().mockResolvedValue(jsonBody),
-      query: vi.fn().mockImplementation((key) => queryParams[key]),
-      param: vi.fn().mockImplementation((key) => routeParams[key])
+      query: vi.fn().mockImplementation(key => queryParams[key]),
+      param: vi.fn().mockImplementation(key => routeParams[key]),
     },
-    json: vi.fn().mockImplementation((data, status) => ({ body: data, status: status || 200 }))
+    json: vi.fn().mockImplementation((data, status) => ({ body: data, status: status || 200 })),
   } as unknown as Context;
   return c;
-};
+}
 
 afterEach(() => {
   vi.clearAllMocks();
 });
 
-test('getListServers', async () => {
+it('getListServers', async () => {
   const mockServers = [{ order: 1, name: 'srv1' }, { order: 2, name: 'srv2' }] as any;
   vi.mocked(readServersList).mockResolvedValueOnce(mockServers);
 
@@ -51,7 +50,7 @@ test('getListServers', async () => {
   expect(res.body).toEqual({ code: 0, data: [{ order: 2, name: 'srv2' }, { order: 1, name: 'srv1' }], msg: 'ok' });
 });
 
-test('setServer success', async () => {
+it('setServer success', async () => {
   vi.mocked(updateServer).mockResolvedValueOnce(undefined as any);
   const c = mockContext({ username: 'srv1', data: { username: 'srv1', name: 'newname' } });
   const res: any = await setServer(c);
@@ -60,7 +59,7 @@ test('setServer success', async () => {
   expect(res.body).toEqual({ code: 0, data: null, msg: 'ok' });
 });
 
-test('addServer bulk', async () => {
+it('addServer bulk', async () => {
   vi.mocked(bulkCreateServer).mockResolvedValueOnce(undefined as any);
   const c = mockContext({ data: JSON.stringify([{ username: 'srv1' }]) });
   const res: any = await addServer(c);
@@ -69,7 +68,7 @@ test('addServer bulk', async () => {
   expect(res.body).toEqual({ code: 0, data: null, msg: 'ok' });
 });
 
-test('removeServer', async () => {
+it('removeServer', async () => {
   vi.mocked(deleteServer).mockResolvedValueOnce(undefined as any);
   const c = mockContext({}, {}, { username: 'srv1' });
   const res: any = await removeServer(c);
@@ -78,7 +77,7 @@ test('removeServer', async () => {
   expect(res.body).toEqual({ code: 0, data: null, msg: 'ok' });
 });
 
-test('modifyOrder', async () => {
+it('modifyOrder', async () => {
   vi.mocked(updateOrder).mockResolvedValueOnce(undefined as any);
   const c = mockContext({ order: [1, 2, 3] });
   const res: any = await modifyOrder(c);
@@ -87,7 +86,7 @@ test('modifyOrder', async () => {
   expect(res.body).toEqual({ code: 0, data: null, msg: 'ok' });
 });
 
-test('queryEvents', async () => {
+it('queryEvents', async () => {
   vi.mocked(readEvents).mockResolvedValueOnce([1, [{ id: 1 }]] as any);
   const c = mockContext({}, { size: '5', offset: '2' });
   const res: any = await queryEvents(c);
@@ -96,7 +95,7 @@ test('queryEvents', async () => {
   expect(res.body).toEqual({ code: 0, data: { count: 1, list: [{ id: 1 }] }, msg: 'ok' });
 });
 
-test('removeEvent single', async () => {
+it('removeEvent single', async () => {
   vi.mocked(deleteEvent).mockResolvedValueOnce(undefined as any);
   const c = mockContext({}, {}, { id: '123' });
   const res: any = await removeEvent(c);
@@ -105,7 +104,7 @@ test('removeEvent single', async () => {
   expect(res.body).toEqual({ code: 0, data: null, msg: 'ok' });
 });
 
-test('removeEvent all', async () => {
+it('removeEvent all', async () => {
   vi.mocked(deleteAllEvents).mockResolvedValueOnce(undefined as any);
   const c = mockContext({}, {}, {});
   const res: any = await removeEvent(c);
@@ -114,7 +113,7 @@ test('removeEvent all', async () => {
   expect(res.body).toEqual({ code: 0, data: null, msg: 'ok' });
 });
 
-test('queryConfig', async () => {
+it('queryConfig', async () => {
   const c = mockContext();
   const res: any = await queryConfig(c);
   expect(res.body).toHaveProperty('title');

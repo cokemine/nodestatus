@@ -1,26 +1,32 @@
+import type {
+  Box,
+  BoxItem,
+  IResp,
+  IServer,
+  Prisma,
+  Server,
+} from '../../types/server';
 import { compare } from 'bcrypt-ts';
-import {
-  readServersList,
-  createServer,
-  readServer,
-  updateServer,
-  deleteServer,
-  readServerPassword
-} from '../model/server';
+import { createRes } from '../lib/utils';
 import {
   createEvent,
-  updateEvent
+  updateEvent,
 } from '../model/event';
-import { createRes } from '../lib/utils';
-import type {
-  Prisma, Server, IResp, Box, IServer, BoxItem
-} from '../../types/server';
+import {
+  createServer,
+  deleteServer,
+  readServer,
+  readServerPassword,
+  readServersList,
+  updateServer,
+} from '../model/server';
 
 async function handleRequest<T = any>(handler: Promise<T>): Promise<IResp<T>> {
   let data: T;
   try {
     data = await handler;
-  } catch (error: any) {
+  }
+  catch (error: any) {
     return createRes(1, error.message);
   }
   return createRes({ data });
@@ -28,7 +34,8 @@ async function handleRequest<T = any>(handler: Promise<T>): Promise<IResp<T>> {
 
 export async function authServer(username: string, password: string): Promise<boolean> {
   const res = await handleRequest(readServerPassword(username));
-  if (res.code || !res.data) return false;
+  if (res.code || !res.data)
+    return false;
   return compare(password, res.data);
 }
 
@@ -46,12 +53,14 @@ export function removeServer(username: string): Promise<IResp<void>> {
 
 export async function getListServers(): Promise<IResp<Box>> {
   const result = await handleRequest(readServersList());
-  if (result.code) return result as any;
+  if (result.code)
+    return result as any;
   const obj: Box = {};
 
-  result.data.forEach(item => {
+  result.data.forEach((item) => {
     const { username, disabled, ..._item } = item;
-    if (disabled) return;
+    if (disabled)
+      return;
     obj[username] = _item;
   });
   return createRes({ data: obj });
@@ -59,11 +68,12 @@ export async function getListServers(): Promise<IResp<Box>> {
 
 export async function getServer(username: string): Promise<IResp<BoxItem | null>> {
   const result = await handleRequest(readServer(username));
-  if (result.code || !result.data) return result;
+  if (result.code || !result.data)
+    return result;
   const { data } = result;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { username: _, disabled, ...item } = data;
-  if (disabled) return createRes(1, 'Server disabled');
+  if (disabled)
+    return createRes(1, 'Server disabled');
   return createRes({ data: item });
 }
 

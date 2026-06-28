@@ -1,8 +1,8 @@
 {
   "name": "hotaru-theme",
+  "type": "module",
   "version": "0.0.0",
   "private": true,
-  "type": "module",
   "scripts": {
     "build": "vue-tsc --noEmit && vite build",
     "dev": "vite",
@@ -14,7 +14,7 @@
     "@vueuse/head": "^1.0.22",
     "reconnecting-websocket": "^4.4.0",
     "semantic-ui-css": "^2.4.1",
-    "typescript": "^5.5.3",
+    "typescript": "^6.0.3",
     "vite": "^8.1.0",
     "vite-plugin-svg-icons": "^2.0.1",
     "vue": "^3.2.33",

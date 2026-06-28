@@ -1,44 +1,69 @@
-<template>
-  <table class="ui basic unstackable table" id="table">
-    <thead>
-    <tr>
-      <th id="status4">运行状态</th>
-      <th id="name">节点名</th>
-      <th id="type">类型</th>
-      <th id="location">服务器位置</th>
-      <th id="uptime">在线时间</th>
-      <th id="load">负载</th>
-      <th id="network">网络↓|↑</th>
-      <th id="traffic">流量↓|↑</th>
-      <th id="cpu">CPU</th>
-      <th id="ram">内存</th>
-      <th id="hdd">硬盘</th>
-    </tr>
-    </thead>
-    <tbody id="servers">
-    <!-- Servers here \o/ -->
-    <table-item v-for="server of servers" :key="server.id" :server="server" />
-    </tbody>
-  </table>
-</template>
 <script lang="ts">
-import { defineComponent, PropType } from 'vue';
-import TableItem from './TableItem.vue';
+import type { PropType } from 'vue';
 import type { ServerItem } from '../types';
+import { defineComponent } from 'vue';
+import TableItem from './TableItem.vue';
 
 export default defineComponent({
   name: 'ServersTable',
+  components: {
+    TableItem,
+  },
   props: {
     servers: {
       type: Array as PropType<Array<ServerItem>>,
-      default: () => ([])
-    }
+      default: () => ([]),
+    },
   },
-  components: {
-    TableItem
-  }
 });
 </script>
+
+<template>
+  <table id="table" class="ui basic unstackable table">
+    <thead>
+      <tr>
+        <th id="status4">
+          运行状态
+        </th>
+        <th id="name">
+          节点名
+        </th>
+        <th id="type">
+          类型
+        </th>
+        <th id="location">
+          服务器位置
+        </th>
+        <th id="uptime">
+          在线时间
+        </th>
+        <th id="load">
+          负载
+        </th>
+        <th id="network">
+          网络↓|↑
+        </th>
+        <th id="traffic">
+          流量↓|↑
+        </th>
+        <th id="cpu">
+          CPU
+        </th>
+        <th id="ram">
+          内存
+        </th>
+        <th id="hdd">
+          硬盘
+        </th>
+      </tr>
+    </thead>
+    <tbody id="servers">
+      <!-- Servers here \o/ -->
+      <TableItem v-for="server of servers" :key="server.id" :server="server" />
+    </tbody>
+  </table>
+</template>
+
 <style>
 #table {
   font-size: 1rem;

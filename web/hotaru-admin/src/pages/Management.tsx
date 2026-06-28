@@ -1,45 +1,67 @@
-import React, {
-  FC, ReactElement, Reducer, useCallback, useMemo, useState, useReducer
-} from 'react';
-import {
-  Typography, Table, Tag, Modal, Input, Form, Switch, Button, AutoComplete,
-  FormInstance
+import type {
+  FormInstance,
 } from 'antd';
-import { ColumnsType } from 'antd/es/table';
+import type { ColumnsType } from 'antd/es/table';
+import type {
+  FC,
+  ReactElement,
+  Reducer,
+} from 'react';
+import type { KeyedMutator } from 'swr';
+import type { IResp, IServer } from '../types';
 import {
-  DeleteOutlined, EditOutlined, ExclamationCircleOutlined, MenuOutlined
+  DeleteOutlined,
+  EditOutlined,
+  ExclamationCircleOutlined,
+  MenuOutlined,
 } from '@ant-design/icons';
-import useSWR, { KeyedMutator } from 'swr';
-import api from '../lib/api';
+import {
+  AutoComplete,
+  Button,
+  Form,
+  Input,
+  Modal,
+  Switch,
+  Table,
+  Tag,
+  Typography,
+} from 'antd';
 import { arrayMoveImmutable } from 'array-move';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import countries from 'i18n-iso-countries';
-import i18nZh from 'i18n-iso-countries/langs/zh.json';
 import i18nEn from 'i18n-iso-countries/langs/en.json';
-import { IResp, IServer } from '../types';
-import { notify } from '../utils';
+import i18nZh from 'i18n-iso-countries/langs/zh.json';
+import React, {
+  useCallback,
+  useMemo,
+  useReducer,
+  useState,
+} from 'react';
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
+import useSWR from 'swr';
 import Loading from '../components/Loading';
+import api from '../lib/api';
+import { notify } from '../utils';
 
 const { Title } = Typography;
 countries.registerLocale(i18nZh);
 countries.registerLocale(i18nEn);
 
-type ActionType = {
-  type: 'showModal' | 'showImportForm' | 'reverseSortEnabled' | 'resetState' | 'setInstallationScript' | 'setNode',
+interface ActionType {
+  type: 'showModal' | 'showImportForm' | 'reverseSortEnabled' | 'resetState' | 'setInstallationScript' | 'setNode';
   payload?: {
-    form?: FormInstance,
-    mutate?: KeyedMutator<any>,
-    installationScript?: string,
+    form?: FormInstance;
+    mutate?: KeyedMutator<any>;
+    installationScript?: string;
     currentNode?: string;
-  }
-};
+  };
+}
 
 const initialState = {
   currentNode: '',
   installationScript: '',
   showModal: false,
   sortEnabled: false,
-  isImport: false
+  isImport: false,
 };
 
 const reducer: Reducer<typeof initialState, ActionType> = (state, action) => {
@@ -47,13 +69,13 @@ const reducer: Reducer<typeof initialState, ActionType> = (state, action) => {
     mutate,
     form,
     installationScript = '',
-    currentNode = ''
+    currentNode = '',
   } = action.payload ?? {};
   switch (action.type) {
     case 'showModal':
       return {
         ...state,
-        showModal: true
+        showModal: true,
       };
     case 'reverseSortEnabled':
       return { ...state, sortEnabled: !state.sortEnabled };
@@ -67,7 +89,7 @@ const reducer: Reducer<typeof initialState, ActionType> = (state, action) => {
         ...state,
         showModal: true,
         currentNode,
-        installationScript
+        installationScript,
       };
     case 'resetState':
       mutate?.();
@@ -77,27 +99,26 @@ const reducer: Reducer<typeof initialState, ActionType> = (state, action) => {
         currentNode: '',
         installationScript: '',
         showModal: false,
-        isImport: false
+        isImport: false,
       };
     default:
       throw new Error();
   }
 };
 
-const basicValidator = (_: unknown, value: string) => ([' ', '+', '&', '%', '/', '\\', '?', '#']
-  .some(v => value.includes(v))
-  ? Promise.reject(new Error('This field cannot contain spaces and special characters'))
-  : Promise.resolve());
+function basicValidator(_: unknown, value: string) {
+  return [' ', '+', '&', '%', '/', '\\', '?', '#']
+    .some(v => value.includes(v))
+    ? Promise.reject(new Error('This field cannot contain spaces and special characters'))
+    : Promise.resolve();
+}
 
-const parseInstallationScript = (
-  username: string,
-  password: string
-): string => {
+function parseInstallationScript(username: string, password: string): string {
   const protocol = document.location.protocol.replace('http', 'ws');
   const { host } = window.location;
   const dsn = `${protocol}//${username || 'USERNAME_YOU_SET'}:${password || 'PASSWORD_YOU_SET'}@${host}`;
   return `wget -N https://raw.githubusercontent.com/cokemine/nodestatus-client-go/master/install.sh && bash install.sh --dsn ${dsn}`;
-};
+}
 
 const Management: FC = () => {
   const [regionResult, setRegionResult] = useState<string[]>([]);
@@ -106,11 +127,11 @@ const Management: FC = () => {
 
   const [form] = Form.useForm<IServer & { password: string }>();
   const { confirm } = Modal;
-  const dataSource = data?.data!;
+  const dataSource = data?.data;
 
   const handleModify = useCallback(() => {
     const data = form.getFieldsValue();
-    api.put('/api/admin/servers', { json: { username: state.currentNode, data } }).json<IResp>().then(res => {
+    api.put('/api/admin/servers', { json: { username: state.currentNode, data } }).json<IResp>().then((res) => {
       notify('Success', res.msg, 'success');
       dispatch({ type: 'resetState', payload: { form, mutate } });
     });
@@ -118,21 +139,21 @@ const Management: FC = () => {
 
   const handleCreate = useCallback(() => {
     const data = form.getFieldsValue();
-    api.post('/api/admin/servers', { json: { ...data } }).json<IResp>().then(res => {
+    api.post('/api/admin/servers', { json: { ...data } }).json<IResp>().then((res) => {
       notify('Success', res.msg, 'success');
       dispatch({ type: 'resetState', payload: { form, mutate } });
     });
   }, [form, mutate]);
 
   const handleDelete = useCallback((username: string) => {
-    api.delete(`/api/admin/servers/${username}`).json<IResp>().then(res => {
+    api.delete(`/api/admin/servers/${username}`).json<IResp>().then((res) => {
       notify('Success', res.msg, 'success');
       dispatch({ type: 'resetState', payload: { form, mutate } });
     });
   }, [form, mutate]);
 
   const handleSortOrder = useCallback((order: number[]) => {
-    api.put('/api/admin/servers/order', { json: { order } }).json<IResp>().then(res => {
+    api.put('/api/admin/servers/order', { json: { order } }).json<IResp>().then((res) => {
       notify('Success', res.msg, 'success');
       dispatch({ type: 'resetState', payload: { form, mutate } });
     });
@@ -144,7 +165,7 @@ const Management: FC = () => {
       dataIndex: 'sort',
       width: 30,
       align: 'center',
-      render: () => undefined
+      render: () => undefined,
     },
     {
       title: 'SERVER',
@@ -162,27 +183,27 @@ const Management: FC = () => {
             </div>
           </div>
         );
-      }
+      },
     },
     {
       title: 'USERNAME',
       dataIndex: 'username',
-      align: 'center'
+      align: 'center',
     },
     {
       title: 'TYPE',
       dataIndex: 'type',
-      align: 'center'
+      align: 'center',
     },
     {
       title: 'LOCATION',
       dataIndex: 'location',
-      align: 'center'
+      align: 'center',
     },
     {
       title: 'REGION',
       dataIndex: 'region',
-      align: 'center'
+      align: 'center',
     },
     {
       title: 'STATUS',
@@ -192,7 +213,7 @@ const Management: FC = () => {
         disabled
           ? <Tag color="error">Disabled</Tag>
           : <Tag color="success">Enabled</Tag>
-      )
+      ),
     },
     {
       title: 'ACTION',
@@ -207,21 +228,21 @@ const Management: FC = () => {
                 type: 'setNode',
                 payload: {
                   currentNode: record.username,
-                  installationScript: parseInstallationScript(record.username, '')
-                }
+                  installationScript: parseInstallationScript(record.username, ''),
+                },
               });
             }}
             />
             <DeleteOutlined onClick={() => confirm({
               title: 'Are you sure you want to delete this item?',
               icon: <ExclamationCircleOutlined />,
-              onOk: () => handleDelete(record.username)
+              onOk: () => handleDelete(record.username),
             })}
             />
           </div>
         );
-      }
-    }
+      },
+    },
 
   ], [confirm, form, handleDelete]);
 
@@ -265,7 +286,7 @@ const Management: FC = () => {
     </Droppable>
   ), []);
 
-  const DraggableBodyRow = useCallback<FC<any>>(props => {
+  const DraggableBodyRow = useCallback<FC<any>>((props) => {
     const index = dataSource.findIndex(x => x.id === props['data-row-key']);
     return (
       <Draggable
@@ -273,7 +294,7 @@ const Management: FC = () => {
         index={index}
         isDragDisabled={!state.sortEnabled}
       >
-        {provided => {
+        {(provided) => {
           const children = props.children?.map?.((el: ReactElement) => {
             if (el.props.dataIndex === 'sort') {
               const props = el.props ? { ...el.props } : {};
@@ -301,138 +322,147 @@ const Management: FC = () => {
     <>
       <Title level={2} className="my-6">Management</Title>
       {
-        data ? (
-          <DragDropContext
-            onDragEnd={result => {
-              const { destination, source } = result;
-              if (!destination) return;
-              if (destination.droppableId === source.droppableId && destination.index === source.index) return;
-              const newDataSource = arrayMoveImmutable(dataSource, source.index, destination.index);
-              mutate({ ...data, data: newDataSource }, false).then();
-            }}
-          >
-            <Table
-              dataSource={dataSource}
-              columns={columns}
-              rowKey="id"
-              components={{
-                body: {
-                  wrapper: DraggableContainer,
-                  row: DraggableBodyRow
-                }
-              }}
-              pagination={state.sortEnabled ? false : undefined}
-              footer={TableFooter}
-            />
-            <Modal
-              title={state.currentNode ? 'Modify Configuration' : 'New'}
-              visible={state.showModal}
-              onOk={state.currentNode ? handleModify : handleCreate}
-              onCancel={() => dispatch({ type: 'resetState', payload: { form } })}
-              className="top-12"
-            >
-              <Form
-                layout="vertical"
-                form={form}
-                onValuesChange={(field, allFields) => {
-                  if (field.username || field.password) {
-                    dispatch({
-                      type: 'setInstallationScript',
-                      payload: {
-                        installationScript: parseInstallationScript(
-                          field.username || allFields.username,
-                          field.password || allFields.password
-                        )
-                      }
-                    });
-                  }
+        data
+          ? (
+              <DragDropContext
+                onDragEnd={(result) => {
+                  const { destination, source } = result;
+                  if (!destination)
+                    return;
+                  if (destination.droppableId === source.droppableId && destination.index === source.index)
+                    return;
+                  const newDataSource = arrayMoveImmutable(dataSource, source.index, destination.index);
+                  mutate({ ...data, data: newDataSource }, false).then();
                 }}
               >
-                {state.isImport ? (
-                  <Form.Item label="Data" name="data">
-                    <Input.TextArea rows={4} />
-                  </Form.Item>
-                ) : (
-                  <>
-                    <Form.Item
-                      label="Username"
-                      name="username"
-                      rules={
-                        [
-                          {
-                            validator: basicValidator
-                          }
-                        ]
+                <Table
+                  dataSource={dataSource}
+                  columns={columns}
+                  rowKey="id"
+                  components={{
+                    body: {
+                      wrapper: DraggableContainer,
+                      row: DraggableBodyRow,
+                    },
+                  }}
+                  pagination={state.sortEnabled ? false : undefined}
+                  footer={TableFooter}
+                />
+                <Modal
+                  title={state.currentNode ? 'Modify Configuration' : 'New'}
+                  visible={state.showModal}
+                  onOk={state.currentNode ? handleModify : handleCreate}
+                  onCancel={() => dispatch({ type: 'resetState', payload: { form } })}
+                  className="top-12"
+                >
+                  <Form
+                    layout="vertical"
+                    form={form}
+                    onValuesChange={(field, allFields) => {
+                      if (field.username || field.password) {
+                        dispatch({
+                          type: 'setInstallationScript',
+                          payload: {
+                            installationScript: parseInstallationScript(
+                              field.username || allFields.username,
+                              field.password || allFields.password,
+                            ),
+                          },
+                        });
                       }
-                    >
-                      <Input />
-                    </Form.Item>
-                    <Form.Item
-                      label="Password"
-                      name="password"
-                      rules={
-                        [
-                          {
-                            validator: basicValidator
-                          }
-                        ]
-                      }
-                    >
-                      <Input.Password placeholder="留空不修改" />
-                    </Form.Item>
-                    <Form.Item label="Name" name="name">
-                      <Input />
-                    </Form.Item>
-                    <Form.Item label="Type" name="type">
-                      <Input />
-                    </Form.Item>
-                    <Form.Item label="Location" name="location">
-                      <Input />
-                    </Form.Item>
-                    <Form.Item
-                      label="Region"
-                      name="region"
-                      rules={[{
-                        validator(_, value) {
-                          if (countries.isValid(value)) return Promise.resolve();
-                          return Promise.reject(new Error('Country not found!'));
-                        }
-                      }]}
-                    >
-                      <AutoComplete
-                        options={regionResult.map(value => ({
-                          value,
-                          label: value
-                        }))}
-                        onChange={(value: unknown) => {
-                          if (typeof value !== 'string') return [];
-                          const code = countries.getAlpha2Code(value, 'zh');
-                          const codeEn = countries.getAlpha2Code(value, 'en');
-                          const fullMatch = [code, codeEn].filter(v => !!v);
-                          return fullMatch.length ? setRegionResult(fullMatch) : setRegionResult(
-                            Object.keys(countries.getAlpha2Codes()).filter(v => v.startsWith(value.toUpperCase()))
-                          );
-                        }}
-                      >
-                        <Input />
-                      </AutoComplete>
-                    </Form.Item>
-                    <Form.Item label="Disabled" name="disabled" valuePropName="checked">
-                      <Switch />
-                    </Form.Item>
-                    <Form.Item label="Script">
-                      <code
-                        className="bg-gray-200 px-2 py-0.5 leading-6 rounded break-all"
-                      >
-                        {state.installationScript}
-                      </code>
-                    </Form.Item>
-                  </>
-                )}
-              </Form>
-            </Modal>
-          </DragDropContext>
-        )
+                    }}
+                  >
+                    {state.isImport
+                      ? (
+                          <Form.Item label="Data" name="data">
+                            <Input.TextArea rows={4} />
+                          </Form.Item>
+                        )
+                      : (
+                          <>
+                            <Form.Item
+                              label="Username"
+                              name="username"
+                              rules={
+                                [
+                                  {
+                                    validator: basicValidator,
+                                  },
+                                ]
+                              }
+                            >
+                              <Input />
+                            </Form.Item>
+                            <Form.Item
+                              label="Password"
+                              name="password"
+                              rules={
+                                [
+                                  {
+                                    validator: basicValidator,
+                                  },
+                                ]
+                              }
+                            >
+                              <Input.Password placeholder="留空不修改" />
+                            </Form.Item>
+                            <Form.Item label="Name" name="name">
+                              <Input />
+                            </Form.Item>
+                            <Form.Item label="Type" name="type">
+                              <Input />
+                            </Form.Item>
+                            <Form.Item label="Location" name="location">
+                              <Input />
+                            </Form.Item>
+                            <Form.Item
+                              label="Region"
+                              name="region"
+                              rules={[{
+                                validator(_, value) {
+                                  if (countries.isValid(value))
+                                    return Promise.resolve();
+                                  return Promise.reject(new Error('Country not found!'));
+                                },
+                              }]}
+                            >
+                              <AutoComplete
+                                options={regionResult.map(value => ({
+                                  value,
+                                  label: value,
+                                }))}
+                                onChange={(value: unknown) => {
+                                  if (typeof value !== 'string')
+                                    return [];
+                                  const code = countries.getAlpha2Code(value, 'zh');
+                                  const codeEn = countries.getAlpha2Code(value, 'en');
+                                  const fullMatch = [code, codeEn].filter(v => !!v);
+                                  return fullMatch.length
+                                    ? setRegionResult(fullMatch)
+                                    : setRegionResult(
+                                        Object.keys(countries.getAlpha2Codes()).filter(v => v.startsWith(value.toUpperCase())),
+                                      );
+                                }}
+                              >
+                                <Input />
+                              </AutoComplete>
+                            </Form.Item>
+                            <Form.Item label="Disabled" name="disabled" valuePropName="checked">
+                              <Switch />
+                            </Form.Item>
+                            <Form.Item label="Script">
+                              <code
+                                className="bg-gray-200 px-2 py-0.5 leading-6 rounded break-all"
+                              >
+                                {state.installationScript}
+                              </code>
+                            </Form.Item>
+                          </>
+                        )}
+                  </Form>
+                </Modal>
+              </DragDropContext>
+            )
           : <Loading />
       }
     </>

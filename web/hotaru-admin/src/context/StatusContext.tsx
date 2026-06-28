@@ -1,20 +1,22 @@
-import React, { useState, FC, useEffect } from 'react';
-import WebSocket from 'reconnecting-websocket';
+import type { FC } from 'react';
+import type { ITable, ServerItem } from '../types';
 import { parseLoad, parseUpdateTime } from '@nodestatus/web-utils/shared';
-import { ITable, ServerItem } from '../types';
+import React, { useEffect, useState } from 'react';
+import WebSocket from 'reconnecting-websocket';
 
 interface IData {
-  servers: Array<ServerItem>,
+  servers: Array<ServerItem>;
   updated: number;
 }
 
 interface IContext {
-  servers: Array<ITable>,
-  timeSince: string
+  servers: Array<ITable>;
+  timeSince: string;
 }
 
 export const StatusContext = React.createContext<IContext>({
-  servers: [], timeSince: '从未.'
+  servers: [],
+  timeSince: '从未.',
 });
 
 export const StatusContextProvider: FC = ({ children }) => {
@@ -25,12 +27,12 @@ export const StatusContextProvider: FC = ({ children }) => {
     ws.onopen = () => console.log('Connect to backend successfully!');
     ws.onclose = evt => console.log(`WebSocket disconnected: ${evt.reason}`);
     ws.onerror = evt => console.log(`An error occurred while connecting to the backend, ${evt}`);
-    ws.onmessage = evt => {
+    ws.onmessage = (evt) => {
       const data: IData = JSON.parse(evt.data);
       const { servers, updated } = data;
       const value: IContext = {
         servers: [],
-        timeSince: parseUpdateTime(updated)
+        timeSince: parseUpdateTime(updated),
       };
       for (const item of servers) {
         const isOnline = item.status.online4 || item.status.online6;
@@ -41,7 +43,7 @@ export const StatusContextProvider: FC = ({ children }) => {
           region: item.region,
           load: isOnline ? parseLoad(item.status.load) : '-',
           uptime: isOnline ? item.status.uptime : '-',
-          status: isOnline
+          status: isOnline,
         });
       }
       setStatus(value);

@@ -1,18 +1,21 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "module": "esnext",
     "composite": true,
     "jsx": "preserve",
     "lib": [
       "ESNext",
       "DOM",
       "DOM.Iterable"
-    ]
+    ],
+    "module": "esnext"
   },
   "include": [
     "web/*-theme/**/*.ts",
     "web/*-theme/**/*.tsx",
-    "web/*-theme/**/*.vue"
+    "web/*-theme/**/*.vue",
+    "web/utils/**/*.ts",
+    "web/utils/**/*.tsx",
+    "web/utils/**/*.vue"
   ]
 }

@@ -1,10 +1,11 @@
-import React, { FC, useState } from 'react';
-import { Drawer, Layout as AntdLayout } from 'antd';
-import AdminRoutes from '../routes/AdminRoutes';
-import Sider from '../components/Sider';
-import Header from '../components/Header';
+import type { FC } from 'react';
+import { Layout as AntdLayout, Drawer } from 'antd';
+import React, { useState } from 'react';
 import Footer from '../components/Footer';
+import Header from '../components/Header';
+import Sider from '../components/Sider';
 import { StatusContextProvider } from '../context/StatusContext';
+import AdminRoutes from '../routes/AdminRoutes';
 
 const Layout: FC = () => {
   const [collapsed, setCollapsed] = useState(false);
