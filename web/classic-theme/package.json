@@ -11,12 +11,12 @@
   "devDependencies": {
     "@nodestatus/web-utils": "workspace:*",
     "@vitejs/plugin-vue": "^6.0.7",
-    "@vueuse/head": "^1.0.22",
+    "@vueuse/head": "^2.0.0",
     "bootstrap": "3.4.1",
     "reconnecting-websocket": "^4.4.0",
     "typescript": "^6.0.3",
     "vite": "^8.1.0",
-    "vue": "^3.2.33",
-    "vue-tsc": "^2.0.0"
+    "vue": "^3.5.39",
+    "vue-tsc": "^3.3.5"
   }
 }

@@ -1,4 +1,4 @@
-export * from 'nodestatus/types';
+export * from '../../../packages/nodestatus-server/types/server';
 
 export interface IWebConfig {
   title: string;
