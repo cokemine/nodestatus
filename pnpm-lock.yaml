@@ -158,8 +158,8 @@ importers:
         specifier: ^8.18.0
         version: 8.18.1
       bcrypt-ts:
-        specifier: ^4.0.0
-        version: 4.0.1
+        specifier: ^8.0.0
+        version: 8.0.1
       classic-theme:
         specifier: workspace:*
         version: link:../../web/classic-theme
@@ -1772,8 +1772,9 @@ packages:
     resolution: {integrity: sha512-5T6P4xPgpp0YDFvSWwEZ4NoE3aM4QBQXDzmVbraCkFj8zHM+mba8SyqB5DbZWyR7mYHo6Y7BdQo3MoA4m0TeQg==}
     engines: {node: '>=0.10.0'}
 
-  bcrypt-ts@4.0.1:
-    resolution: {integrity: sha512-VdQBytZqdlUs6Hv992mKwhwvjaPAEfVRk+VAV4uuQtJ/6G/AQrqdiOq5nSubtBBsG9HxkTCfiVGUjQcnzq1htw==}
+  bcrypt-ts@8.0.1:
+    resolution: {integrity: sha512-ILrO7U7YieyG+71KVIVVuPCmjN8N9DY3gYs4OiEoJvW8A5HOe4eerRhLD0Rgo2CAyANRKssFGXmLF74zJz094g==}
+    engines: {node: '>=20'}
 
   better-result@2.9.2:
     resolution: {integrity: sha512-WIFoBPCdnTOdk9inkE1ZRvCZ4P0CpSkAiLlchC65N7n9DcjZ3NhqkBOlafzpOVnO8ixyi37kicmSJ3ENhPZl7Q==}
@@ -6262,7 +6263,7 @@ snapshots:
       mixin-deep: 1.3.2
       pascalcase: 0.1.1
 
-  bcrypt-ts@4.0.1: {}
+  bcrypt-ts@8.0.1: {}
 
   better-result@2.9.2: {}
 
