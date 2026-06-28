@@ -1,10 +1,10 @@
 import React, { FC, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form, Input, Button } from 'antd';
-import axios from 'axios';
 import { useSWRConfig } from 'swr';
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { notify } from '../utils';
+import api from '../lib/api';
 
 /* https://unsplash.com/photos/McsNra2VRQQ */
 import cherry from '../assets/img/cherry.jpg';
@@ -19,8 +19,7 @@ const Login: FC = () => {
 
   const onFinish = useCallback(async (values: { username: string, password: string }) => {
     const { username, password } = values;
-    const res = await axios.post<IResp<string>>('/api/admin/session', { username, password });
-    const { data } = res;
+    const data = await api.post<IResp<string>>('/api/admin/session', { json: { username, password } }).json<IResp<string>>();
     if (!data.code) {
       notify('Success', undefined, 'success');
       localStorage.setItem('token', data.data);

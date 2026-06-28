@@ -14,7 +14,7 @@ import dayjs from 'dayjs';
 import {
   ExclamationCircleOutlined
 } from '@ant-design/icons';
-import axios from 'axios';
+import api from '../lib/api';
 import Loading from '../components/Loading';
 import { notify } from '../utils';
 import type { IResp, Event as IEvent } from '../types';
@@ -31,8 +31,8 @@ const Incidents: FC = () => {
   const { count, list: dataList } = resp?.data || {};
 
   const handleDeleteEvent = useCallback((id: number) => {
-    axios.delete<IResp>(`/api/admin/events/${id}`).then(res => {
-      notify('Success', res.data.msg, 'success');
+    api.delete(`/api/admin/events/${id}`).json<IResp>().then(res => {
+      notify('Success', res.msg, 'success');
       return mutate();
     });
   }, [mutate]);
@@ -104,8 +104,8 @@ const Incidents: FC = () => {
         onClick={() => Modal.confirm({
           title: 'Are you sure you want to delete all items?',
           icon: <ExclamationCircleOutlined />,
-          onOk: () => axios.delete('/api/admin/events').then(res => {
-            notify('Success', res.data.msg, 'success');
+          onOk: () => api.delete('/api/admin/events').json<IResp>().then(res => {
+            notify('Success', res.msg, 'success');
             return mutate();
           })
         })}

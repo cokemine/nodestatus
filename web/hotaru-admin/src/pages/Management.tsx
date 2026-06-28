@@ -9,8 +9,8 @@ import { ColumnsType } from 'antd/es/table';
 import {
   DeleteOutlined, EditOutlined, ExclamationCircleOutlined, MenuOutlined
 } from '@ant-design/icons';
-import axios from 'axios';
 import useSWR, { KeyedMutator } from 'swr';
+import api from '../lib/api';
 import { arrayMoveImmutable } from 'array-move';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import countries from 'i18n-iso-countries';
@@ -110,30 +110,30 @@ const Management: FC = () => {
 
   const handleModify = useCallback(() => {
     const data = form.getFieldsValue();
-    axios.put<IResp>('/api/admin/servers', { username: state.currentNode, data }).then(res => {
-      notify('Success', res.data.msg, 'success');
+    api.put('/api/admin/servers', { json: { username: state.currentNode, data } }).json<IResp>().then(res => {
+      notify('Success', res.msg, 'success');
       dispatch({ type: 'resetState', payload: { form, mutate } });
     });
   }, [state.currentNode, form, mutate]);
 
   const handleCreate = useCallback(() => {
     const data = form.getFieldsValue();
-    axios.post<IResp>('/api/admin/servers', { ...data }).then(res => {
-      notify('Success', res.data.msg, 'success');
+    api.post('/api/admin/servers', { json: { ...data } }).json<IResp>().then(res => {
+      notify('Success', res.msg, 'success');
       dispatch({ type: 'resetState', payload: { form, mutate } });
     });
   }, [form, mutate]);
 
   const handleDelete = useCallback((username: string) => {
-    axios.delete<IResp>(`/api/admin/servers/${username}`).then(res => {
-      notify('Success', res.data.msg, 'success');
+    api.delete(`/api/admin/servers/${username}`).json<IResp>().then(res => {
+      notify('Success', res.msg, 'success');
       dispatch({ type: 'resetState', payload: { form, mutate } });
     });
   }, [form, mutate]);
 
   const handleSortOrder = useCallback((order: number[]) => {
-    axios.put<IResp>('/api/admin/servers/order', { order }).then(res => {
-      notify('Success', res.data.msg, 'success');
+    api.put('/api/admin/servers/order', { json: { order } }).json<IResp>().then(res => {
+      notify('Success', res.msg, 'success');
       dispatch({ type: 'resetState', payload: { form, mutate } });
     });
   }, [form, mutate]);
