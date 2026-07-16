@@ -36,7 +36,6 @@
     "@types/fs-extra": "^9.0.13",
     "@types/node": "^24.6.2",
     "cross-env": "^7.0.3",
-    "esbuild": "^0.28.1",
     "eslint": "^9.39.4",
     "fs-extra": "^11.1.0",
     "globals": "^15.15.0",

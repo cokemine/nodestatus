@@ -12,7 +12,4 @@ export default defineConfig({
       symbolId: '[name]',
     }),
   ],
-  build: {
-    cssMinify: 'esbuild',
-  },
 });
