@@ -34,7 +34,7 @@
     "pretest": "cross-env NODE_ENV=TEST node scripts/init.js"
   },
   "dependencies": {
-    "@hono/node-server": "^2.0.6",
+    "@hono/node-server": "^2.0.10",
     "@prisma/adapter-better-sqlite3": "^7.8.0",
     "@prisma/adapter-mariadb": "^7.8.0",
     "@prisma/adapter-pg": "^7.8.0",
