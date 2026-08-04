@@ -42,7 +42,7 @@
     "@prisma/client-runtime-utils": "^7.8.0",
     "better-sqlite3": "^12.11.1",
     "dotenv": "^16.0.1",
-    "hono": "^4.12.27",
+    "hono": "^4.12.34",
     "mariadb": "^3.4.0",
     "pg": "^8.13.1",
     "prisma": "^7.8.0",
