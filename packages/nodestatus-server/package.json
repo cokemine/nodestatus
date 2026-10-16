@@ -43,7 +43,7 @@
     "better-sqlite3": "^12.11.1",
     "dotenv": "^16.0.1",
     "hono": "^4.12.27",
-    "mariadb": "^3.4.0",
+    "mariadb": "^3.5.4",
     "pg": "^8.13.1",
     "prisma": "^7.8.0",
     "replace-in-file": "^6.3.2"
